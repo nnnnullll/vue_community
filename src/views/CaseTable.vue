@@ -26,6 +26,11 @@
                         <el-tag :type="tag.type">{{tag.name}}</el-tag>
                     </template>
                 </el-table-column>
+                <el-table-column label="状态" align="center">
+                    <template #default="scope">
+                        <el-tag :type="tag.type">{{tag.name}}</el-tag>
+                    </template>
+                </el-table-column>
 
                 <el-table-column prop="date" label="注册时间"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
