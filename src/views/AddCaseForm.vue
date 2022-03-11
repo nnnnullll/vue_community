@@ -246,6 +246,7 @@ export default {
     onSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          // 1-employee 2-Customer
           this.form.created_by = localStorage.getItem('loginuser')
           this.form.created_role = localStorage.getItem('logintype')
           axios.post('/insertcase?subject=' + this.form.subject + '&description=' + this.form.description + '&type=' + this.form.type + '&created_by=' + this.form.created_by + '&created_role=' + this.form.created_role)

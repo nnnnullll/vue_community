@@ -12,24 +12,17 @@ export default new Router({
       component: Home,
       children: [
         {
-          path: '/donate',
-          name: 'donate',
-          meta: {
-            title: '鼓励作者'
-          },
-          component: () => import('../views/Donate.vue')
-        }, {
           path: '/casetable',
           name: 'casetable',
           meta: {
-            title: '表单'
+            title: '投诉单列表'
           },
           component: () => import('../views/CaseTable.vue')
         }, {
           path: '/addcaseform',
           name: 'addcaseform',
           meta: {
-            title: '表单'
+            title: '新建投诉单'
           },
           component: () => import('../views/AddCaseForm.vue')
         },
@@ -37,9 +30,25 @@ export default new Router({
           path: '/casedetail',
           name: 'casedetail',
           meta: {
-            title: '表单'
+            title: '投诉单详情'
           },
           component: () => import('../views/CaseDetail.vue')
+        },
+        {
+          path: '/householddetail',
+          name: 'householddetail',
+          meta: {
+            title: '个人信息'
+          },
+          component: () => import('../views/HouseholdDetail.vue')
+        },
+        {
+          path: '/changepassword',
+          name: 'changepassword',
+          meta: {
+            title: '更改密码'
+          },
+          component: () => import('../views/ChangePassword.vue')
         }
       ]
     }, {

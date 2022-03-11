@@ -116,7 +116,6 @@
 <script>
 const axios = require('axios')
 export default {
-  name: 'addcaseform',
   data () {
     return {
       form: null,

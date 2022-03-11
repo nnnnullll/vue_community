@@ -109,9 +109,19 @@ export default {
           ]
         },
         {
-          icon: 'el-icon-redpacket_fill',
-          index: '/donate',
-          title: '支持作者'
+          icon: 'el-icon-user',
+          index: '8',
+          title: '个人中心',
+          subs: [
+            {
+              index: '/householddetail',
+              title: '个人信息'
+            },
+            {
+              index: '/changepassword',
+              title: '更改密码'
+            }
+          ]
         }
       ]
 
