@@ -120,6 +120,10 @@ export default {
             {
               index: '/changepassword',
               title: '更改密码'
+            },
+            {
+              index: '/communitydetail',
+              title: '社区信息'
             }
           ]
         }

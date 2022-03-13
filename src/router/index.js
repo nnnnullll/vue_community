@@ -43,6 +43,14 @@ export default new Router({
           component: () => import('../views/HouseholdDetail.vue')
         },
         {
+          path: '/communitydetail',
+          name: 'communitydetail',
+          meta: {
+            title: '社区信息'
+          },
+          component: () => import('../views/CommunityDetail.vue')
+        },
+        {
           path: '/changepassword',
           name: 'changepassword',
           meta: {

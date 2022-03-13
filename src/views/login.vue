@@ -62,11 +62,15 @@ export default {
         if (valid) {
           axios.post('/login?username=' + this.loginForm.username + '&password=' + this.loginForm.password + '&type=' + this.loginForm.type)
             .then(res => {
-              this.$message({
-                message: '登录成功',
-                type: 'success'
-              })
-              this.$router.push('/home')
+              // type=1 employee
+              // type=2 household
+              if (this.loginForm.type) {
+                this.$message({
+                  message: '登录成功',
+                  type: 'success'
+                })
+              }
+              this.$router.push('/casetable')
               localStorage.setItem('loginuser', this.loginForm.username)
               localStorage.setItem('logintype', this.loginForm.type)
             })
