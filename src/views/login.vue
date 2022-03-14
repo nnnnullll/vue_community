@@ -70,7 +70,7 @@ export default {
                   type: 'success'
                 })
               }
-              this.$router.push('/casetable')
+              this.$router.push('/')
               localStorage.setItem('loginuser', this.loginForm.username)
               localStorage.setItem('logintype', this.loginForm.type)
             })

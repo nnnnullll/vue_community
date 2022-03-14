@@ -122,7 +122,6 @@ export default {
       axios.post('/getcasebyhouseholdnumber?householdnumber=' + householdNumber)
         .then(res => {
           this.tableData = res.data
-          this.pageTotal = res.data.length
         })
         .catch(err => {
           this.$message.error('加载失败:' + err)

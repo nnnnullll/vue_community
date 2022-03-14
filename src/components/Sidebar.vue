@@ -124,6 +124,10 @@ export default {
             {
               index: '/communitydetail',
               title: '社区信息'
+            },
+            {
+              index: '/communitytable',
+              title: '社区表格'
             }
           ]
         }

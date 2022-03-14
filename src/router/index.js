@@ -8,9 +8,20 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/dashboard'
+    }, {
+      path: '/',
       name: 'Home',
       component: Home,
       children: [
+        {
+          path: '/dashboard',
+          name: 'dashboard',
+          meta: {
+            title: '系统首页'
+          },
+          component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue')
+        },
         {
           path: '/casetable',
           name: 'casetable',
@@ -41,6 +52,14 @@ export default new Router({
             title: '个人信息'
           },
           component: () => import('../views/HouseholdDetail.vue')
+        },
+        {
+          path: '/communitytable',
+          name: 'communitytable',
+          meta: {
+            title: '社区表格'
+          },
+          component: () => import('../views/CommunityTable.vue')
         },
         {
           path: '/communitydetail',
