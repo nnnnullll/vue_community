@@ -5,16 +5,14 @@
                 <el-card shadow="hover" class="mgb20" style="height:223px;">
                     <div class="user-info">
                         <div class="user-info-cont">
-                            <div class="user-info-name">{{employeeinfo.employeename}}</div>
+                            <div class="user-info-name">{{logininfo.loginname}}</div>
                         </div>
                     </div>
                     <div class="user-info-list">
-                        所属物业公司：
-                        <span>{{employeeinfo.companyname}}</span>
+                        <span>{{logininfo.line1}}</span>
                     </div>
                     <div class="user-info-list">
-                        是否为超级管理员：
-                        <span>{{employeeinfo.ifadmin}}</span>
+                        <span>{{logininfo.line2}}</span>
                     </div>
                 </el-card>
             </el-col>
@@ -36,7 +34,7 @@
                             <div class="grid-content grid-con-1">
                                 <i class="el-icon-tickets grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{employeeinfo.newnumber}}</div>
+                                    <div class="grid-num">{{logininfo.newnumber}}</div>
                                     <div>新建</div>
                                 </div>
                             </div>
@@ -47,7 +45,7 @@
                             <div class="grid-content grid-con-2">
                                 <i class="el-icon-help grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{employeeinfo.inprogressnumber}}</div>
+                                    <div class="grid-num">{{logininfo.inprogressnumber}}</div>
                                     <div>我的受理</div>
                                 </div>
                             </div>
@@ -61,7 +59,7 @@
                             <div class="grid-content grid-con-3">
                                 <i class="el-icon-warning-outline grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{employeeinfo.escalationnumber}}</div>
+                                    <div class="grid-num">{{logininfo.escalationnumber}}</div>
                                     <div>我的加急</div>
                                 </div>
                             </div>
@@ -72,7 +70,7 @@
                             <div class="grid-content grid-con-4">
                                 <i class="el-icon-warning grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{employeeinfo.emergencynumber}}</div>
+                                    <div class="grid-num">{{logininfo.emergencynumber}}</div>
                                     <div>我的逾期</div>
                                 </div>
                             </div>
@@ -83,7 +81,7 @@
                             <div class="grid-content grid-con-5">
                                 <i class="el-icon-finished grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{employeeinfo.resolvednumber}}</div>
+                                    <div class="grid-num">{{logininfo.resolvednumber}}</div>
                                     <div>已解决</div>
                                 </div>
                             </div>
@@ -106,7 +104,7 @@
                             <div class="grid-content grid-con-h-1">
                                 <i class="el-icon-tickets grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{employeeinfo.newnumber}}</div>
+                                    <div class="grid-num">{{logininfo.newnumber}}</div>
                                     <div>新建</div>
                                 </div>
                             </div>
@@ -117,7 +115,7 @@
                             <div class="grid-content grid-con-h-2">
                                 <i class="el-icon-help grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{employeeinfo.inprogressnumber}}</div>
+                                    <div class="grid-num">{{logininfo.inprogressnumber}}</div>
                                     <div>受理中</div>
                                 </div>
                             </div>
@@ -130,7 +128,7 @@
                             <div class="grid-content grid-con-h-3">
                                 <i class="el-icon-warning-outline grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{employeeinfo.escalationnumber}}</div>
+                                    <div class="grid-num">{{logininfo.escalationnumber}}</div>
                                     <div>待补充</div>
                                 </div>
                             </div>
@@ -141,7 +139,7 @@
                             <div class="grid-content grid-con-h-4">
                                 <i class="el-icon-finished grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{employeeinfo.emergencynumber}}</div>
+                                    <div class="grid-num">{{logininfo.emergencynumber}}</div>
                                     <div>已解决</div>
                                 </div>
                             </div>
@@ -152,7 +150,66 @@
                             <div class="grid-content grid-con-h-5">
                                 <i class="el-icon-box grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{employeeinfo.emergencynumber}}</div>
+                                    <div class="grid-num">{{logininfo.emergencynumber}}</div>
+                                    <div>已关闭</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                </el-row>
+                 <el-row v-show="partnershow" :gutter="24" class="mgb20">
+                     <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                            <div class="grid-content grid-con-h-1">
+                                <i class="el-icon-tickets grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div class="grid-num">{{logininfo.fixwaite_number}}</div>
+                                    <div>待分配</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                            <div class="grid-content grid-con-h-2">
+                                <i class="el-icon-tickets grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div class="grid-num">{{logininfo.fixassigned_number}}</div>
+                                    <div>被分配</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                            <div class="grid-content grid-con-h-3">
+                                <i class="el-icon-help grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div class="grid-num">{{logininfo.infix_number}}</div>
+                                    <div>维修中</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                </el-row>
+                <el-row v-show="partnershow" :gutter="24" class="mgb20">
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                            <div class="grid-content grid-con-h-4">
+                                <i class="el-icon-finished grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div class="grid-num">{{logininfo.fixfinish_number}}</div>
+                                    <div>已解决</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                            <div class="grid-content grid-con-h-5">
+                                <i class="el-icon-box grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div class="grid-num">{{logininfo.fixclose_number}}</div>
                                     <div>已关闭</div>
                                 </div>
                             </div>
@@ -164,7 +221,7 @@
         <el-row :gutter="20">
             <el-col :span="12">
                 <el-card shadow="hover">
-                    <schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
+                    <schart height="400px" ref="bar" class="schart" canvasId="bar" :options="options"></schart>
                 </el-card>
             </el-col>
             <el-col :span="12">
@@ -185,80 +242,105 @@ export default {
   data () {
     return {
       employeeshow: false,
-      employeeinfo: null,
+      logininfo: null, // type=2时 就是householdinfo
       householdshow: false,
+      partnershow: false,
       options: {
         type: 'bar',
         title: {
-          text: '最近一周各品类销售图'
+          text: ''
         },
         xRorate: 25,
         labels: [''],
         datasets: [
           {
-            label: '新建',
-            data: [234]
+            label: '',
+            data: []
           },
           {
-            label: '受理中',
-            data: [144]
+            label: '',
+            data: []
           },
           {
-            label: '待补充',
-            data: [104]
+            label: '',
+            data: []
           },
           {
-            label: '加急',
-            data: [4]
+            label: '',
+            data: []
           },
           {
-            label: '逾期',
-            data: [44]
+            label: '',
+            data: []
           }
         ]
       },
       options2: {
         type: 'pie',
         title: {
-          text: '饼图1'
+          text: ''
         },
         titlePosition: 'bottom',
-        labels: ['6月', '7月', '8月', '9月', '10月'],
+        labels: [],
         datasets: [
           {
-            data: [234, 278, 270, 190, 230]
+            data: []
           }
         ]
       }
     }
   },
   mounted: function () {
-    // 1-employee 2-Customer
-    // eslint-disable-next-line eqeqeq
-    if (localStorage.getItem('logintype') == 1) {
-      this.employeeshow = true
-      this.getEmployeedash(localStorage.getItem('loginuser'))
-    // eslint-disable-next-line eqeqeq
-    } else if (localStorage.getItem('logintype') == 2) {
-      this.householdshow = true
-    } else {
-
-    }
+    this.initialLoginDash(localStorage.getItem('loginuser'), localStorage.getItem('logintype'))
   },
   methods: {
-    getEmployeedash (number) {
-      console.log(number)
-      axios.post('/getemployeedash?number=1000000000')
+    initialLoginDash (number, type) {
+    // 1-employee 2-Customer 3-partner
+    // eslint-disable-next-line eqeqeq
+      if (type == 1) {
+        this.employeeshow = true
+        // eslint-disable-next-line eqeqeq
+      } else if (type == 2) {
+        this.householdshow = true
+      } else {
+        this.partnershow = true
+      }
+      this.getLogindash(number, type)
+    },
+    getLogindash (number, type) {
+      axios.post('/getlogindash?number=' + number + '&type=' + type)
         .then(res => {
           console.log(res.data)
-          this.employeeinfo = res.data
+          this.logininfo = res.data
+          this.options.title.text = res.data.stateChartTitle
+          this.options.datasets[0].data[0] = res.data.statechart[0]
+          this.options.datasets[1].data[0] = res.data.statechart[1]
+          this.options.datasets[2].data[0] = res.data.statechart[2]
+          this.options.datasets[3].data[0] = res.data.statechart[3]
+          this.options.datasets[4].data[0] = res.data.statechart[4]
+          this.options.datasets[0].label = res.data.stateChartLabels[0]
+          this.options.datasets[1].label = res.data.stateChartLabels[1]
+          this.options.datasets[2].label = res.data.stateChartLabels[2]
+          this.options.datasets[3].label = res.data.stateChartLabels[3]
+          this.options.datasets[4].label = res.data.stateChartLabels[4]
+          this.options2.title.text = res.data.typeChartTitle
+          this.options2.datasets[0].data = res.data.typechart
+          this.options2.labels = res.data.typeChartLabels
+          // eslint-disable-next-line eqeqeq
+          if (type == 1) {
+            localStorage.setItem('loginuser_commpany', this.loginForm.companyNumber)
+            // eslint-disable-next-line eqeqeq
+          } else if (type == 2) {
+            localStorage.setItem('loginuser_commpany', this.loginForm.companyNumber)
+            localStorage.setItem('loginuser_commmunity', this.loginForm.communitynumber)
+          } else {
+          }
         })
         .catch(err => {
           this.$message.error('加载失败:' + err)
           console.error(err)
         })
     }
-
   }
 }
 </script>

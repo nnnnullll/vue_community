@@ -180,20 +180,12 @@ export default {
           value: 3
         },
         {
-          label: '地面',
+          label: '公共设施',
           value: 4
         },
         {
-          label: '围墙外立面',
-          value: 5
-
-        }, {
-          label: '公共设施',
-          value: 6
-        },
-        {
           label: '其他',
-          value: 7
+          value: 5
         }
       ],
       statelist: [

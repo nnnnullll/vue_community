@@ -64,15 +64,16 @@ export default {
             .then(res => {
               // type=1 employee
               // type=2 household
+              // type=3 partner
               if (this.loginForm.type) {
                 this.$message({
                   message: '登录成功',
                   type: 'success'
                 })
               }
-              this.$router.push('/')
               localStorage.setItem('loginuser', this.loginForm.username)
               localStorage.setItem('logintype', this.loginForm.type)
+              this.$router.push('/')
             })
             .catch(err => {
               this.$message.error('登录失败, 请输入正确的用户名密码')
