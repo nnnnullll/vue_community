@@ -18,11 +18,15 @@
 </template>
 <script>
 import vHeader from '../components/Header.vue'
-import vSidebar from '../components/Sidebar.vue'
+import vSidebarPartner from '../components/SidebarPartner.vue'
+import vSidebarHousehold from '../components/SidebarHousehold.vue'
+import vSidebarEmployee from '../components/SidebarEmployee.vue'
 export default {
   components: {
     vHeader,
-    vSidebar
+    vSidebarPartner,
+    vSidebarHousehold,
+    vSidebarEmployee
   },
   data () {
     return {

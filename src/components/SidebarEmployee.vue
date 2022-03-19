@@ -128,6 +128,22 @@ export default {
             {
               index: '/communitytable',
               title: '社区表格'
+            },
+            {
+              index: '/companytable',
+              title: '物业公司表格'
+            },
+            {
+              index: '/partnertable',
+              title: '维修公司表格'
+            },
+            {
+              index: '/companydetail',
+              title: '物业公司信息'
+            },
+            {
+              index: '/partnerdetail',
+              title: '维修公司信息'
             }
           ]
         }

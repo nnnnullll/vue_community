@@ -62,12 +62,44 @@ export default new Router({
           component: () => import('../views/CommunityTable.vue')
         },
         {
+          path: '/companytable',
+          name: 'companytable',
+          meta: {
+            title: '物业公司表格'
+          },
+          component: () => import('../views/CompanyTable.vue')
+        },
+        {
+          path: '/partnertable',
+          name: 'partnertable',
+          meta: {
+            title: '维修公司表格'
+          },
+          component: () => import('../views/PartnerTable.vue')
+        },
+        {
           path: '/communitydetail',
           name: 'communitydetail',
           meta: {
             title: '社区信息'
           },
           component: () => import('../views/CommunityDetail.vue')
+        },
+        {
+          path: '/companydetail',
+          name: 'companydetail',
+          meta: {
+            title: '物业公司信息'
+          },
+          component: () => import('../views/CompanyDetail.vue')
+        },
+        {
+          path: '/partnerdetail',
+          name: 'partnerdetail',
+          meta: {
+            title: '维修公司信息'
+          },
+          component: () => import('../views/PartnerDetail.vue')
         },
         {
           path: '/changepassword',

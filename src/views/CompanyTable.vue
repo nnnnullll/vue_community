@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 社区表格
+                    <i class="el-icon-lx-cascades"></i> 物业公司表格
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -17,13 +17,15 @@
                         </span>
                     </template>
                 </el-table-column>
-                <el-table-column sortable prop="name" label="社区名" :formatter="formatter"></el-table-column>
-                <el-table-column sortable prop="region" label="地址"></el-table-column>
+                <el-table-column sortable prop="name" label="名字" :formatter="formatter"></el-table-column>
+                <el-table-column sortable prop="address" label="地址"></el-table-column>
                 <el-table-column width="85px" sortable prop="active" label="有效" :filters="activetag" :filter-method="filterActive" filter-placement="bottom-end" >
                     <template slot-scope="{row}">
                         <el-tag v-show="row.active==0" type="success">加急</el-tag>
                     </template>
                 </el-table-column>
+                <el-table-column sortable prop="email" label="邮箱"></el-table-column>
+                <el-table-column sortable prop="phone" label="联系电话"></el-table-column>
             </el-table>
         </div>
     </div>
@@ -45,12 +47,12 @@ export default {
     // 1-employee 2-Customer
     // eslint-disable-next-line eqeqeq
     if (localStorage.getItem('logintype') == 1) {
-      this.getDataCommunityByCompany(100000000000000000)
+      this.getDataCompaniesByPartner(1000000000)
     // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 2) {
-      this.getDataCommunityByCompany(100000000000000000)
+      this.getDataCompaniesByPartner(1000000000)
     } else {
-      this.getDataCommunityByCompany(100000000000000000)
+      this.getDataCompaniesByPartner(1000000000)
     }
   },
   methods: {
@@ -63,8 +65,8 @@ export default {
     filterActive (value, row) {
       return row.active === value
     },
-    getDataCommunityByCompany (companynumber) {
-      axios.post('/getcommunity?type=2&number=1&company=' + companynumber)
+    getDataCompaniesByPartner (partner) {
+      axios.post('/getcompanies?type=1&partner=' + partner)
         .then(res => {
           console.log(res.data)
           this.tableData = res.data
