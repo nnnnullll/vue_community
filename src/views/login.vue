@@ -39,16 +39,16 @@ export default {
   data () {
     return {
       loginForm: {
-        username: 0,
-        password: '',
-        type: 0
+        username: null,
+        password: null,
+        type: null
       },
       rules: {
         username: [
           { required: true, message: '请输入账号', trigger: 'blur' }
         ],
         type: [
-          { required: true, message: '请选择身份', trigger: 'change' }
+          { required: true, message: '请选择身份', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
@@ -62,9 +62,7 @@ export default {
         if (valid) {
           axios.post('/login?username=' + this.loginForm.username + '&password=' + this.loginForm.password + '&type=' + this.loginForm.type)
             .then(res => {
-              // type=1 employee
-              // type=2 household
-              // type=3 partner
+              // type=1 employee  type=2 household  type=3 partner
               if (this.loginForm.type) {
                 this.$message({
                   message: '登录成功',

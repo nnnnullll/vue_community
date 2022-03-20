@@ -114,36 +114,16 @@ export default {
           title: '个人中心',
           subs: [
             {
-              index: '/householddetail',
-              title: '个人信息'
+              index: '/partnerdetail',
+              title: '我的信息'
             },
             {
               index: '/changepassword',
               title: '更改密码'
             },
             {
-              index: '/communitydetail',
-              title: '社区信息'
-            },
-            {
-              index: '/communitytable',
-              title: '社区表格'
-            },
-            {
               index: '/companytable',
-              title: '物业公司表格'
-            },
-            {
-              index: '/partnertable',
-              title: '维修公司表格'
-            },
-            {
-              index: '/companydetail',
-              title: '物业公司信息'
-            },
-            {
-              index: '/partnerdetail',
-              title: '维修公司信息'
+              title: '我的合作'
             }
           ]
         }

@@ -1,7 +1,9 @@
 <template>
     <div class="about">
         <v-header @receivecollapse="fromChild" />
-        <v-sidebar />
+        <v-sidebarpartner v-if="type==3" />
+        <v-sidebaremployee v-else-if="type==1"/>
+        <v-sidebarhousehold v-else />
         <div class="content-box" :class="{ 'content-collapse': collapse }">
             <div class="content">
                 <router-view v-slot="{ Component }">
@@ -18,22 +20,24 @@
 </template>
 <script>
 import vHeader from '../components/Header.vue'
-import vSidebarPartner from '../components/SidebarPartner.vue'
-import vSidebarHousehold from '../components/SidebarHousehold.vue'
-import vSidebarEmployee from '../components/SidebarEmployee.vue'
+import vSidebarpartner from '../components/SidebarPartne.vue'
+import vSidebarhousehold from '../components/SidebarHousehold.vue'
+import vSidebaremployee from '../components/SidebarEmployee.vue'
 export default {
   components: {
     vHeader,
-    vSidebarPartner,
-    vSidebarHousehold,
-    vSidebarEmployee
+    vSidebarpartner,
+    vSidebarhousehold,
+    vSidebaremployee
   },
   data () {
     return {
-      collapse: null
+      collapse: null,
+      type: null
     }
   },
   mounted: function () {
+    this.type = localStorage.getItem('logintype')
     this.fromChild()
   },
   methods: {

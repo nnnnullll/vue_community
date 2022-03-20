@@ -46,6 +46,14 @@ export default new Router({
           component: () => import('../views/CaseDetail.vue')
         },
         {
+          path: '/employeedetail',
+          name: 'employeedetail',
+          meta: {
+            title: '个人信息'
+          },
+          component: () => import('../views/EmployeeDetail.vue')
+        },
+        {
           path: '/householddetail',
           name: 'householddetail',
           meta: {
@@ -76,6 +84,14 @@ export default new Router({
             title: '维修公司表格'
           },
           component: () => import('../views/PartnerTable.vue')
+        },
+        {
+          path: '/employeetable',
+          name: 'employeetable',
+          meta: {
+            title: '维修公司表格'
+          },
+          component: () => import('../views/EmployeeTable.vue')
         },
         {
           path: '/communitydetail',
