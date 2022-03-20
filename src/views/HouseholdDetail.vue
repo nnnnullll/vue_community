@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     GetHouseholdDetailByNumber (number) {
-      axios.post('/gethousehold?type=1&number=' + number + '&community=0')
+      axios.post('/gethouseholds?type=1&company=0&number=' + number + '&community=0')
         .then(res => {
           this.form = res.data[0]
         })

@@ -66,7 +66,7 @@ export default {
       return row.active === value
     },
     getDataCompaniesByPartner (partner) {
-      axios.post('/getcompanies?type=1&partner=' + partner)
+      axios.post('/getcompanies?type=2&number=0&partner=' + partner)
         .then(res => {
           this.tableData = res.data
         })

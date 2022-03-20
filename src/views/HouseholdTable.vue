@@ -62,7 +62,7 @@ export default {
       return row.active === value
     },
     getDataHouseholdByCompany (company) {
-      axios.post('/gethouseholdbycompany?company=' + company)
+      axios.post('/gethouseholds?type=3&company=' + company + '&number=0&community=0')
         .then(res => {
           this.tableData = res.data
         })

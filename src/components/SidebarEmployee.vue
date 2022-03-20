@@ -45,7 +45,7 @@ export default {
         },
         {
           icon: 'el-icon-document',
-          index: '3',
+          index: '2',
           title: '投诉单',
           subs: [
             {
@@ -99,6 +99,10 @@ export default {
             {
               index: '/communitytable',
               title: '管理的社区'
+            },
+            {
+              index: '/householdtable',
+              title: '住户列表'
             }
           ]
         },

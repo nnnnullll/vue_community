@@ -79,9 +79,9 @@ export default {
   },
   methods: {
     GetCompanyDetailByNumber (number) {
-      axios.post('/getcompanybynumber?number=' + number)
+      axios.post('/getcompanies?type=1&partner=0&number=' + number)
         .then(res => {
-          this.form = res.data
+          this.form = res.data[0]
           // eslint-disable-next-line eqeqeq
           if (res.data.active == 1) { this.form.active = 0 } else { this.form.active = 1 }
         })
