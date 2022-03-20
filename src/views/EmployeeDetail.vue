@@ -5,7 +5,7 @@
                 <el-breadcrumb-item>
                     <i class="el-icon-lx-calendar"></i> 用户
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>个人信息</el-breadcrumb-item>
+                <el-breadcrumb-item>物业员工</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -77,10 +77,21 @@ export default {
     }
   },
   mounted: function () {
-    this.GetEmployeeDetailByNumber(localStorage.getItem('loginuser'))
+    // 1-employee 2-Customer 3-partner  员工-我的信息
+    // eslint-disable-next-line no-constant-condition
+    // eslint-disable-next-line eqeqeq
+    if (this.$route.query.from == 'internal') {
+      this.GetEmployeeDetailByNumber(this.$route.query.number)
+    // eslint-disable-next-line eqeqeq
+    } else if (localStorage.getItem('logintype') == 1) {
+      this.GetEmployeeDetailByNumber(localStorage.getItem('loginuser'))
+    } else {
+
+    }
   },
   methods: {
     GetEmployeeDetailByNumber (number) {
+      console.log(number)
       axios.post('/getemployee?type=1&company=0&number=' + number)
         .then(res => {
           this.form = res.data[0]

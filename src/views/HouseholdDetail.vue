@@ -5,7 +5,7 @@
                 <el-breadcrumb-item>
                     <i class="el-icon-lx-calendar"></i> 用户
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>个人信息</el-breadcrumb-item>
+                <el-breadcrumb-item>住户信息</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -68,7 +68,17 @@ export default {
     }
   },
   mounted: function () {
-    this.GetHouseholdDetailByNumber(localStorage.getItem('loginuser'))
+    // 1-employee 2-Customer 3-partner  住户-我的信息
+    // eslint-disable-next-line no-constant-condition
+    // eslint-disable-next-line eqeqeq
+    if (this.$route.query.from == 'internal') {
+      this.GetHouseholdDetailByNumber(this.$route.query.number)
+    // eslint-disable-next-line eqeqeq
+    } else if (localStorage.getItem('logintype') == 2) {
+      this.GetHouseholdDetailByNumber(localStorage.getItem('loginuser'))
+    } else {
+
+    }
   },
   methods: {
     GetHouseholdDetailByNumber (number) {

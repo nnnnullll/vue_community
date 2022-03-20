@@ -18,7 +18,7 @@
             </el-col>
             <el-col :span="16">
                 <!-- emplyee row1 -->
-                <el-row v-show="employeeshow" :gutter="24" class="mgb20">
+                <el-row v-if="employeeshow" :gutter="24" class="mgb20">
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-1">
@@ -53,7 +53,7 @@
                     </el-col>
                 </el-row>
                 <!-- emplyee row2 -->
-                <el-row v-show="employeeshow" :gutter="24" class="mgb20">
+                <el-row v-if="employeeshow" :gutter="24" class="mgb20">
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-3">
@@ -88,7 +88,7 @@
                         </el-card>
                     </el-col>
                 </el-row>
-                <el-row v-show="householdshow" :gutter="24" class="mgb20">
+                <el-row v-if="householdshow" :gutter="24" class="mgb20">
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-1">
@@ -122,7 +122,7 @@
                         </el-card>
                     </el-col>
                 </el-row>
-                <el-row v-show="householdshow" :gutter="24" class="mgb20">
+                <el-row v-if="householdshow" :gutter="24" class="mgb20">
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-h-3">
@@ -157,7 +157,7 @@
                         </el-card>
                     </el-col>
                 </el-row>
-                 <el-row v-show="partnershow" :gutter="24" class="mgb20">
+                 <el-row v-if="partnershow" :gutter="24" class="mgb20">
                      <el-col :span="8">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-h-1">
@@ -192,7 +192,7 @@
                         </el-card>
                     </el-col>
                 </el-row>
-                <el-row v-show="partnershow" :gutter="24" class="mgb20">
+                <el-row v-if="partnershow" :gutter="24" class="mgb20">
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-h-4">
@@ -328,11 +328,12 @@ export default {
           this.options2.labels = res.data.typeChartLabels
           // eslint-disable-next-line eqeqeq
           if (type == 1) {
-            localStorage.setItem('loginuser_commpany', this.loginForm.companyNumber)
+            localStorage.setItem('loginuser_commpany', res.data.companynumber)
             // eslint-disable-next-line eqeqeq
           } else if (type == 2) {
-            localStorage.setItem('loginuser_commpany', this.loginForm.companyNumber)
-            localStorage.setItem('loginuser_commmunity', this.loginForm.communitynumber)
+            localStorage.setItem('loginuser_commpany', res.data.companynumber)
+            // console.log(localStorage.getItem('loginuser_commpany'))
+            localStorage.setItem('loginuser_commmunity', res.data.communitynumber)
           } else {
           }
         })

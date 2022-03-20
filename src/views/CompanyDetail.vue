@@ -3,9 +3,9 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-calendar"></i> 物业公司
+                    <i class="el-icon-lx-calendar"></i>基本休息
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>基本信息</el-breadcrumb-item>
+                <el-breadcrumb-item>物业公司</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -32,7 +32,7 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
-                        <el-form-item label="" prop="active">
+                        <el-form-item label="使用中" prop="active">
                           <el-checkbox label="使用中" :disabled="true" name="form.active"></el-checkbox>
                         </el-form-item>
                       </el-col>
@@ -65,13 +65,22 @@ export default {
     }
   },
   mounted: function () {
-    this.GetHouseholdDetailByNumber(100000000000000002)
+    // 1-employee 2-Customer 3-partner 住户-我的物业 员工-我的公司
+    // eslint-disable-next-line no-constant-condition
+    // eslint-disable-next-line eqeqeq
+    if (this.$route.query.from == 'internal') {
+      this.GetCompanyDetailByNumber(this.$route.query.number)
+    // eslint-disable-next-line eqeqeq
+    } else if (localStorage.getItem('logintype') == 1 || localStorage.getItem('logintype') == 2) {
+      this.GetCompanyDetailByNumber(localStorage.getItem('loginuser_commpany'))
+    } else {
+
+    }
   },
   methods: {
-    GetHouseholdDetailByNumber (number) {
+    GetCompanyDetailByNumber (number) {
       axios.post('/getcompanybynumber?number=' + number)
         .then(res => {
-          console.log(res.data)
           this.form = res.data
           // eslint-disable-next-line eqeqeq
           if (res.data.active == 1) { this.form.active = 0 } else { this.form.active = 1 }

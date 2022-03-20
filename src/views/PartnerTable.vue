@@ -10,9 +10,9 @@
         <div class="container">
             <el-button @click="clearFilter">清除所有过滤器</el-button>
             <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
-                <el-table-column width="73px" sortable prop="num" label="单号" @click="toCaseDetail(row.num)">
+                <el-table-column width="73px" sortable prop="num" label="单号">
                     <template slot-scope="{row}">
-                        <span @click="toCommunityDetail(row.num)">
+                        <span @click="toDetail(row.num)">
                             <el-link type="primary">{{ row.num }}</el-link>
                         </span>
                     </template>
@@ -36,15 +36,15 @@ export default {
     }
   },
   mounted: function () {
-    // 1-employee 2-Customer
+    // 1-employee 2-Customer 3-partner  物业员工-合作的维修公司
+    // eslint-disable-next-line no-constant-condition
+    if (false) {
+    // 通过url的参数号码
     // eslint-disable-next-line eqeqeq
-    if (localStorage.getItem('logintype') == 1) {
-      this.getDataPartnerByCompany(100000000000000000)
-    // eslint-disable-next-line eqeqeq
-    } else if (localStorage.getItem('logintype') == 2) {
-      this.getDataPartnerByCompany(100000000000000000)
+    } else if (localStorage.getItem('logintype') == 1) {
+      this.getDataPartnerByCompany(localStorage.getItem('loginuser_commpany'))
     } else {
-      this.getDataPartnerByCompany(100000000000000000)
+
     }
   },
   methods: {
@@ -68,11 +68,12 @@ export default {
           console.error(err)
         })
     },
-    toCommunityDetail (communitynumber) {
+    toDetail (number) {
       this.$router.push({
-        path: '/communitydetail',
+        path: '/partnerdetail',
         query: {
-          communitynumber: communitynumber
+          number: number,
+          from: 'internal'
         }
       })
     }

@@ -3,9 +3,9 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-calendar"></i> 社区
+                    <i class="el-icon-lx-calendar"></i> 基本信息
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>基本信息</el-breadcrumb-item>
+                <el-breadcrumb-item>社区信息</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -65,7 +65,18 @@ export default {
     }
   },
   mounted: function () {
-    this.GetHouseholdDetailByNumber(1000000000)
+    // 1-employee 2-Customer 3-partner 住户-我的社区
+    // eslint-disable-next-line no-constant-condition
+    // eslint-disable-next-line eqeqeq
+    if (this.$route.query.from == 'internal') {
+      this.GetHouseholdDetailByNumber(this.$route.query.number)
+    // eslint-disable-next-line eqeqeq
+    } else if (localStorage.getItem('logintype') == 2) {
+      console.log(localStorage.getItem('loginuser_commmunity'))
+      this.GetHouseholdDetailByNumber(localStorage.getItem('loginuser_commmunity'))
+    } else {
+
+    }
   },
   methods: {
     GetHouseholdDetailByNumber (number) {

@@ -73,13 +73,22 @@ export default {
     }
   },
   mounted: function () {
-    this.GetHouseholdDetailByNumber(1000000000)
+    // 1-employee 2-Customer 3-partner  维修员工-个人信息
+    // eslint-disable-next-line no-constant-condition
+    // eslint-disable-next-line eqeqeq
+    if (this.$route.query.from == 'internal') {
+      this.GetPartnerDetailByNumber(this.$route.query.number)
+    // eslint-disable-next-line eqeqeq
+    } else if (localStorage.getItem('logintype') == 3) {
+      this.GetPartnerDetailByNumber(localStorage.getItem('loginuser'))
+    } else {
+
+    }
   },
   methods: {
-    GetHouseholdDetailByNumber (number) {
+    GetPartnerDetailByNumber (number) {
       axios.post('/getpartnerbynum?num=' + number)
         .then(res => {
-          console.log(res.data)
           this.form = res.data
           // eslint-disable-next-line eqeqeq
           if (res.data.active == 1) { this.form.active = 0 } else { this.form.active = 1 }

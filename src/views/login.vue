@@ -27,7 +27,8 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
                 </div>
-                <p class="login-tips">Tips : 增加忘记密码的功能,三种身份识别。</p>
+                <el-link type="primary">忘记密码</el-link>
+                <p class="login-tips" type="primary">帮助中心联系电话：18812345678</p>
             </el-form>
         </div>
     </div>
@@ -63,18 +64,24 @@ export default {
           axios.post('/login?username=' + this.loginForm.username + '&password=' + this.loginForm.password + '&type=' + this.loginForm.type)
             .then(res => {
               // type=1 employee  type=2 household  type=3 partner
-              if (this.loginForm.type) {
+              // eslint-disable-next-line eqeqeq
+              if (res.data == 1) {
                 this.$message({
                   message: '登录成功',
                   type: 'success'
                 })
+                localStorage.setItem('loginuser', this.loginForm.username)
+                localStorage.setItem('logintype', this.loginForm.type)
+                this.$router.push('/')
+              // eslint-disable-next-line eqeqeq
+              } else if (res.data == 0) {
+                this.$message.error('登录失败：用户名或密码或身份不符')
+              } else {
+                this.$message.error('登录失败：未知错误，请联系工作人员。联系电话：18812345678')
               }
-              localStorage.setItem('loginuser', this.loginForm.username)
-              localStorage.setItem('logintype', this.loginForm.type)
-              this.$router.push('/')
             })
             .catch(err => {
-              this.$message.error('登录失败, 请输入正确的用户名密码')
+              this.$message.error('error: ' + err)
               console.error(err)
             })
         } else {

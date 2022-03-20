@@ -3,16 +3,16 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 社区表格
+                    <i class="el-icon-lx-cascades"></i> 社区表单
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <el-button @click="clearFilter">清除所有过滤器</el-button>
             <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
-                <el-table-column width="73px" sortable prop="number" label="单号" @click="toCaseDetail(row.number)">
+                <el-table-column width="73px" sortable prop="number" label="单号">
                     <template slot-scope="{row}">
-                        <span @click="toCommunityDetail(row.number)">
+                        <span @click="toDetail(row.number)">
                             <el-link type="primary">{{ row.number }}</el-link>
                         </span>
                     </template>
@@ -42,15 +42,15 @@ export default {
     }
   },
   mounted: function () {
-    // 1-employee 2-Customer
+    // 1-employee 2-Customer 3-partner 住户-我的社区
+    // eslint-disable-next-line no-constant-condition
+    if (false) {
+    // 通过url的参数号码
     // eslint-disable-next-line eqeqeq
-    if (localStorage.getItem('logintype') == 1) {
-      this.getDataCommunityByCompany(100000000000000000)
-    // eslint-disable-next-line eqeqeq
-    } else if (localStorage.getItem('logintype') == 2) {
-      this.getDataCommunityByCompany(100000000000000000)
+    } else if (localStorage.getItem('logintype') == 1) {
+      this.getDataCommunityByCompany(localStorage.getItem('loginuser_commpany'))
     } else {
-      this.getDataCommunityByCompany(100000000000000000)
+
     }
   },
   methods: {
@@ -66,7 +66,6 @@ export default {
     getDataCommunityByCompany (companynumber) {
       axios.post('/getcommunity?type=2&number=1&company=' + companynumber)
         .then(res => {
-          console.log(res.data)
           this.tableData = res.data
         })
         .catch(err => {
@@ -74,11 +73,12 @@ export default {
           console.error(err)
         })
     },
-    toCommunityDetail (communitynumber) {
+    toDetail (number) {
       this.$router.push({
         path: '/communitydetail',
         query: {
-          communitynumber: communitynumber
+          number: number,
+          from: 'internal'
         }
       })
     }
