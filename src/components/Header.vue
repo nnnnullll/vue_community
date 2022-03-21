@@ -33,6 +33,7 @@ export default {
         localStorage.removeItem('logintype')
         localStorage.removeItem('loginuser_commpany')
         localStorage.removeItem('loginuser_commmunity')
+        localStorage.removeItem('loginadmin')
         this.$router.replace('/login')
       }).catch(() => {
         this.$message({

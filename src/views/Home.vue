@@ -2,7 +2,7 @@
     <div class="about">
         <v-header @receivecollapse="fromChild" />
         <v-sidebarpartner v-if="type==3" />
-        <v-sidebaremployee v-else-if="type==1"/>
+        <v-sidebaremployee v-else-if="type==1 && admin==0"/>
         <v-sidebarhouseholdadmin v-else-if="type==1 && admin==1" />
         <v-sidebarhousehold v-else />
         <div class="content-box" :class="{ 'content-collapse': collapse }">
