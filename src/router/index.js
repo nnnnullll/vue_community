@@ -110,12 +110,28 @@ export default new Router({
           component: () => import('../views/CompanyDetail.vue')
         },
         {
+          path: '/communityadd',
+          name: 'communityadd',
+          meta: {
+            title: '新建社区'
+          },
+          component: () => import('../views/CommunityAdd.vue')
+        },
+        {
           path: '/partnerdetail',
           name: 'partnerdetail',
           meta: {
             title: '维修公司信息'
           },
           component: () => import('../views/PartnerDetail.vue')
+        },
+        {
+          path: '/partneradd',
+          name: 'partneradd',
+          meta: {
+            title: '维修公司信息'
+          },
+          component: () => import('../views/PartnerAdd.vue')
         },
         {
           path: '/changepassword',
