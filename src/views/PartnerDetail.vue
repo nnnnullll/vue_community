@@ -11,19 +11,11 @@
         <div class="container">
             <div class="form-box">
                 <el-form :model="form" ref="form"  label-width="130px">
-                    <!-- row0 -->
+                    <!-- row1 -->
                     <el-row>
                       <el-col :span="12">
                         <el-form-item label="编号" prop="num">
                           <el-input v-model="form.num" :disabled="true"></el-input>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <!-- row1 -->
-                    <el-row>
-                      <el-col :span="12">
-                        <el-form-item label="社会信用代码" prop="number">
-                          <el-input v-model="form.number" :disabled="true"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">

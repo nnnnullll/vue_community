@@ -17,7 +17,6 @@
                         </span>
                     </template>
                 </el-table-column>
-                <el-table-column sortable prop="number" label="社会信誉代码"></el-table-column>
                 <el-table-column sortable prop="name" label="名字" :formatter="formatter"></el-table-column>
                 <el-table-column sortable prop="address" label="地址"></el-table-column>
                 <el-table-column sortable prop="email" label="邮箱"></el-table-column>

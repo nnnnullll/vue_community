@@ -329,7 +329,6 @@ export default {
           // eslint-disable-next-line eqeqeq
           if (type == 1) {
             localStorage.setItem('loginuser_commpany', res.data.companynumber)
-            localStorage.setItem('loginadmin', res.data.ifadmin)
             // eslint-disable-next-line eqeqeq
           } else if (type == 2) {
             localStorage.setItem('loginuser_commpany', res.data.companynumber)

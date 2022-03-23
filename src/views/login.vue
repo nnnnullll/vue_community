@@ -64,18 +64,21 @@ export default {
           axios.post('/login?username=' + this.loginForm.username + '&password=' + this.loginForm.password + '&type=' + this.loginForm.type)
             .then(res => {
               // type=1 employee  type=2 household  type=3 partner
+              // type=1  0-no admin 1-admin 2-失败
+              // type=2/3  1-成功 2-失败
               // eslint-disable-next-line eqeqeq
-              if (res.data == 1) {
+              if (res.data == 2) {
+                this.$message.error('登录失败：用户名或密码或身份不符')
+              // eslint-disable-next-line eqeqeq
+              } else if (res.data == 1 || res.data == 0) {
                 this.$message({
                   message: '登录成功',
                   type: 'success'
                 })
                 localStorage.setItem('loginuser', this.loginForm.username)
                 localStorage.setItem('logintype', this.loginForm.type)
+                localStorage.setItem('loginadmin', res.data)
                 this.$router.push('/')
-              // eslint-disable-next-line eqeqeq
-              } else if (res.data == 0) {
-                this.$message.error('登录失败：用户名或密码或身份不符')
               } else {
                 this.$message.error('登录失败：未知错误，请联系工作人员。联系电话：18812345678')
               }

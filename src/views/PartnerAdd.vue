@@ -11,53 +11,36 @@
         <div class="container">
             <div class="form-box">
                 <el-form :model="form" ref="form"  label-width="130px">
-                    <!-- row0 -->
-                    <el-row>
-                      <el-col :span="12">
-                        <el-form-item label="编号" prop="num">
-                          <el-input v-model="form.num" :disabled="true"></el-input>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
                     <!-- row1 -->
                     <el-row>
                       <el-col :span="12">
-                        <el-form-item label="社会信用代码" prop="number">
-                          <el-input v-model="form.number" :disabled="true"></el-input>
+                        <el-form-item label="物业公司名" prop="name">
+                          <el-input v-model="form.name"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
-                        <el-form-item label="物业公司名" prop="name">
-                          <el-input v-model="form.name" :disabled="true"></el-input>
+                        <el-form-item label="地址" prop="address">
+                          <el-input v-model="form.address"></el-input>
                         </el-form-item>
                       </el-col>
                     </el-row>
                     <!-- row2 -->
                     <el-row>
                       <el-col :span="12">
-                        <el-form-item label="地址" prop="address">
-                          <el-input v-model="form.address" :disabled="true"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
-                        <el-form-item label="" prop="active">
-                          <el-checkbox label="使用中" :disabled="true" name="form.active"></el-checkbox>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <!-- row4 -->
-                    <el-row>
-                      <el-col :span="12">
                         <el-form-item label="邮件" prop="email">
-                          <el-input v-model="form.email" :disabled="true"></el-input>
+                          <el-input v-model="form.email"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
                         <el-form-item label="联系电话" prop="phone">
-                          <el-input v-model="form.phone" :disabled="true"></el-input>
+                          <el-input v-model="form.phone"></el-input>
                         </el-form-item>
                       </el-col>
                     </el-row>
+                    <!-- row4 -->
+                    <el-form-item>
+                      <el-button type="primary" @click="onSubmit('form')">表单提交</el-button>
+                    </el-form-item>
                 </el-form>
             </div>
         </div>
@@ -69,36 +52,61 @@ const axios = require('axios')
 export default {
   data () {
     return {
-      form: null
+      form: {
+        name: null,
+        number: null,
+        address: null,
+        email: null,
+        phone: null
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入标题', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '请选择类别', trigger: 'blur' }
+        ],
+        address: [
+          { required: true, message: '请输入具体描述', trigger: 'blur' }
+        ]
+      }
     }
   },
   mounted: function () {
     // 1-employee 2-Customer 3-partner  维修员工-个人信息
     // eslint-disable-next-line no-constant-condition
     // eslint-disable-next-line eqeqeq
-    if (this.$route.query.from == 'internal') {
-      this.GetPartnerDetailByNumber(this.$route.query.number)
-    // eslint-disable-next-line eqeqeq
-    } else if (localStorage.getItem('logintype') == 3) {
-      this.GetPartnerDetailByNumber(localStorage.getItem('loginuser'))
-    } else {
-
+    if (localStorage.getItem('logintype') == 1 && localStorage.getItem('loginadmin') == 1) {
     }
   },
   methods: {
-    GetPartnerDetailByNumber (number) {
-      axios.post('/getpartnerbynum?num=' + number)
-        .then(res => {
-          this.form = res.data
-          // eslint-disable-next-line eqeqeq
-          if (res.data.active == 1) { this.form.active = 0 } else { this.form.active = 1 }
-        })
-        .catch(err => {
-          this.$message.error('加载失败:' + err)
-          console.error(err)
-        })
-    },
     onSubmit (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          axios.post('/insertpartner?name=' + this.form.name + '&address=' + this.form.address + '&phone=' + this.form.phone + '&email=' + this.form.email)
+            .then(res => {
+              this.$message({
+                message: '创建成功',
+                type: 'success'
+              })
+              console.log(res.data)
+              this.$router.push({
+                path: '/partnerdetail',
+                query: {
+                  number: res.data,
+                  from: 'internal'
+                }
+              })
+            })
+            .catch(err => {
+              this.$message.error('创建失败:' + err)
+              console.error(err)
+            })
+        } else {
+          this.$message.error('请输入必填项')
+          return false
+        }
+      })
     }
   }
 }
