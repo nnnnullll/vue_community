@@ -90,7 +90,7 @@ export default {
           title: '物业员工',
           subs: [
             {
-              index: '/employeetable',
+              index: '/employeeadd',
               title: '新建员工'
             },
             {

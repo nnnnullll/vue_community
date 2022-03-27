@@ -94,6 +94,14 @@ export default new Router({
           component: () => import('../views/EmployeeTable.vue')
         },
         {
+          path: '/employeeadd',
+          name: 'employeeadd',
+          meta: {
+            title: '维修公司表格'
+          },
+          component: () => import('../views/EmployeeAdd.vue')
+        },
+        {
           path: '/communitydetail',
           name: 'communitydetail',
           meta: {

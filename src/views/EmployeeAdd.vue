@@ -14,49 +14,37 @@
                     <!-- row1 -->
                     <el-row>
                       <el-col :span="12">
-                        <el-form-item label="编号" prop="number">
-                          <el-input v-model="form.number" :disabled="true"></el-input>
+                        <el-form-item label="名字" prop="name">
+                          <el-input v-model="form.name"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
                         <el-form-item label="手机号" prop="phone">
-                          <el-input v-model="form.phone" :disabled="true"></el-input>
+                          <el-input v-model="form.phone"></el-input>
                         </el-form-item>
                       </el-col>
                     </el-row>
                     <!-- row2 -->
                     <el-row>
                       <el-col :span="12">
-                        <el-form-item label="名字" prop="name">
-                          <el-input v-model="form.name" :disabled="true"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
                         <el-form-item label="邮箱" prop="email">
-                          <el-input v-model="form.email" :disabled="true"></el-input>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <!-- row4 -->
-                    <el-row>
-                      <el-col :span="12">
-                        <el-form-item label="公司号" prop="company">
-                          <el-input v-model="form.company" :disabled="true"></el-input>
+                          <el-input v-model="form.email"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
                         <el-row>
-                            <el-col :span="12">
-                              <el-form-item label="" prop="admin">
-                                <el-checkbox label="超级管理员" :disabled="true" name="admin"></el-checkbox>
-                              </el-form-item>
-                            </el-col>
-                            <el-col :span="12">
-                              <el-form-item label="" prop="active">
-                                <el-checkbox label="账号使用中" :disabled="true" name="active"></el-checkbox>
-                              </el-form-item>
-                            </el-col>
+                            <el-form-item label="" prop="admin">
+                              <el-checkbox label="超级管理员" :name="admin"></el-checkbox>
+                            </el-form-item>
                           </el-row>
+                      </el-col>
+                    </el-row>
+                    <!-- row2 -->
+                    <el-row>
+                      <el-col :span="12">
+                        <el-form-item label="身份证号" prop="id">
+                          <el-input v-model="form.id"></el-input>
+                        </el-form-item>
                       </el-col>
                     </el-row>
                     <el-form-item>
@@ -73,35 +61,57 @@ const axios = require('axios')
 export default {
   data () {
     return {
-      form: null
+      form: {
+        company: '',
+        name: '',
+        phone: '',
+        email: '',
+        admin: 0,
+        id: ''
+      }
     }
   },
   mounted: function () {
-    // 1-employee 2-Customer 3-partner  员工-我的信息
+    // 1-employee 2-Customer 3-partner  维修员工-个人信息
     // eslint-disable-next-line no-constant-condition
     // eslint-disable-next-line eqeqeq
-    if (this.$route.query.from == 'internal') {
-      this.GetEmployeeDetailByNumber(this.$route.query.number)
-    // eslint-disable-next-line eqeqeq
-    } else if (localStorage.getItem('logintype') == 1) {
-      this.GetEmployeeDetailByNumber(localStorage.getItem('loginuser'))
-    } else {
-
+    if (localStorage.getItem('logintype') == 1 && localStorage.getItem('loginadmin') == 1) {
     }
   },
   methods: {
-    GetEmployeeDetailByNumber (number) {
-      console.log(number)
-      axios.post('/getemployee?type=1&company=0&number=' + number)
-        .then(res => {
-          this.form = res.data[0]
-        })
-        .catch(err => {
-          this.$message.error('加载失败:' + err)
-          console.error(err)
-        })
-    },
     onSubmit (formName) {
+      this.form.company = localStorage.getItem('loginuser_commpany')
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          axios.post('/insertemployee?name=' + this.form.name + '&company=' + this.form.company + '&phone=' + this.form.phone + '&email=' + this.form.email + '&admin=' + this.form.admin + '&id=' + this.form.id)
+            .then(res => {
+              // eslint-disable-next-line eqeqeq
+              if (res.data != 0) {
+                this.$message({
+                  message: '创建成功',
+                  type: 'success'
+                })
+                console.log(res.data)
+                this.$router.push({
+                  path: '/employeedetail',
+                  query: {
+                    number: res.data,
+                    from: 'internal'
+                  }
+                })
+              } else {
+                this.$message.error('创建失败:检测到相同的身份证号或手机号，该同事已存在！点击查看')
+              }
+            })
+            .catch(err => {
+              this.$message.error('创建失败:' + err)
+              console.error(err)
+            })
+        } else {
+          this.$message.error('请输入必填项')
+          return false
+        }
+      })
     }
   }
 }
