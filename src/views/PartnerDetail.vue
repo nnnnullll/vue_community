@@ -50,6 +50,14 @@
                         </el-form-item>
                       </el-col>
                     </el-row>
+                    <!-- row4 -->
+                    <el-row>
+                      <el-col :span="24">
+                        <el-form-item label="描述" prop="description">
+                          <el-input v-model="form.description" :disabled="true"></el-input>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
                 </el-form>
             </div>
         </div>

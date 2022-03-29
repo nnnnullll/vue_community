@@ -20,7 +20,13 @@
                       </el-col>
                       <el-col :span="12">
                         <el-form-item label="地址" prop="region">
-                          <el-input v-model="form.region"></el-input>
+                          <div class="block">
+                          <el-cascader
+                            :options="options"
+                            :props="props"
+                            clearable>
+                          </el-cascader>
+                        </div>
                         </el-form-item>
                       </el-col>
                     </el-row>
@@ -65,7 +71,76 @@ export default {
       form: {
         name: '',
         region: ''
-      }
+      },
+      props: { multiple: false },
+      options: [
+        {
+          value: null,
+          label: '上海',
+          children: [
+            { value: 1, label: '黄浦区' },
+            { value: 2, label: '徐汇区' },
+            { value: 3, label: '长宁区' },
+            { value: 4, label: '静安区' },
+            { value: 5, label: '普陀区' },
+            { value: 6, label: '虹口区' },
+            { value: 7, label: '杨浦区' },
+            { value: 8, label: '浦东新区' },
+            { value: 9, label: '闵行区' },
+            { value: 10, label: '宝山区' },
+            { value: 11, label: '嘉定区' },
+            { value: 12, label: '金山区' },
+            { value: 13, label: '松江区' },
+            { value: 14, label: '青浦区' },
+            { value: 15, label: '奉贤区' },
+            { value: 16, label: '崇明区' }
+          ]
+        },
+        {
+          value: null,
+          label: '江苏',
+          children: [
+            { value: 17, label: '南京市' },
+            { value: 18, label: '无锡市' },
+            { value: 19, label: '徐州市' },
+            { value: 20, label: '常州市' },
+            { value: 21, label: '苏州市' },
+            { value: 22, label: '南通市' },
+            { value: 23, label: '连云港市' },
+            { value: 24, label: '淮安市' },
+            { value: 25, label: '扬州市' },
+            { value: 26, label: '镇江市' },
+            { value: 27, label: '泰州市' },
+            { value: 28, label: '宿迁市' },
+            { value: 29, label: '盐城市' }
+          ]
+        },
+        {
+          value: null,
+          label: '浙江',
+          children: [
+            { value: 30, label: '杭州' },
+            { value: 31, label: '宁波' },
+            { value: 32, label: '嘉兴' }
+          ]
+        },
+        {
+          value: null,
+          label: '陕西',
+          children: [
+            { value: 33, label: '西安' },
+            { value: 34, label: '延安' }
+          ]
+        },
+        {
+          value: null,
+          label: '新疆维吾尔族自治区',
+          children: [
+            { value: 35, label: '乌鲁木齐' },
+            { value: 36, label: '克拉玛依' }
+          ]
+        }
+      ]
     }
   },
   mounted: function () {

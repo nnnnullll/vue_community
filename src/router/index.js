@@ -86,6 +86,14 @@ export default new Router({
           component: () => import('../views/PartnerTable.vue')
         },
         {
+          path: '/partnertableall',
+          name: 'partnertableall',
+          meta: {
+            title: '所有维修公司'
+          },
+          component: () => import('../views/PartnerTableAll.vue')
+        },
+        {
           path: '/employeetable',
           name: 'employeetable',
           meta: {

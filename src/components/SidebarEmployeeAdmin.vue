@@ -81,6 +81,10 @@ export default {
             {
               index: '/partnertable',
               title: '合作维修公司'
+            },
+            {
+              index: '/partnertableall',
+              title: '所有维修公司'
             }
           ]
         },

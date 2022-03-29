@@ -20,13 +20,12 @@
                 <el-table-column sortable prop="name" label="名字" :formatter="formatter"></el-table-column>
                 <el-table-column sortable prop="address" label="地址"></el-table-column>
                 <el-table-column sortable prop="email" label="邮箱"></el-table-column>
-                <el-table-column sortable prop="phone" width="110px" label="联系电话"></el-table-column>
-                <el-table-column sortable prop="description" label="合作类别"></el-table-column>
-                <el-table-column sortable prop="one" label="水管"></el-table-column>
-                <el-table-column sortable prop="two" label="电路"></el-table-column>
-                <el-table-column sortable prop="three" label="绿化"></el-table-column>
+                <el-table-column sortable prop="phone" label="联系电话" width="110px"></el-table-column>
+                <el-table-column sortable prop="one" label="水管" width="73px"></el-table-column>
+                <el-table-column sortable prop="two" label="电路" width="73px"></el-table-column>
+                <el-table-column sortable prop="three" label="绿化" width="73px"></el-table-column>
                 <el-table-column sortable prop="four" label="公共设施"></el-table-column>
-                <el-table-column sortable prop="five" label="其他"></el-table-column>
+                <el-table-column sortable prop="five" label="其他" width="73px"></el-table-column>
             </el-table>
         </div>
     </div>
@@ -47,7 +46,7 @@ export default {
     // 通过url的参数号码
     // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 1) {
-      this.getDataPartnerByCompany(localStorage.getItem('loginuser_commpany'))
+      this.getDataPartnerByCompany()
     } else {
 
     }
@@ -62,8 +61,8 @@ export default {
     filterActive (value, row) {
       return row.active === value
     },
-    getDataPartnerByCompany (company) {
-      axios.post('/getpartners?type=1&company=' + company)
+    getDataPartnerByCompany () {
+      axios.post('/getpartners?type=2&company=0')
         .then(res => {
           console.log(res.data)
           this.tableData = res.data
