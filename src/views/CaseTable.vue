@@ -94,9 +94,7 @@ export default {
   mounted: function () {
     // 1-employee 2-Customer
     // eslint-disable-next-line eqeqeq
-    if (localStorage.getItem('logintype') == 2) {
-      this.getDataByHouseholdNumber(localStorage.getItem('loginuser'))
-    }
+    this.getData(localStorage.getItem('loginuser'), localStorage.getItem('logintype'))
   },
   methods: {
     clearFilter () {
@@ -118,8 +116,9 @@ export default {
       const property = column['property']
       return row[property] === value
     },
-    getDataByHouseholdNumber (householdNumber) {
-      axios.post('/getcasebyhouseholdnumber?householdnumber=' + householdNumber)
+    // 1-employee 2-Customer 3-partner
+    getData (number, type) {
+      axios.post('/getcaselist?number=' + number + '&type=' + type)
         .then(res => {
           this.tableData = res.data
         })

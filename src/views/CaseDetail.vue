@@ -11,7 +11,8 @@
         <div class="container">
             <!-- 2-Customer 1-employee 3-partner -->
             <div style="width: 100%;height: 60px;">
-              <el-button v-show="usertype==1&&form.state==0&&form.fix_state==0?true:false" style="margin-right: 30px; float:right;" type="primary" @click="postactivity(message)">受理</el-button>
+              <!--物业员工 分配给我（状态新建时能看见） -->
+              <el-button v-show="usertype==1&&form.state==0&&form.fix_state==null?true:false" style="margin-right: 30px; float:right;" type="primary" @click="postactivity(message)">受理</el-button>
               <el-button v-show="usertype==1&&form.state==1&&form.fix_state==0?true:false" style="margin-right: 10px; float:right;" type="primary" @click="postactivity(message)">待补充</el-button>
               <el-button v-show="usertype==1&&form.state==1&&form.fix_state==2?true:false" style="float:right;" type="primary" @click="postactivity(message)">分配维修</el-button>
               <el-button v-show="usertype==1&&form.state==3&&form.fix_state==2?true:false" style="float:right;" type="primary" @click="postactivity(message)">已解决</el-button>
@@ -94,7 +95,7 @@
                          <el-col :span="8">
                             <el-form-item label="状态" prop="state">
                               <!-- 只有物业员工才能编辑state -->
-                                <el-select v-model="form.state"  placeholder="请选择"  :disabled="usertype==1?false:true">
+                                <el-select v-model="form.state"  placeholder="请选择"  :disabled="true">
                                     <el-option v-for="item in statelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
                                 </el-select>
                             </el-form-item>
@@ -102,7 +103,7 @@
                         <el-col :span="8">
                             <el-form-item label="维修状态" prop="fix_state">
                               <!-- 只有物业员工才能编辑fix_state -->
-                                <el-select v-model="form.fix_state"  placeholder="请选择" :disabled="usertype==1?false:true">
+                                <el-select v-model="form.fix_state"  placeholder="请选择" :disabled="true">
                                     <el-option v-for="item in fix_statelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
                                 </el-select>
                             </el-form-item>
@@ -110,7 +111,7 @@
                         <el-col :span="8">
                             <el-form-item label="类别" prop="type">
                                 <!-- 只有物业员工才能编辑 -->
-                                <el-select v-model="form.type" placeholder="请选择" :disabled="usertype==1?false:true">
+                                <el-select v-model="form.type" placeholder="请选择" :disabled="true">
                                     <el-option v-for="item in typelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
                                 </el-select>
                             </el-form-item>
@@ -131,7 +132,7 @@
                                   <el-button style="margin-top: 20px; float:right;" type="primary" @click="postactivity(message)">提交</el-button>
                               </el-form-item>
                               <el-form-item style="margin-top: 20px;" label="历史记录" prop="activity">
-                                <div v-for="(ac, index) in activity" :key="index">
+                                <div v-for="(ac, index) in form.activities" :key="index">
                                   <el-card v-if="ac.updated_role==1" class="box-card" style="border-left: 4px solid rgb(66, 128, 8);">
                                     <div slot="header" class="clearfix">
                                       <span>物业员工: {{ac.updated_name}}</span>
@@ -180,7 +181,6 @@ export default {
     return {
       form: null,
       // 通过user的身份设置某些字段是否可以编辑 按钮是否可见
-      activity: null,
       usertype: null,
       username: null,
       message: null,
@@ -211,27 +211,27 @@ export default {
       statelist: [
         {
           label: '新建',
-          value: 1
+          value: 0
         },
         {
           label: '受理中',
-          value: 2
+          value: 1
         },
         {
           label: '待补充',
-          value: 3
+          value: 2
         },
         {
           label: '维修中',
-          value: 4
+          value: 3
         },
         {
           label: '已解决',
-          value: 5
+          value: 4
 
         }, {
           label: '关闭',
-          value: 6
+          value: 5
         }
       ],
       fix_statelist: [
@@ -256,7 +256,6 @@ export default {
   },
   mounted: function () {
     this.GetCaseDetailByNumber(this.$route.query.casenumber)
-    this.GetCaseActivityByNumber(this.$route.query.casenumber)
     // type=1 employee  type=2 household  type=3 partner
     this.usertype = localStorage.getItem('logintype')
     this.username = localStorage.getItem('loginuser')
@@ -266,16 +265,6 @@ export default {
       axios.post('/getcasebynumber?number=' + number)
         .then(res => {
           this.form = res.data
-        })
-        .catch(err => {
-          this.$message.error('加载失败:' + err)
-          console.error(err)
-        })
-    },
-    GetCaseActivityByNumber (number) {
-      axios.post('/getactivitybycase_number?case_number=' + number)
-        .then(res => {
-          this.activity = res.data
         })
         .catch(err => {
           this.$message.error('加载失败:' + err)
