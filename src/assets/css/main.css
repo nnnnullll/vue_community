@@ -111,6 +111,50 @@ a {
     padding-bottom: 0;
 }
 
+.el-input.is-disabled .el-input__inner {
+    color: #68696d;
+}
+
+.el-textarea.is-disabled .el-textarea__inner{
+    color: #68696d;
+}
+
+.el-checkbox__input.is-disabled+span.el-checkbox__label{
+    color: #68696d;
+}
+
+.el-card__header {
+    padding: 0px 20px;
+    border-bottom: 1px solid #EBEEF5;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 8px;
+    color: #68696d;
+}
+
+.el-card__body {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.el-card {
+    border: 1px solid #EBEEF5;
+    background-color: #FFF;
+    color: #68696d;
+    -webkit-transition: .3s;
+    transition: .3s;
+    margin-top: 20px;
+}
+
+.el-card.is-always-shadow, .el-card.is-hover-shadow:focus, .el-card.is-hover-shadow:hover {
+    -webkit-box-shadow: 0 1px 1px 0 rgb(0 0 0 / 10%);
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    color: rgb(182, 107, 10);
+}
+
+
 /*Upload*/
 
 .pure-button {

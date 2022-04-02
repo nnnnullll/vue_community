@@ -19,17 +19,13 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="状态" prop="state">
-                                <el-select v-model="form.state"  placeholder="请选择" :disabled="true">
-                                    <el-option v-for="item in statelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                                </el-select>
+                            <el-form-item label="物业" prop="company.numner">
+                                <el-input v-model="form.company.number" :disabled="true"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="维修状态" prop="fix_state">
-                                <el-select v-model="form.fix_state"  placeholder="请选择" :disabled="true">
-                                    <el-option v-for="item in fix_statelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                                </el-select>
+                            <el-form-item label="更新时间" prop="updated">
+                                <el-input v-model="form.updated" :disabled="true"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -41,26 +37,26 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="物业" prop="company.numner">
-                                <el-input v-model="form.company.number" :disabled="true"></el-input>
+                            <el-form-item label="住户" prop="household.number">
+                                <el-input v-model="form.household.number" :disabled="true"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="维修方" prop="fix_assigned_to.number">
-                                <el-input v-model="form.fix_assigned_to.number" :disabled="true"></el-input>
+                            <el-form-item label="创建时间" prop="created">
+                                <el-input v-model="form.created" :disabled="true"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <!-- row3 -->
                     <el-row>
                         <el-col :span="8">
-                            <el-form-item label="住户" prop="household.number">
-                                <el-input v-model="form.household.number" :disabled="true"></el-input>
+                            <el-form-item label="受理人" prop="assigned_to.number">
+                                <el-input v-model="form.assigned_to.number" :disabled="true"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="受理人" prop="assigned_to.number">
-                                <el-input v-model="form.assigned_to.number" :disabled="true"></el-input>
+                            <el-form-item label="维修方" prop="fix_assigned_to.number">
+                                <el-input v-model="form.fix_assigned_to.number" :disabled="true"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
@@ -81,13 +77,17 @@
                     <!-- row4 -->
                     <el-row>
                         <el-col :span="8">
-                            <el-form-item label="创建时间" prop="created">
-                                <el-input v-model="form.created" :disabled="true"></el-input>
+                            <el-form-item label="状态" prop="state">
+                                <el-select v-model="form.state"  placeholder="请选择" :disabled="true">
+                                    <el-option v-for="item in statelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                </el-select>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="更新时间" prop="updated">
-                                <el-input v-model="form.updated" :disabled="true"></el-input>
+                            <el-form-item label="维修状态" prop="fix_state">
+                                <el-select v-model="form.fix_state"  placeholder="请选择" :disabled="true">
+                                    <el-option v-for="item in fix_statelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                </el-select>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
