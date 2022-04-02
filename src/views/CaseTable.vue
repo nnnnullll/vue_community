@@ -124,7 +124,6 @@ export default {
         })
         .catch(err => {
           this.$message.error('加载失败:' + err)
-          console.error(err)
         })
     },
     toCaseDetail (casenumber) {

@@ -12,7 +12,7 @@
             <!-- 2-Customer 1-employee 3-partner -->
             <div style="width: 100%;height: 60px;">
               <!--物业员工 分配给我（状态新建时能看见） -->
-              <el-button v-show="usertype==1&&form.state==0&&form.fix_state==null?true:false" style="margin-right: 30px; float:right;" type="primary" @click="postactivity(message)">受理</el-button>
+              <el-button v-show="usertype==1&&form.state==0&&form.fix_state==null?true:false" style="margin-right: 30px; float:right;" type="primary" @click="clickbuttonlist(1)">受理</el-button>
               <el-button v-show="usertype==1&&form.state==1&&form.fix_state==0?true:false" style="margin-right: 10px; float:right;" type="primary" @click="postactivity(message)">待补充</el-button>
               <el-button v-show="usertype==1&&form.state==1&&form.fix_state==2?true:false" style="float:right;" type="primary" @click="postactivity(message)">分配维修</el-button>
               <el-button v-show="usertype==1&&form.state==3&&form.fix_state==2?true:false" style="float:right;" type="primary" @click="postactivity(message)">已解决</el-button>
@@ -267,9 +267,30 @@ export default {
           this.form = res.data
         })
         .catch(err => {
-          this.$message.error('加载失败:' + err)
-          console.error(err)
+          this.$message.error('获取投诉单数据失败:' + err)
         })
+    },
+    clickbuttonlist (buttonNum) {
+      // 分配
+      // eslint-disable-next-line eqeqeq
+      if (buttonNum == 1) {
+        if (this.form.assigned_to == null) {
+          this.$message.error('分配受理失败！受理人字段为空，无法分配！')
+        } else {
+          this.$confirm('此操作将把该投诉单分配给工号' + this.form.assigned_to.name + '员工, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.changeFromNewToInProgress(this.form.number)
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消操作'
+            })
+          })
+        }
+      }
     },
     postsolution (solution) {
       axios.post('/getactivitybycase_number?case_number=' + solution)
@@ -277,25 +298,41 @@ export default {
           this.activity = res.data
         })
         .catch(err => {
-          this.$message.error('加载失败:' + err)
-          console.error(err)
+          this.$message.error('添加解决方案失败:' + err)
         })
     },
     postactivity (message) {
       axios.post('/insertactivity?case_number=' + this.form.number + '&message=' + message + '&updated_by=' + this.username + '&updated_role=' + this.usertype)
         .then(res => {
-          this.$router.push({
-            path: '/loading',
-            query: {
-              url: '/casedetail',
-              casenumber: this.form.number
-            }
-          })
+          this.refresh()
         })
         .catch(err => {
-          this.$message.error('加载失败:' + err)
+          this.$message.error('添加留言失败:' + err)
+        })
+    },
+    changeFromNewToInProgress (n) {
+      axios.post('/updatecasebynumber?number=' + this.form.number + '&type=1' + '&assigned_to=' + this.form.assigned_to.name)
+        .then(res => {
+          this.form = res.data
+          this.$message({
+            type: 'success',
+            message: '操作成功!'
+          })
+          this.refresh(n)
+        })
+        .catch(err => {
+          this.$message.error('操作失败:' + err)
           console.error(err)
         })
+    },
+    refresh (n) {
+      this.$router.push({
+        path: '/loading',
+        query: {
+          url: '/casedetail',
+          casenumber: n
+        }
+      })
     }
   }
 }
