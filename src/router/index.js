@@ -165,6 +165,13 @@ export default new Router({
         title: '登录'
       },
       component: () => import('../views/login.vue')
+    }, {
+      path: '/loading',
+      name: 'loading',
+      meta: {
+        title: '登录'
+      },
+      component: () => import('../views/Loading.vue')
     }
   ]
 })

@@ -9,6 +9,19 @@
             </el-breadcrumb>
         </div>
         <div class="container">
+            <!-- 2-Customer 1-employee 3-partner -->
+            <div style="width: 100%;height: 60px;">
+              <el-button v-show="usertype==1&&form.state==0&&form.fix_state==0?true:false" style="margin-right: 30px; float:right;" type="primary" @click="postactivity(message)">受理</el-button>
+              <el-button v-show="usertype==1&&form.state==1&&form.fix_state==0?true:false" style="margin-right: 10px; float:right;" type="primary" @click="postactivity(message)">待补充</el-button>
+              <el-button v-show="usertype==1&&form.state==1&&form.fix_state==2?true:false" style="float:right;" type="primary" @click="postactivity(message)">分配维修</el-button>
+              <el-button v-show="usertype==1&&form.state==3&&form.fix_state==2?true:false" style="float:right;" type="primary" @click="postactivity(message)">已解决</el-button>
+              <!--维修员 接受（状态室维修中-3 维修状态是已分配_2时能看见）  -->
+              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2?true:false" style="float:right;" type="primary" @click="postactivity(message)">接受维修单</el-button>
+              <!--维修员 拒绝（状态室维修中-3 维修状态是已分配_2时能看见）  -->
+              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2?true:false" style="float:right;" type="primary" @click="postactivity(message)">拒绝维修单</el-button>
+              <!--维修员 完成（状态室维修中-3 维修状态是维修中_3时能看见）  -->
+              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==3?true:false" style="float:right;" type="primary" @click="postactivity(message)">完成维修单</el-button>
+            </div>
             <div class="form-box">
                 <el-form :model="form" ref="form"  label-width="80px">
                     <!-- row1 -->
@@ -113,11 +126,12 @@
                         <template>
                            <el-tabs v-model="activeName">
                             <el-tab-pane label="历史记录" name="first">
-                              <el-form-item label="留言" prop="description">
-                                  <el-input type="textarea" rows="5" v-model="note" :disabled="true"></el-input>
+                              <el-form-item label="留言" prop="message">
+                                  <el-input type="textarea" rows="5" v-model="message" :disabled="form.state==5?true:false"></el-input>
+                                  <el-button style="margin-top: 20px; float:right;" type="primary" @click="postactivity(message)">提交</el-button>
                               </el-form-item>
                               <el-form-item style="margin-top: 20px;" label="历史记录" prop="activity">
-                                <div v-for="ac in activity" :key="ac">
+                                <div v-for="(ac, index) in activity" :key="index">
                                   <el-card v-if="ac.updated_role==1" class="box-card" style="border-left: 4px solid rgb(66, 128, 8);">
                                     <div slot="header" class="clearfix">
                                       <span>物业员工: {{ac.updated_name}}</span>
@@ -143,8 +157,11 @@
                               </el-form-item>
                             </el-tab-pane>
                             <el-tab-pane label="提供解决方案" name="second">
-                              <el-form-item label="解决方案" prop="description">
+                              <el-form-item label="解决方案" prop="solution">
                                   <el-input type="textarea" rows="5" v-model="form.solution" :disabled="true"></el-input>
+                              </el-form-item>
+                              <el-form-item>
+                                <el-button style="margin-top: 20px; float:right; " type="primary" @click="postsolution(form.solution)">提交</el-button>
                               </el-form-item>
                             </el-tab-pane>
                           </el-tabs>
@@ -165,7 +182,8 @@ export default {
       // 通过user的身份设置某些字段是否可以编辑 按钮是否可见
       activity: null,
       usertype: null,
-      activity_color: null,
+      username: null,
+      message: null,
       // 选项卡
       activeName: 'first',
       typelist: [
@@ -241,6 +259,7 @@ export default {
     this.GetCaseActivityByNumber(this.$route.query.casenumber)
     // type=1 employee  type=2 household  type=3 partner
     this.usertype = localStorage.getItem('logintype')
+    this.username = localStorage.getItem('loginuser')
   },
   methods: {
     GetCaseDetailByNumber (number) {
@@ -263,7 +282,31 @@ export default {
           console.error(err)
         })
     },
-    onSubmit (formName) {
+    postsolution (solution) {
+      axios.post('/getactivitybycase_number?case_number=' + solution)
+        .then(res => {
+          this.activity = res.data
+        })
+        .catch(err => {
+          this.$message.error('加载失败:' + err)
+          console.error(err)
+        })
+    },
+    postactivity (message) {
+      axios.post('/insertactivity?case_number=' + this.form.number + '&message=' + message + '&updated_by=' + this.username + '&updated_role=' + this.usertype)
+        .then(res => {
+          this.$router.push({
+            path: '/loading',
+            query: {
+              url: '/casedetail',
+              casenumber: this.form.number
+            }
+          })
+        })
+        .catch(err => {
+          this.$message.error('加载失败:' + err)
+          console.error(err)
+        })
     }
   }
 }
