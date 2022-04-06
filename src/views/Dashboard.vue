@@ -495,7 +495,7 @@ export default {
 }
 
 .mgb20 {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 .schart {
     width: 100%;
