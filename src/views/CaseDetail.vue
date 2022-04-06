@@ -290,8 +290,7 @@ export default {
           })
         }
       // eslint-disable-next-line brace-style
-      }
-      // 待补充 awaiting in progress->awaiting info
+      } // 待补充 awaiting in progress->awaiting info
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 2) {
         if (this.message == null) {
@@ -308,8 +307,7 @@ export default {
           })
         }
       // eslint-disable-next-line brace-style
-      }
-      // 分配维修 fix_assgned_to in progress->in fix
+      } // 分配维修 fix_assgned_to in progress->in fix
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 3) {
         if (this.form.fix_assigned_to.name == null) {
@@ -326,8 +324,7 @@ export default {
           })
         }
       // eslint-disable-next-line brace-style
-      }
-      // 提供解决方案 resolved in progress/in fix->resolved
+      }// 提供解决方案 resolved in progress/in fix->resolved
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 4) {
         if (this.form.solution == null) {
@@ -344,8 +341,7 @@ export default {
           })
         }
       // eslint-disable-next-line brace-style
-      }
-      // 接受维修单 维修状态：维修中 ← 已分配
+      }// 接受维修单 维修状态：维修中 ← 已分配
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 5) {
         this.$confirm('此操作将接收该维修委托, 是否继续?', '提示', {
@@ -358,8 +354,7 @@ export default {
           this.postInfoMessage('已取消操作')
         })
       // eslint-disable-next-line brace-style
-      }
-      // 拒绝维修单 维修状态：待分配 ← 已分配
+      }// 拒绝维修单 维修状态：待分配 ← 已分配
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 6) {
         this.$confirm('此操作将拒绝该维修委托, 是否继续?', '提示', {
@@ -372,8 +367,7 @@ export default {
           this.postInfoMessage('已取消操作')
         })
       // eslint-disable-next-line brace-style
-      }
-      // 维修结束 维修状态：已解决 ← 维修中
+      }// 维修结束 维修状态：已解决 ← 维修中
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 7) {
         if (this.message == null) {
