@@ -13,20 +13,20 @@
             <div style="width: 100%;height: 60px;">
             <!-- 物业员工 -->
               <!-- 分配给我（状态新建时能看见） -->
-              <el-button v-show="usertype==1&&form.state==0&&form.fix_state==null?true:false" style="margin-right: 30px; float:right;" type="primary" @click="clickbuttonlist(1)">受理</el-button>
+              <el-button v-show="usertype==1&&(form.state==0||form.state==1||form.state==2||form.state==3)" style="margin-right: 30px; float:right;" type="primary" @click="clickbuttonlist(1)">受理</el-button>
               <!-- 待补充（状态受理中时能看见） -->
-              <el-button v-show="usertype==1&&form.state==1&&form.fix_state==null?true:false" style="margin-right: 10px; float:right;" type="primary" @click="clickbuttonlist(2)">待补充</el-button>
+              <el-button v-show="usertype==1&&form.state==1&&form.fix_state==null" style="margin-right: 10px; float:right;" type="primary" @click="clickbuttonlist(2)">待补充</el-button>
               <!-- 分配维修（状态受理中/维修中时能看见） -->
-              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4)))?true:false" style="float:right;" type="primary" @click="clickbuttonlist(3)">分配维修</el-button>
+              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4)))" style="float:right;" type="primary" @click="clickbuttonlist(3)">分配维修</el-button>
               <!-- 已解决（状态受理中/维修中时能看见） -->
-              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&form.fix_state==4))?true:false" style="float:right;" type="primary" @click="clickbuttonlist(4)">已解决</el-button>
+              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&form.fix_state==4))" style="float:right;" type="primary" @click="clickbuttonlist(4)">已解决</el-button>
             <!-- 维修方 -->
               <!--维修员 接受（状态室维修中-3 维修状态是已分配_2时能看见）  -->
-              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2?true:false" style="float:right;" type="primary" @click="clickbuttonlist(5)">接受维修单</el-button>
+              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="float:right;" type="primary" @click="clickbuttonlist(5)">接受维修单</el-button>
               <!--维修员 拒绝（状态室维修中-3 维修状态是已分配_2时能看见）  -->
-              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2?true:false" style="float:right;" type="primary" @click="clickbuttonlist(6)">拒绝维修单</el-button>
+              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="float:right;" type="primary" @click="clickbuttonlist(6)">拒绝维修单</el-button>
               <!--维修员 完成（状态室维修中-3 维修状态是维修中_3时能看见）  -->
-              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==3?true:false" style="float:right;" type="primary" @click="clickbuttonlist(7)">完成维修单</el-button>
+              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==3" style="float:right;" type="primary" @click="clickbuttonlist(7)">完成维修单</el-button>
             </div>
             <div class="form-box">
                 <el-form :model="form" ref="form"  label-width="80px">
@@ -109,7 +109,7 @@
                             <el-form-item label="维修状态" prop="fix_state">
                               <!-- 只有物业员工才能编辑fix_state -->
                                 <el-select v-model="form.fix_state"  placeholder="请选择" :disabled="true">
-                                    <el-option v-for="item in fix_statelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                    <el-option v-for="item1 in fix_statelist" :key="item1.value" :label="item1.label" :value="item1.value"></el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
@@ -134,7 +134,7 @@
                             <el-tab-pane label="历史记录" name="first">
                               <el-form-item label="留言" prop="message">
                                   <el-input type="textarea" rows="5" v-model="message" :disabled="form.state==5?true:false"></el-input>
-                                  <el-button style="margin-top: 20px; float:right;" type="primary" @click="postactivity(8)">提交</el-button>
+                                  <el-button style="margin-top: 20px; float:right;" type="primary" @click="clickbuttonlist(8)">提交</el-button>
                               </el-form-item>
                               <el-form-item style="margin-top: 20px;" label="历史记录" prop="activity">
                                 <div v-for="(ac, index) in form.activities" :key="index">

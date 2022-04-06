@@ -29,6 +29,14 @@ export default new Router({
             title: '投诉单列表'
           },
           component: () => import('../views/CaseTable.vue')
+        },
+        {
+          path: '/casetableall',
+          name: 'casetableall',
+          meta: {
+            title: '投诉单列表'
+          },
+          component: () => import('../views/CaseTableAll.vue')
         }, {
           path: '/addcaseform',
           name: 'addcaseform',

@@ -92,9 +92,12 @@ export default {
     }
   },
   mounted: function () {
-    // 1-employee 2-Customer 3-partner
+    // 1-employee 2-Customer 3-partner 4-all case by company
     // eslint-disable-next-line eqeqeq
-    this.getData(localStorage.getItem('loginuser'), localStorage.getItem('logintype'), '')
+    if (localStorage.getItem('logintype') == 1) {
+      this.getData(localStorage.getItem('loginuser'), 4, localStorage.getItem('loginuser_commpany'))
+    } else {
+    }
   },
   methods: {
     clearFilter () {
@@ -116,7 +119,7 @@ export default {
       const property = column['property']
       return row[property] === value
     },
-    // 1-employee 2-Customer 3-partner
+    // type 4-all case by company
     getData (number, type, company) {
       axios.post('/getcaselist?number=' + number + '&type=' + type + '&company=' + company)
         .then(res => {

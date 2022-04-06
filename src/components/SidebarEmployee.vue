@@ -54,7 +54,11 @@ export default {
             },
             {
               index: '/casetable',
-              title: '投诉单列表'
+              title: '我的投诉单列表'
+            },
+            {
+              index: '/casetableall',
+              title: '所有投诉单列表'
             }
           ]
         },
