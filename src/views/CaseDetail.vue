@@ -134,7 +134,7 @@
                             <el-tab-pane label="历史记录" name="first">
                               <el-form-item label="留言" prop="message">
                                   <el-input type="textarea" rows="5" v-model="message" :disabled="form.state==5?true:false"></el-input>
-                                  <el-button style="margin-top: 20px; float:right;" type="primary" @click="postactivity(message)">提交</el-button>
+                                  <el-button style="margin-top: 20px; float:right;" type="primary" @click="postactivity(8)">提交</el-button>
                               </el-form-item>
                               <el-form-item style="margin-top: 20px;" label="历史记录" prop="activity">
                                 <div v-for="(ac, index) in form.activities" :key="index">
@@ -384,35 +384,46 @@ export default {
           })
         }
       // eslint-disable-next-line brace-style
-      } else {
+      }// 发送留言 // payload type 8-employee/8-household/10-customer
+      // eslint-disable-next-line eqeqeq
+      else if (buttonNum == 8) {
+        if (this.message == null) {
+          this.postErrorMessage('操作失败, 留言内容为空！')
+        } else {
+          this.$confirm('此操作将发送留言, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            //     usertype 1-employee 2-household  3-partner
+            // payload type 8-employee/9-household/10-customer
+            // eslint-disable-next-line eqeqeq
+            if (this.usertype == 1) {
+              this.changeCaseState(this.form.number, 8, 0, this.message, this.username)
+            // eslint-disable-next-line eqeqeq
+            } else if (this.usertype == 2) {
+              this.changeCaseState(this.form.number, 9, 0, this.message, this.username)
+            } else {
+              this.changeCaseState(this.form.number, 10, 0, this.message, this.username)
+            }
+          }).catch(() => {
+            this.postInfoMessage('已取消操作')
+          })
+        }
+      // eslint-disable-next-line brace-style
       }
-    },
-    postsolution (solution) {
-      axios.post('/getactivitybycase_number?case_number=' + solution)
-        .then(res => {
-          this.activity = res.data
-        })
-        .catch(err => {
-          this.$message.error('添加解决方案失败:' + err)
-        })
-    },
-    postactivity (message) {
-      axios.post('/insertactivity?case_number=' + this.form.number + '&message=' + message + '&updated_by=' + this.username + '&updated_role=' + this.usertype)
-        .then(res => {
-          this.refresh()
-          this.postSuccessMessage('添加留言成功！')
-        })
-        .catch(err => {
-          this.postErrorMessage('添加留言失败:' + err)
-        })
+      else {
+      }
     },
     changeCaseState (casenumber, type, assign, message, updateduser) {
       // type=1 分配   state: assgned_to new->in progress; casenumber&type&assigned_to&updated_usernumber
       // type=2 待补充 state: in progress->awaiting info; casenumber&type&message&updated_usernumber
       // type=3 维修中 state: in progress->in fix, fix_state:已分配 ← 空/待分配/已解决; casenumber&type&(fix)assigned_to&updated_usernumber
       // type=4 已解决 state: in progress/in fix->resolved; casenumber&type&(resolution)message&updated_usernumber
-      // type=5 接收维修单 维修状态：维修中 ← 已分配
-      // type=6 拒绝维修单 维修状态：待分配 ← 已分配
+      // type=5 接收维修单 维修状态：维修中 ← 已分配; casenumber&type&updated_usernumber
+      // type=6 拒绝维修单 维修状态：待分配 ← 已分配; casenumber&type&updated_usernumber
+      // type=7 维修状态：已解决 ← 维修中; casenumber&type&message&updated_usernumber
+      // type=8-household/9-employee/10-customer 发送留言,household可能状态变化; casenumber&type&message&updated_usernumber
       axios.post('/updatecasebynumber?number=' + this.form.number + '&type=' + type + '&assigned_to=' + assign + '&message=' + message + '&updateduser=' + updateduser)
         .then(res => {
           this.form = res.data
