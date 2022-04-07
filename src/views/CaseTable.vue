@@ -22,11 +22,11 @@
                 <el-table-column width="85px" sortable prop="state" label="状态" :filters="statetag" :filter-method="filterState" >
                     <template slot-scope="{row}">
                         <!-- 新建 提供解决方案 -->
-                        <el-tag  v-if="row.state==1||row.state==5" type="success">{{statetag[row.state].text}}</el-tag>
+                        <el-tag  v-if="row.state==0||row.state==4" type="success">{{statetag[row.state].text}}</el-tag>
                         <!-- 关闭 -->
-                        <el-tag  v-else-if="row.state==3" type="warning">{{statetag[row.state].text}}</el-tag>
+                        <el-tag  v-else-if="row.state==2" type="warning">{{statetag[row.state].text}}</el-tag>
                         <!-- 待补充 -->
-                        <el-tag  v-else-if="row.state==6" type="info">{{statetag[row.state].text}}</el-tag>
+                        <el-tag  v-else-if="row.state==5" type="info">{{statetag[row.state].text}}</el-tag>
                         <!-- 受理中 维修中 -->
                         <el-tag  v-else type="">{{statetag[row.state].text}}</el-tag>
                     </template>
@@ -43,7 +43,7 @@
                         <div v-else></div>
                     </template>
                 </el-table-column>
-                <el-table-column width="85px" sortable prop="escalation" label="紧急" :filters="escalationtag" :filter-method="filterEscalation" filter-placement="bottom-end" >
+                <el-table-column width="85px" sortable prop="escalation" label="加急" :filters="escalationtag" :filter-method="filterEscalation" filter-placement="bottom-end" >
                     <template slot-scope="{row}">
                         <el-tag v-show="row.escalation==1" type="danger">加急</el-tag>
                     </template>
@@ -74,15 +74,15 @@ export default {
         { text: '关闭', value: 5 }
       ],
       fixstatetag: [
-        { text: '无需维修', value: 0 },
+        { text: '空', value: 0 },
         { text: '待分配', value: 1 },
         { text: '已分配', value: 2 },
         { text: '维修中', value: 3 },
         { text: '已解决', value: 4 }
       ],
       escalationtag: [
-        { text: '紧急', value: 1 },
-        { text: '未紧急', value: 0 }
+        { text: '加急', value: 1 },
+        { text: '未加急', value: 0 }
       ],
       emergencytag: [
         { text: '逾期', value: 1 },

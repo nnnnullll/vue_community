@@ -8,24 +8,24 @@
             </el-breadcrumb>
         </div>
         <div class="container">
-            <el-button @click="clearFilter">清除所有过滤器</el-button>
-            <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
-                <el-table-column width="73px" sortable prop="number" label="单号">
-                    <template slot-scope="{row}">
-                        <span @click="toDetail(row.number)">
-                            <el-link type="primary">{{ row.number }}</el-link>
-                        </span>
-                    </template>
+          <el-button type="primary" plain @click="clearFilter">清除所有过滤器</el-button>
+          <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
+            <el-table-column sortable prop="number" label="单号">
+              <template slot-scope="{row}">
+                <span @click="toDetail(row.number)">
+                  <el-link type="primary">{{ row.number }}</el-link>
+                </span>
+              </template>
+              </el-table-column>
+              <el-table-column sortable prop="name" label="名字" :formatter="formatter"></el-table-column>
+              <el-table-column sortable prop="email" label="邮箱"></el-table-column>
+              <el-table-column sortable prop="phone" label="联系电话"></el-table-column>
+               <el-table-column prop="admin" label="管理员" width="83px" :filters="admin" :filter-method="filterAdmin" filter-placement="bottom-end">
+                  <template slot-scope="{row}">
+                    <el-tag v-show="row.admin==1"  effect="light" type="success">✔</el-tag>
+                  </template>
                 </el-table-column>
-                <el-table-column sortable prop="name" label="名字" :formatter="formatter"></el-table-column>
-                <el-table-column width="85px" sortable prop="admin" label="有效" :filters="activetag" :filter-method="filterActive" filter-placement="bottom-end" >
-                    <template slot-scope="{row}">
-                        <el-tag v-show="row.admin==0" type="success">加急</el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column sortable prop="email" label="邮箱"></el-table-column>
-                <el-table-column sortable prop="phone" label="联系电话"></el-table-column>
-            </el-table>
+          </el-table>
         </div>
     </div>
 </template>
@@ -35,14 +35,16 @@ const axios = require('axios')
 export default {
   data () {
     return {
-      activetag: [
-        { text: '服务中', value: 0 },
-        { text: '暂定服务', value: 1 }
-      ],
-      tableData: []
+      usertype: null,
+      tableData: [],
+      admin: [
+        { text: '', value: 0 },
+        { text: '✔', value: 1 }
+      ]
     }
   },
   mounted: function () {
+    this.usertype = localStorage.getItem('logintype')
     // 1-employee 2-Customer 3-partner  员工-我的同事
     // eslint-disable-next-line no-constant-condition
     if (false) {
@@ -61,8 +63,8 @@ export default {
     formatter (row, column) {
       return row.name
     },
-    filterActive (value, row) {
-      return row.active === value
+    filterAdmin (value, row) {
+      return row.admin === value
     },
     getDataEmploysByCompany (company) {
       axios.post('/getemployee?type=2&number=1&company=' + company)

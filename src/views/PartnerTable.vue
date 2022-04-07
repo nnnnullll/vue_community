@@ -8,7 +8,8 @@
             </el-breadcrumb>
         </div>
         <div class="container">
-            <el-button @click="clearFilter">清除所有过滤器</el-button>
+            <el-button type="primary" plain @click="clearFilter">清除所有过滤器</el-button>
+            <el-button type="success" plain @click="toNew">新建</el-button>
             <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
                 <el-table-column width="100px" sortable prop="num" label="编号">
                     <template slot-scope="{row}">
@@ -19,14 +20,32 @@
                 </el-table-column>
                 <el-table-column sortable prop="name" label="名字" :formatter="formatter"></el-table-column>
                 <el-table-column sortable prop="address" label="地址"></el-table-column>
-                <el-table-column sortable prop="email" label="邮箱"></el-table-column>
-                <el-table-column sortable prop="phone" width="110px" label="联系电话"></el-table-column>
-                <el-table-column sortable prop="description" label="合作类别"></el-table-column>
-                <el-table-column sortable prop="one" label="水管"></el-table-column>
-                <el-table-column sortable prop="two" label="电路"></el-table-column>
-                <el-table-column sortable prop="three" label="绿化"></el-table-column>
-                <el-table-column sortable prop="four" label="公共设施"></el-table-column>
-                <el-table-column sortable prop="five" label="其他"></el-table-column>
+                <el-table-column prop="phone" label="联系电话" width="110px"></el-table-column>
+                <el-table-column prop="one" label="水管" width="63px" :filters="typetag" :filter-method="filterOne" filter-placement="bottom-end">
+                  <template slot-scope="{row}">
+                        <el-tag v-show="row.one==1"  effect="light" type="success">✔</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="two" label="电路" width="63px" :filters="typetag" :filter-method="filterTwo" filter-placement="bottom-end">
+                  <template slot-scope="{row}">
+                        <el-tag v-show="row.two==1"  effect="light" type="success">✔</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="three" label="绿化" width="63px" :filters="typetag" :filter-method="filterThree" filter-placement="bottom-end">
+                  <template slot-scope="{row}">
+                        <el-tag v-show="row.three==1"  effect="light" type="success">✔</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="four" label="公共设施" width="93px" :filters="typetag" :filter-method="filterFour" filter-placement="bottom-end">
+                  <template slot-scope="{row}">
+                        <el-tag v-show="row.four==1"  effect="light" type="success">✔</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="five" label="其他" width="63px" :filters="typetag" :filter-method="filterFive" filter-placement="bottom-end">
+                  <template slot-scope="{row}">
+                        <el-tag v-show="row.five==1"  effect="light" type="success">✔</el-tag>
+                    </template>
+                </el-table-column>
             </el-table>
         </div>
     </div>
@@ -37,7 +56,11 @@ const axios = require('axios')
 export default {
   data () {
     return {
-      tableData: []
+      tableData: [],
+      typetag: [
+        { text: '', value: 0 },
+        { text: '✔', value: 1 }
+      ]
     }
   },
   mounted: function () {
@@ -61,6 +84,21 @@ export default {
     },
     filterActive (value, row) {
       return row.active === value
+    },
+    filterOne (value, row) {
+      return row.one === value
+    },
+    filterTwo (value, row) {
+      return row.two === value
+    },
+    filterThree (value, row) {
+      return row.three === value
+    },
+    filterFour (value, row) {
+      return row.four === value
+    },
+    filterFive (value, row) {
+      return row.five === value
     },
     getDataPartnerByCompany (company) {
       axios.post('/getpartners?type=1&company=' + company)

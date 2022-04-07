@@ -8,7 +8,7 @@
             </el-breadcrumb>
         </div>
         <div class="container">
-            <el-button @click="clearFilter">清除所有过滤器</el-button>
+            <el-button type="primary" plain @click="clearFilter">清除所有过滤器</el-button>
             <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
                 <el-table-column width="73px" sortable prop="number" label="单号">
                     <template slot-scope="{row}">
