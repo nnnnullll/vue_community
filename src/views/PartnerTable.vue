@@ -9,7 +9,6 @@
         </div>
         <div class="container">
             <el-button type="primary" plain @click="clearFilter">清除所有过滤器</el-button>
-            <el-button type="success" plain @click="toNew">新建</el-button>
             <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
                 <el-table-column width="100px" sortable prop="num" label="编号">
                     <template slot-scope="{row}">
