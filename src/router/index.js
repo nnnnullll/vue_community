@@ -57,9 +57,17 @@ export default new Router({
           path: '/employeedetail',
           name: 'employeedetail',
           meta: {
-            title: '个人信息'
+            title: '员工信息'
           },
           component: () => import('../views/EmployeeDetail.vue')
+        },
+        {
+          path: '/employeedetailMine',
+          name: 'employeedetailmine',
+          meta: {
+            title: '个人信息'
+          },
+          component: () => import('../views/EmployeeDetailMine.vue')
         },
         {
           path: '/householddetail',

@@ -154,7 +154,9 @@ a {
     color: rgb(182, 107, 10);
 }
 
-
+.el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
+    border-color: #686a6e;
+}
 /*Upload*/
 
 .pure-button {

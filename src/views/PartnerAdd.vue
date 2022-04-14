@@ -37,9 +37,40 @@
                         </el-form-item>
                       </el-col>
                     </el-row>
-                    <!-- row4 -->
+                    <el-row>
+                      <el-col :span="2">
+                        <el-form-item  prop="one">
+                          <el-checkbox v-model="form.one">水管</el-checkbox>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="2">
+                        <el-form-item  prop="two">
+                          <el-checkbox v-model="form.two">电路</el-checkbox>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="2">
+                        <el-form-item  prop="three">
+                          <el-checkbox v-model="form.three">绿化</el-checkbox>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="3">
+                        <el-form-item  prop="four">
+                          <el-checkbox v-model="form.four">公共设施</el-checkbox>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="2">
+                        <el-form-item  prop="five">
+                          <el-checkbox v-model="form.five">其他</el-checkbox>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-form-item label="简介" prop="description">
+                          <el-input v-model="form.description"></el-input>
+                      </el-form-item>
+                    </el-row>
                     <el-form-item>
-                      <el-button type="primary" @click="onSubmit('form')">表单提交</el-button>
+                      <el-button type="primary" @click="onSubmit('form')">提交</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -57,7 +88,13 @@ export default {
         number: null,
         address: null,
         email: null,
-        phone: null
+        phone: null,
+        description: null,
+        one: null,
+        two: null,
+        three: null,
+        four: null,
+        five: null
       },
       rules: {
         name: [
@@ -83,7 +120,8 @@ export default {
     onSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.post('/insertpartner?name=' + this.form.name + '&address=' + this.form.address + '&phone=' + this.form.phone + '&email=' + this.form.email)
+          // eslint-disable-next-line eqeqeq
+          axios.post('/insertpartner?name=' + this.form.name + '&address=' + this.form.address + '&phone=' + this.form.phone + '&email=' + this.form.email + '&description=' + this.form.description + '&one=' + this.form.one == true ? 1 : 0 + '&two=' + this.form.two == true ? 1 : 0 + '&three=' + this.form.three == true ? 1 : 0 + '&four=' + this.form.four == true ? 1 : 0 + '&five=' + this.form.five == true ? 1 : 0)
             .then(res => {
               this.$message({
                 message: '创建成功',

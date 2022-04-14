@@ -20,7 +20,7 @@
                       </el-col>
                       <el-col :span="12">
                         <el-form-item label="手机号" prop="phone">
-                          <el-input v-model="form.phone" :disabled="true"></el-input>
+                          <el-input v-model="form.phone" :disabled="flag"></el-input>
                         </el-form-item>
                       </el-col>
                     </el-row>
@@ -33,7 +33,7 @@
                       </el-col>
                       <el-col :span="12">
                         <el-form-item label="邮箱" prop="email">
-                          <el-input v-model="form.email" :disabled="true"></el-input>
+                          <el-input v-model="form.email" :disabled="flag"></el-input>
                         </el-form-item>
                       </el-col>
                     </el-row>
@@ -51,7 +51,7 @@
                       </el-col>
                     </el-row>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit('form')">表单提交</el-button>
+                        <el-button v-show="!flag" type="primary" @click="onSubmit('form')">表单提交</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -64,7 +64,8 @@ const axios = require('axios')
 export default {
   data () {
     return {
-      form: null
+      form: null,
+      flag: true
     }
   },
   mounted: function () {
@@ -75,6 +76,7 @@ export default {
       this.GetHouseholdDetailByNumber(this.$route.query.number)
     // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 2) {
+      this.flag = false
       this.GetHouseholdDetailByNumber(localStorage.getItem('loginuser'))
     } else {
 
@@ -85,6 +87,10 @@ export default {
       axios.post('/gethouseholds?type=1&company=0&number=' + number + '&community=0')
         .then(res => {
           this.form = res.data[0]
+          // eslint-disable-next-line eqeqeq
+          if (res.data[0].active == 0) {
+            this.form.active = true
+          }
         })
         .catch(err => {
           this.$message.error('加载失败:' + err)

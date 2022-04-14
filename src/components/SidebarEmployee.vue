@@ -116,7 +116,7 @@ export default {
           title: '个人中心',
           subs: [
             {
-              index: '/employeedetail',
+              index: '/employeedetailmine',
               title: '我的信息'
             },
             {

@@ -22,6 +22,8 @@ export default {
             casenumber: this.$route.query.casenumber
           }
         })
+      // 2-Customer 1-employee 3-partner
+      // eslint-disable-next-line eqeqeq
       }
     }
   }

@@ -15,12 +15,12 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="编号" prop="number">
-                <el-input v-model="form.number" :disabled="true"></el-input>
+                <el-input v-model="form.number"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="手机号" prop="phone">
-                <el-input v-model="form.phone" :disabled="true"></el-input>
+                <el-input v-model="form.phone"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -28,20 +28,20 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="名字" prop="name">
-                <el-input v-model="form.name" :disabled="true"></el-input>
+                <el-input v-model="form.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="邮箱" prop="email">
-                <el-input v-model="form.email" :disabled="true"></el-input>
+                <el-input v-model="form.email"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
-          <!-- row3 -->
+          <!-- row4 -->
           <el-row>
             <el-col :span="12">
               <el-form-item label="公司号" prop="company">
-                <el-input v-model="form.company" :disabled="true"></el-input>
+                <el-input v-model="form.company"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -61,7 +61,6 @@
                     <el-checkbox
                       v-model="form.active"
                       label="账号使用中"
-                      :disabled="true"
                       name="active"
                     ></el-checkbox>
                   </el-form-item>
@@ -69,6 +68,9 @@
               </el-row>
             </el-col>
           </el-row>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+          </el-form-item>
         </el-form>
       </div>
     </div>
@@ -81,15 +83,14 @@ export default {
   data () {
     return {
       form: null,
-      true: true // 不可以编辑
+      flag: true // 只有查看本人信息时才可以编辑
     }
   },
   mounted: function () {
     // 1-employee 2-Customer 3-partner  员工-我的信息
     // eslint-disable-next-line eqeqeq
-    if (this.$route.query.from == 'internal') {
-      this.GetEmployeeDetailByNumber(this.$route.query.number)
-      // eslint-disable-next-line eqeqeq
+    if (localStorage.getItem('logintype') == 1) {
+      this.GetEmployeeDetailByNumber(localStorage.getItem('loginuser'))
     }
   },
   methods: {
@@ -112,7 +113,8 @@ export default {
           this.$message.error('加载失败:' + err)
           console.error(err)
         })
-    }
+    },
+    onSubmit (formName) {}
   }
 }
 </script>
