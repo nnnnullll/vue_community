@@ -15,7 +15,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="编号" prop="num">
-                <el-input v-model="form.num" :disabled="flag"></el-input>
+                <el-input v-model="form.num" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -59,27 +59,37 @@
           <el-row>
             <el-col :span="2">
               <el-form-item label="服务类别" prop="one">
-                <el-checkbox :disabled="flag" v-model="form.one">水管</el-checkbox>
+                <el-checkbox :disabled="flag" v-model="form.one"
+                  >水管</el-checkbox
+                >
               </el-form-item>
             </el-col>
             <el-col :span="2">
               <el-form-item prop="two">
-                <el-checkbox :disabled="flag" v-model="form.two">电路</el-checkbox>
+                <el-checkbox :disabled="flag" v-model="form.two"
+                  >电路</el-checkbox
+                >
               </el-form-item>
             </el-col>
             <el-col :span="2">
               <el-form-item prop="three">
-                <el-checkbox :disabled="flag" v-model="form.three">绿化</el-checkbox>
+                <el-checkbox :disabled="flag" v-model="form.three"
+                  >绿化</el-checkbox
+                >
               </el-form-item>
             </el-col>
             <el-col :span="3">
               <el-form-item prop="four">
-                <el-checkbox :disabled="flag" v-model="form.four">公共设施</el-checkbox>
+                <el-checkbox :disabled="flag" v-model="form.four"
+                  >公共设施</el-checkbox
+                >
               </el-form-item>
             </el-col>
             <el-col :span="2">
               <el-form-item prop="five">
-                <el-checkbox :disabled="flag" v-model="form.five">其他</el-checkbox>
+                <el-checkbox :disabled="flag" v-model="form.five"
+                  >其他</el-checkbox
+                >
               </el-form-item>
             </el-col>
           </el-row>
@@ -94,7 +104,9 @@
             </el-col>
           </el-row>
           <el-form-item>
-            <el-button v-show="!flag" type="primary" @click="onSubmit('form')">保存</el-button>
+            <el-button v-show="!flag" type="primary" @click="onSubmit('form')"
+              >保存</el-button
+            >
           </el-form-item>
         </el-form>
       </div>
@@ -171,7 +183,41 @@ export default {
           console.error(err)
         })
     },
-    onSubmit (formName) {}
+    onSubmit (formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // eslint-disable-next-line eqeqeq
+          axios
+            .post(
+              '/updatepartner?num=' + this.form.num + '&name=' + this.form.name + '&address=' + this.form.address +
+                '&phone=' + this.form.phone + '&email=' + this.form.email + '&description=' + this.form.description +
+                // eslint-disable-next-line eqeqeq
+                '&one=' + (this.form.one == true ? 1 : 0) + '&two=' + (this.form.two == true ? 1 : 0) + '&three=' + (this.form.three == true ? 1 : 0) + '&four=' + (this.form.four == true ? 1 : 0) + '&five=' + (this.form.five == true ? 1 : 0)
+            )
+            .then(res => {
+              this.$message({
+                message: '更新成功',
+                type: 'success'
+              })
+              console.log(res.data)
+              this.$router.push({
+                path: '/loading',
+                query: {
+                  url: '/partnerdetail',
+                  number: this.form.num
+                }
+              })
+            })
+            .catch(err => {
+              this.$message.error('创建失败:' + err)
+              console.error(err)
+            })
+        } else {
+          this.$message.error('请输入必填项')
+          return false
+        }
+      })
+    }
   }
 }
 </script>

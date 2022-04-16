@@ -24,6 +24,25 @@ export default {
         })
       // 2-Customer 1-employee 3-partner
       // eslint-disable-next-line eqeqeq
+      } else if (url == '/partnerdetail') {
+        this.$router.push({
+          path: '/partnerdetail',
+          query: {
+            number: this.$route.query.number
+          }
+        })
+      // 2-Customer 1-employee 3-partner
+      // eslint-disable-next-line eqeqeq
+      } else if (url == '/householddetail') {
+        this.$router.push({
+          path: '/householddetail',
+          query: {
+            number: this.$route.query.number
+          }
+        })
+      // 2-Customer 1-employee 3-partner
+      // eslint-disable-next-line eqeqeq
+      } else {
       }
     }
   }

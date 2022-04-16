@@ -121,7 +121,10 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // eslint-disable-next-line eqeqeq
-          axios.post('/insertpartner?name=' + this.form.name + '&address=' + this.form.address + '&phone=' + this.form.phone + '&email=' + this.form.email + '&description=' + this.form.description + '&one=' + this.form.one == true ? 1 : 0 + '&two=' + this.form.two == true ? 1 : 0 + '&three=' + this.form.three == true ? 1 : 0 + '&four=' + this.form.four == true ? 1 : 0 + '&five=' + this.form.five == true ? 1 : 0)
+          axios.post('/insertpartner?name=' + this.form.name + '&address=' + this.form.address + '&phone=' +
+          this.form.phone + '&email=' + this.form.email + '&description=' + this.form.description +
+          // eslint-disable-next-line eqeqeq
+          '&one=' + (this.form.one == true ? 1 : 0) + '&two=' + (this.form.two == true ? 1 : 0) + '&three=' + (this.form.three == true ? 1 : 0) + '&four=' + (this.form.four == true ? 1 : 0) + '&five=' + (this.form.five == true ? 1 : 0))
             .then(res => {
               this.$message({
                 message: '创建成功',

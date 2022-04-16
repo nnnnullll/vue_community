@@ -98,6 +98,36 @@ export default {
         })
     },
     onSubmit (formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // eslint-disable-next-line eqeqeq
+          axios
+            .post(
+              '/updatehousehold?number=' + this.form.number + '&email=' + this.form.email + '&phone=' + this.form.phone
+            )
+            .then(res => {
+              this.$message({
+                message: '更新成功',
+                type: 'success'
+              })
+              console.log(res.data)
+              this.$router.push({
+                path: '/loading',
+                query: {
+                  url: '/householddetail',
+                  number: this.form.number
+                }
+              })
+            })
+            .catch(err => {
+              this.$message.error('创建失败:' + err)
+              console.error(err)
+            })
+        } else {
+          this.$message.error('请输入必填项')
+          return false
+        }
+      })
     }
   }
 }
