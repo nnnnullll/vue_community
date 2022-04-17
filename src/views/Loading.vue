@@ -22,7 +22,6 @@ export default {
             casenumber: this.$route.query.casenumber
           }
         })
-      // 2-Customer 1-employee 3-partner
       // eslint-disable-next-line eqeqeq
       } else if (url == '/partnerdetail') {
         this.$router.push({
@@ -31,7 +30,6 @@ export default {
             number: this.$route.query.number
           }
         })
-      // 2-Customer 1-employee 3-partner
       // eslint-disable-next-line eqeqeq
       } else if (url == '/householddetail') {
         this.$router.push({
@@ -40,7 +38,22 @@ export default {
             number: this.$route.query.number
           }
         })
-      // 2-Customer 1-employee 3-partner
+      // eslint-disable-next-line eqeqeq
+      } else if (url == '/employeedetailmine') {
+        this.$router.push({
+          path: '/employeedetailmine',
+          query: {
+            number: this.$route.query.number
+          }
+        })
+      // eslint-disable-next-line eqeqeq
+      } else if (url == '/employeetable') {
+        this.$router.push({
+          path: '/employeetable',
+          query: {
+            number: this.$route.query.number
+          }
+        })
       // eslint-disable-next-line eqeqeq
       } else {
       }

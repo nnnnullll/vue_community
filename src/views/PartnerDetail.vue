@@ -20,7 +20,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="物业公司名" prop="name">
-                <el-input v-model="form.name" :disabled="flag"></el-input>
+                <el-input v-model="form.name" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -189,7 +189,7 @@ export default {
           // eslint-disable-next-line eqeqeq
           axios
             .post(
-              '/updatepartner?num=' + this.form.num + '&name=' + this.form.name + '&address=' + this.form.address +
+              '/updatepartner?num=' + this.form.num + '&address=' + this.form.address +
                 '&phone=' + this.form.phone + '&email=' + this.form.email + '&description=' + this.form.description +
                 // eslint-disable-next-line eqeqeq
                 '&one=' + (this.form.one == true ? 1 : 0) + '&two=' + (this.form.two == true ? 1 : 0) + '&three=' + (this.form.three == true ? 1 : 0) + '&four=' + (this.form.four == true ? 1 : 0) + '&five=' + (this.form.five == true ? 1 : 0)

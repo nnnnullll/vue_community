@@ -10,7 +10,7 @@
         <div class="container">
           <el-button type="primary" plain @click="clearFilter">清除所有过滤器</el-button>
           <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
-            <el-table-column sortable prop="number" label="单号">
+            <el-table-column sortable prop="number" label="工号">
               <template slot-scope="{row}">
                 <span @click="toDetail(row.number)">
                   <el-link type="primary">{{ row.number }}</el-link>
@@ -20,11 +20,24 @@
               <el-table-column sortable prop="name" label="名字" :formatter="formatter"></el-table-column>
               <el-table-column sortable prop="email" label="邮箱"></el-table-column>
               <el-table-column sortable prop="phone" label="联系电话"></el-table-column>
-               <el-table-column prop="admin" label="管理员" width="83px" :filters="admin" :filter-method="filterAdmin" filter-placement="bottom-end">
-                  <template slot-scope="{row}">
-                    <el-tag v-show="row.admin==1"  effect="light" type="success">✔</el-tag>
-                  </template>
-                </el-table-column>
+              <el-table-column prop="admin" label="管理员" width="75px" :filters="admin" :filter-method="filterAdmin" filter-placement="bottom-end">
+                <template slot-scope="{row}">
+                  <el-tag v-show="row.admin==1"  effect="light" type="success">✔</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="admin" label="在职" width="61px" :filters="active" :filter-method="filterActive" filter-placement="bottom-end">
+                <template slot-scope="{row}">
+                  <el-tag v-show="row.active==0"  effect="light" type="success">✔</el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column>
+                <template slot-scope="{row}">
+                  <el-link v-show="row.active==0?true:false" type="primary" @click="onLeave(row.number)">离职</el-link>
+                  <el-link v-show="row.active!=0?true:false" type="primary" @click="onLeave(row.number)">复职</el-link>
+                  <el-link v-show="row.admin!=1?true:false" type="primary" @click="giveAdmin(row.number)">授予管理员</el-link>
+                  <el-link v-show="row.admin==1?true:false" type="primary" @click="giveAdmin(row.number)">撤销管理员</el-link>
+                </template>
+              </el-table-column>
           </el-table>
         </div>
     </div>
@@ -40,6 +53,10 @@ export default {
       admin: [
         { text: '', value: 0 },
         { text: '✔', value: 1 }
+      ],
+      active: [
+        { text: '', value: 1 },
+        { text: '✔', value: 0 }
       ]
     }
   },
@@ -66,10 +83,33 @@ export default {
     filterAdmin (value, row) {
       return row.admin === value
     },
+    filterActive (value, row) {
+      return row.active === value
+    },
     getDataEmploysByCompany (company) {
       axios.post('/getemployee?type=2&number=1&company=' + company)
         .then(res => {
           this.tableData = res.data
+        })
+        .catch(err => {
+          this.$message.error('加载失败:' + err)
+          console.error(err)
+        })
+    },
+    onLeave (number) {
+      axios.post('/updateemployee?number=' + number + '&email=0&phone=0&type=2')
+        .then(res => {
+          this.reFresh()
+        })
+        .catch(err => {
+          this.$message.error('加载失败:' + err)
+          console.error(err)
+        })
+    },
+    giveAdmin (number) {
+      axios.post('/updateemployee?number=' + number + '&email=0&phone=0&type=3')
+        .then(res => {
+          this.reFresh()
         })
         .catch(err => {
           this.$message.error('加载失败:' + err)
@@ -82,6 +122,14 @@ export default {
         query: {
           number: number,
           from: 'internal'
+        }
+      })
+    },
+    reFresh () {
+      this.$router.push({
+        path: '/loading',
+        query: {
+          url: '/employeetable'
         }
       })
     }

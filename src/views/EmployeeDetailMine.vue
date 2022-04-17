@@ -15,7 +15,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="编号" prop="number">
-                <el-input v-model="form.number"></el-input>
+                <el-input :disabled='true' v-model="form.number"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -28,7 +28,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="名字" prop="name">
-                <el-input v-model="form.name"></el-input>
+                <el-input :disabled='true' v-model="form.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -41,7 +41,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="公司号" prop="company">
-                <el-input v-model="form.company"></el-input>
+                <el-input :disabled='true' v-model="form.company"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -61,6 +61,7 @@
                     <el-checkbox
                       v-model="form.active"
                       label="账号使用中"
+                      :disabled="true"
                       name="active"
                     ></el-checkbox>
                   </el-form-item>
@@ -114,7 +115,38 @@ export default {
           console.error(err)
         })
     },
-    onSubmit (formName) {}
+    onSubmit (formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // eslint-disable-next-line eqeqeq
+          axios
+            .post(
+              '/updateemployee?number=' + this.form.number + '&email=' + this.form.email + '&phone=' + this.form.phone + '&type=1'
+            )
+            .then(res => {
+              this.$message({
+                message: '更新成功',
+                type: 'success'
+              })
+              console.log(res.data)
+              this.$router.push({
+                path: '/loading',
+                query: {
+                  url: '/employeedetailmine',
+                  number: this.form.number
+                }
+              })
+            })
+            .catch(err => {
+              this.$message.error('创建失败:' + err)
+              console.error(err)
+            })
+        } else {
+          this.$message.error('请输入必填项')
+          return false
+        }
+      })
+    }
   }
 }
 </script>
