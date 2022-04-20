@@ -61,29 +61,31 @@
             >
           </template>
         </el-table-column>
-        <el-table-column prop="number" >
+        <el-table-column prop="number">
           <template slot-scope="{ row }">
-            <span @click="update(row.number,2)">
-              <el-link v-show="row.active == 0 && ifshow && minename!=row.number" type="primary"
+            <span @click="update(row.number, 2)">
+              <el-link
+                v-show="row.active == 0 && ifshow && minename != row.number"
+                type="primary"
                 >离职</el-link
               >
             </span>
             <el-link
-              v-show="row.active != 0 && ifshow && minename!=row.number"
+              v-show="row.active != 0 && ifshow && minename != row.number"
               type="primary"
-              @click="update(row.number,2)"
+              @click="update(row.number, 2)"
               >复职</el-link
             >
             <el-link
-              v-show="row.admin != 1 && ifshow && minename!=row.number"
+              v-show="row.admin != 1 && ifshow && minename != row.number"
               type="primary"
-              @click="update(row.number,3)"
+              @click="update(row.number, 3)"
               >授予管理员</el-link
             >
             <el-link
-              v-show="row.admin == 1 && ifshow && minename!=row.number"
+              v-show="row.admin == 1 && ifshow && minename != row.number"
               type="primary"
-              @click="update(row.number,3)"
+              @click="update(row.number, 3)"
               >撤销管理员</el-link
             >
           </template>
@@ -154,7 +156,9 @@ export default {
     // type=3 admin/deadmin
     update (number, type) {
       axios
-        .post('/updateemployee?number=' + number + '&email=0&phone=0&type=' + type)
+        .post(
+          '/updateemployee?number=' + number + '&email=0&phone=0&type=' + type
+        )
         .then(res => {
           this.successMessage('操作成功')
           this.reFresh()

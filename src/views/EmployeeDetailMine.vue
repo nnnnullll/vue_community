@@ -15,7 +15,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="编号" prop="number">
-                <el-input :disabled='true' v-model="form.number"></el-input>
+                <el-input :disabled="true" v-model="form.number"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -28,7 +28,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="名字" prop="name">
-                <el-input :disabled='true' v-model="form.name"></el-input>
+                <el-input :disabled="true" v-model="form.name"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -41,7 +41,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="公司号" prop="company">
-                <el-input :disabled='true' v-model="form.company"></el-input>
+                <el-input :disabled="true" v-model="form.company"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -138,7 +138,13 @@ export default {
         if (valid) {
           axios
             .post(
-              '/updateemployee?number=' + this.form.number + '&email=' + this.form.email + '&phone=' + this.form.phone + '&type=1'
+              '/updateemployee?number=' +
+                this.form.number +
+                '&email=' +
+                this.form.email +
+                '&phone=' +
+                this.form.phone +
+                '&type=1'
             )
             .then(res => {
               this.successMessage('更新成功')
