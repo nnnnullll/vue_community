@@ -1,59 +1,61 @@
 <template>
-    <div>
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item>
-                    <i class="el-icon-lx-calendar"></i> 用户
-                </el-breadcrumb-item>
-                <el-breadcrumb-item>物业员工</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
-        <div class="container">
-            <div class="form-box">
-                <el-form :model="form" ref="form"  label-width="80px">
-                    <!-- row1 -->
-                    <el-row>
-                      <el-col :span="12">
-                        <el-form-item label="名字" prop="name">
-                          <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
-                        <el-form-item label="手机号" prop="phone">
-                          <el-input v-model="form.phone"></el-input>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <!-- row2 -->
-                    <el-row>
-                      <el-col :span="12">
-                        <el-form-item label="邮箱" prop="email">
-                          <el-input v-model="form.email"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      <el-col :span="12">
-                        <el-row>
-                            <el-form-item label="" prop="admin">
-                              <el-checkbox label="超级管理员" :name="admin"></el-checkbox>
-                            </el-form-item>
-                          </el-row>
-                      </el-col>
-                    </el-row>
-                    <!-- row2 -->
-                    <el-row>
-                      <el-col :span="12">
-                        <el-form-item label="身份证号" prop="id">
-                          <el-input v-model="form.id"></el-input>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit('form')">表单提交</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-        </div>
+  <div>
+    <div class="crumbs">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>
+          <i class="el-icon-lx-calendar"></i> 用户
+        </el-breadcrumb-item>
+        <el-breadcrumb-item>物业员工</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
+    <div class="container">
+      <div class="form-box">
+        <el-form :model="form" ref="form" :rules="rules" label-width="80px">
+          <!-- row1 -->
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="名字" prop="name">
+                <el-input v-model="form.name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="手机号" prop="phone">
+                <el-input v-model="form.phone"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <!-- row2 -->
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="邮箱" prop="email">
+                <el-input v-model="form.email"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-row>
+                <el-form-item label="" prop="admin">
+                  <el-checkbox label="超级管理员" :name="admin"></el-checkbox>
+                </el-form-item>
+              </el-row>
+            </el-col>
+          </el-row>
+          <!-- row2 -->
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="身份证号" prop="id">
+                <el-input v-model="form.id"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit('form')"
+              >表单提交</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -68,49 +70,94 @@ export default {
         email: '',
         admin: 0,
         id: ''
+      },
+      rules: {
+        name: [{ required: true, message: '名字不能为空', trigger: 'blur' }],
+        email: [
+          { required: true, message: '邮箱不能为空', trigger: 'blur' },
+          {
+            type: 'email',
+            message: '请输入正确的邮箱地址',
+            trigger: ['blur', 'change']
+          }
+        ],
+        phone: [
+          { required: true, message: '手机号码不能为空', trigger: 'blur' },
+          {
+            pattern: /^1[3456789]\d{9}$/,
+            message: '请输入正确的手机号码',
+            trigger: ['blur', 'change']
+          }
+        ],
+        id: [
+          { required: true, message: '身份证号码不能为空', trigger: 'blur' },
+          {
+            pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
+            message: '请输入正确的身份证号码',
+            trigger: ['blur', 'change']
+          }
+        ]
       }
     }
   },
-  mounted: function () {
-    // 1-employee 2-Customer 3-partner  维修员工-个人信息
-    // eslint-disable-next-line no-constant-condition
-    // eslint-disable-next-line eqeqeq
-    if (localStorage.getItem('logintype') == 1 && localStorage.getItem('loginadmin') == 1) {
-    }
-  },
+
   methods: {
     onSubmit (formName) {
       this.form.company = localStorage.getItem('loginuser_commpany')
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(valid => {
         if (valid) {
-          axios.post('/insertemployee?name=' + this.form.name + '&company=' + this.form.company + '&phone=' + this.form.phone + '&email=' + this.form.email + '&admin=' + this.form.admin + '&id=' + this.form.id)
+          axios
+            .post(
+              '/insertemployee?name=' +
+                this.form.name +
+                '&company=' +
+                this.form.company +
+                '&phone=' +
+                this.form.phone +
+                '&email=' +
+                this.form.email +
+                '&admin=' +
+                this.form.admin +
+                '&id=' +
+                this.form.id
+            )
             .then(res => {
               // eslint-disable-next-line eqeqeq
               if (res.data != 0) {
-                this.$message({
-                  message: '创建成功',
-                  type: 'success'
-                })
-                console.log(res.data)
-                this.$router.push({
-                  path: '/employeedetail',
-                  query: {
-                    number: res.data,
-                    from: 'internal'
-                  }
-                })
+                this.successMessage('创建成功！')
+                this.refresh(res.data)
               } else {
-                this.$message.error('创建失败:检测到相同的身份证号或手机号，该同事已存在！点击查看')
+                this.errorMessage(
+                  '创建失败: 检测到相同的身份证号或手机号，该同事已存在！'
+                )
               }
             })
             .catch(err => {
-              this.$message.error('创建失败:' + err)
-              console.error(err)
+              this.errorMessage('创建失败: ' + err)
             })
         } else {
-          this.$message.error('请输入必填项')
+          this.errorMessage('创建失败: 请确认表单内容')
           return false
         }
+      })
+    },
+    refresh (number) {
+      this.$router.push({
+        path: '/employeedetail',
+        query: {
+          number: number,
+          from: 'internal'
+        }
+      })
+    },
+    errorMessage (message) {
+      this.$message.error(message)
+      console.error(message)
+    },
+    successMessage (message) {
+      this.$message({
+        message: message,
+        type: 'success'
       })
     }
   }

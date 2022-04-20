@@ -9,6 +9,12 @@
       </el-breadcrumb>
     </div>
     <div class="container">
+      <div style="width: 100%;height: 60px;">
+        <el-button v-show="ifshow&&form.active==true && minename!=form.number" style="margin-right: 30px; float:right;" type="primary" @click="update(form.number,2)">离职</el-button>
+        <el-button v-show="ifshow&&form.active==false && minename!=form.number" style="margin-right: 30px; float:right;" type="primary" @click="update(form.number,2)">复职</el-button>
+        <el-button v-show="ifshow&&form.active==true&&form.admin==false && minename!=form.number" style="margin-right: 30px; float:right;" type="primary" @click="update(form.number,3)">授予管理员</el-button>
+        <el-button v-show="ifshow&&form.active==true&&form.admin==true && minename!=form.number" style="margin-right: 30px; float:right;" type="primary" @click="update(form.number,3)">撤销管理员</el-button>
+      </div>
       <div class="form-box">
         <el-form :model="form" ref="form" label-width="80px">
           <!-- row1 -->
@@ -80,6 +86,8 @@ const axios = require('axios')
 export default {
   data () {
     return {
+      minename: '',
+      ifshow: false,
       form: null,
       true: true // 不可以编辑
     }
@@ -90,28 +98,54 @@ export default {
     if (this.$route.query.from == 'internal') {
       this.GetEmployeeDetailByNumber(this.$route.query.number)
       // eslint-disable-next-line eqeqeq
+      this.ifshow = localStorage.getItem('loginadmin') == 1
+      this.minename = localStorage.getItem('loginuser')
     }
   },
   methods: {
     GetEmployeeDetailByNumber (number) {
-      console.log(number)
       axios
         .post('/getemployee?type=1&company=0&number=' + number)
         .then(res => {
           this.form = res.data[0]
           // eslint-disable-next-line eqeqeq
-          if (res.data[0].active == 0) {
-            this.form.active = true
-          }
+          this.form.active = (res.data[0].active == 0)
           // eslint-disable-next-line eqeqeq
-          if (res.data[0].admin == 0) {
-            this.form.admin = true
-          }
+          this.form.admin = (res.data[0].admin == 1)
         })
         .catch(err => {
-          this.$message.error('加载失败:' + err)
-          console.error(err)
+          this.errorMessage('加载失败:' + err)
         })
+    },
+    // type=2 active/inactive type=3 admin/deadmin
+    update (number, type) {
+      axios
+        .post('/updateemployee?number=' + number + '&email=0&phone=0&type=' + type)
+        .then(res => {
+          this.reFresh(number)
+        })
+        .catch(err => {
+          this.errorMessage('操作失败:' + err)
+        })
+    },
+    reFresh (number) {
+      this.$router.push({
+        path: '/loading',
+        query: {
+          url: '/employeedetail',
+          number: number
+        }
+      })
+    },
+    errorMessage (message) {
+      this.$message.error(message)
+      console.error(message)
+    },
+    successMessage (message) {
+      this.$message({
+        message: message,
+        type: 'success'
+      })
     }
   }
 }

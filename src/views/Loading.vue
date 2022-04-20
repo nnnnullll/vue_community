@@ -47,12 +47,18 @@ export default {
           }
         })
       // eslint-disable-next-line eqeqeq
+      } else if (url == '/employeedetail') {
+        this.$router.push({
+          path: '/employeedetail',
+          query: {
+            number: this.$route.query.number,
+            from: 'internal'
+          }
+        })
+      // eslint-disable-next-line eqeqeq
       } else if (url == '/employeetable') {
         this.$router.push({
-          path: '/employeetable',
-          query: {
-            number: this.$route.query.number
-          }
+          path: '/employeetable'
         })
       // eslint-disable-next-line eqeqeq
       } else {

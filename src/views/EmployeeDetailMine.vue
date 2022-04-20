@@ -10,7 +10,7 @@
     </div>
     <div class="container">
       <div class="form-box">
-        <el-form :model="form" ref="form" label-width="80px">
+        <el-form :model="form" ref="form" :rules="rules" label-width="80px">
           <!-- row1 -->
           <el-row>
             <el-col :span="12">
@@ -84,7 +84,25 @@ export default {
   data () {
     return {
       form: null,
-      flag: true // 只有查看本人信息时才可以编辑
+      flag: true, // 只有查看本人信息时才可以编辑
+      rules: {
+        email: [
+          { required: true, message: '邮箱不能为空', trigger: 'blur' },
+          {
+            type: 'email',
+            message: '请输入正确的邮箱地址',
+            trigger: ['blur', 'change']
+          }
+        ],
+        phone: [
+          { required: true, message: '手机号码不能为空', trigger: 'blur' },
+          {
+            pattern: /^1[3456789]\d{9}$/,
+            message: '请输入正确的手机号码',
+            trigger: ['blur', 'change']
+          }
+        ]
+      }
     }
   },
   mounted: function () {
@@ -118,33 +136,40 @@ export default {
     onSubmit (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // eslint-disable-next-line eqeqeq
           axios
             .post(
               '/updateemployee?number=' + this.form.number + '&email=' + this.form.email + '&phone=' + this.form.phone + '&type=1'
             )
             .then(res => {
-              this.$message({
-                message: '更新成功',
-                type: 'success'
-              })
-              console.log(res.data)
-              this.$router.push({
-                path: '/loading',
-                query: {
-                  url: '/employeedetailmine',
-                  number: this.form.number
-                }
-              })
+              this.successMessage('更新成功')
+              this.refresh(this.form.number)
             })
             .catch(err => {
-              this.$message.error('创建失败:' + err)
-              console.error(err)
+              this.errorMessage('更新失败:' + err)
             })
         } else {
-          this.$message.error('请输入必填项')
+          this.$message.error('更新失败，请校验表单内容')
           return false
         }
+      })
+    },
+    refresh (number) {
+      this.$router.push({
+        path: '/loading',
+        query: {
+          url: '/employeedetailmine',
+          number: number
+        }
+      })
+    },
+    errorMessage (message) {
+      this.$message.error(message)
+      console.error(message)
+    },
+    successMessage (message) {
+      this.$message({
+        message: message,
+        type: 'success'
       })
     }
   }

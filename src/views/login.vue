@@ -79,6 +79,9 @@ export default {
                 localStorage.setItem('logintype', this.loginForm.type)
                 localStorage.setItem('loginadmin', res.data)
                 this.$router.push('/')
+              // eslint-disable-next-line eqeqeq
+              } else if (res.data == 3) {
+                this.$message.error('该账户已停用')
               } else {
                 this.$message.error('登录失败：未知错误，请联系工作人员。联系电话：18812345678')
               }
