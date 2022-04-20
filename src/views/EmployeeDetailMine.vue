@@ -37,13 +37,20 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <!-- row4 -->
           <el-row>
             <el-col :span="12">
               <el-form-item label="公司号" prop="company">
                 <el-input :disabled="true" v-model="form.company"></el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="12">
+              <el-form-item label="身份证号" prop="email">
+                <el-input :disabled="true" v-model="form.id"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <!-- row4 -->
+          <el-row>
             <el-col :span="12">
               <el-row>
                 <el-col :span="12">
