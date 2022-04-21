@@ -61,6 +61,11 @@ export default {
           path: '/employeetable'
         })
       // eslint-disable-next-line eqeqeq
+      } else if (url == '/changepassword') {
+        this.$router.push({
+          path: '/changepassword'
+        })
+      // eslint-disable-next-line eqeqeq
       } else {
       }
     }

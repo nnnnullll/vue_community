@@ -155,7 +155,7 @@ export default {
     update (number, type) {
       axios
         .post(
-          '/updateemployee?number=' + number + '&email=0&phone=0&type=' + type
+          '/updateemployee?number=' + number + '&email=0&phone=0&oldpassword=0&password=0&type=' + type
         )
         .then(res => {
           this.reFresh(number)

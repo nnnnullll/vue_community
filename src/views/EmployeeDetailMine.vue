@@ -9,6 +9,9 @@
       </el-breadcrumb>
     </div>
     <div class="container">
+      <div style="width: 100%;height: 60px;">
+        <el-button style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form')">保存</el-button>
+      </div>
       <div class="form-box">
         <el-form :model="form" ref="form" :rules="rules" label-width="80px">
           <!-- row1 -->
@@ -76,9 +79,6 @@
               </el-row>
             </el-col>
           </el-row>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit('form')">保存</el-button>
-          </el-form-item>
         </el-form>
       </div>
     </div>
@@ -151,7 +151,7 @@ export default {
                 this.form.email +
                 '&phone=' +
                 this.form.phone +
-                '&type=1'
+                '&type=1&oldpassword=0&password=0'
             )
             .then(res => {
               // eslint-disable-next-line eqeqeq

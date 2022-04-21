@@ -61,7 +61,7 @@
             >
           </template>
         </el-table-column>
-        <el-table-column prop="number">
+        <el-table-column prop="number" v-if="ifshow">
           <template slot-scope="{ row }">
             <span @click="update(row.number, 2)">
               <el-link
@@ -157,7 +157,7 @@ export default {
     update (number, type) {
       axios
         .post(
-          '/updateemployee?number=' + number + '&email=0&phone=0&type=' + type
+          '/updateemployee?number=' + number + '&email=0&phone=0&oldpassword=0&password=0&type=' + type
         )
         .then(res => {
           this.successMessage('操作成功')

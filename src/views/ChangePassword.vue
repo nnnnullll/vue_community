@@ -12,16 +12,16 @@
             <div class="form-box">
                 <el-form :model="form" ref="form"  label-width="80px">
                   <el-form-item label="原密码" prop="old">
-                    <el-input v-model="form.old" :disabled="true"></el-input>
+                    <el-input v-model="form.old"></el-input>
                   </el-form-item>
                   <el-form-item label="新密码" prop="password">
-                    <el-input v-model="form.password" :disabled="true"></el-input>
+                    <el-input v-model="form.password"></el-input>
                   </el-form-item>
                   <el-form-item label="新密码" prop="password2">
-                    <el-input v-model="form.password2" :disabled="true"></el-input>
+                    <el-input v-model="form.password2"></el-input>
                   </el-form-item>
                   <el-form-item>
-                    <el-button type="primary" @click="onSubmit()">表单提交</el-button>
+                    <el-button type="primary" @click="update()">提交</el-button>
                   </el-form-item>
                 </el-form>
             </div>
@@ -34,6 +34,8 @@ const axios = require('axios')
 export default {
   data () {
     return {
+      number: 9,
+      type: 0,
       form: {
         old: '',
         password: '',
@@ -42,19 +44,58 @@ export default {
     }
   },
   mounted: function () {
+    this.user = localStorage.getItem('loginuser')
+    this.type = localStorage.getItem('logintype')
   },
   methods: {
-    GetHouseholdDetailByNumber (number) {
-      axios.post('/gethousehold?type=1&number=' + number + '&community=0')
-        .then(res => {
-          this.form = res.data[0]
-        })
-        .catch(err => {
-          this.$message.error('加载失败:' + err)
-          console.error(err)
-        })
+    update () {
+      // eslint-disable-next-line eqeqeq
+      if (this.form.password != this.form.password2) {
+        this.errorMessage('操作失败: 请确保两次新密码保持一致')
+      } else {
+        var url = ''
+        // eslint-disable-next-line eqeqeq
+        if (this.type == 1) {
+          url = '/updateemployee?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=4'
+        // eslint-disable-next-line eqeqeq
+        } else if (this.type == 2) {
+          url = '/updatehousehold?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=4'
+        } else {
+          url = '/updateemployee?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=4'
+        }
+        axios
+          .post(url)
+          .then(res => {
+            // eslint-disable-next-line eqeqeq
+            if (res.data == 0) {
+              this.errorMessage('操作失败: 原始密码错误')
+            } else {
+              this.successMessage('操作成功')
+              this.reFresh()
+            }
+          })
+          .catch(err => {
+            this.errorMessage('操作失败:' + err)
+          })
+      }
     },
-    onSubmit (formName) {
+    reFresh () {
+      this.$router.push({
+        path: '/loading',
+        query: {
+          url: '/changepassword'
+        }
+      })
+    },
+    errorMessage (message) {
+      this.$message.error(message)
+      console.error(message)
+    },
+    successMessage (message) {
+      this.$message({
+        message: message,
+        type: 'success'
+      })
     }
   }
 }
