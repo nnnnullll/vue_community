@@ -49,25 +49,21 @@ export default {
   },
   methods: {
     update () {
-      // eslint-disable-next-line eqeqeq
-      if (this.form.password != this.form.password2) {
+      if (this.form.password !== this.form.password2) {
         this.errorMessage('操作失败: 请确保两次新密码保持一致')
       } else {
         var url = ''
-        // eslint-disable-next-line eqeqeq
-        if (this.type == 1) {
+        if (this.type === 1) {
           url = '/updateemployee?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=4'
-        // eslint-disable-next-line eqeqeq
-        } else if (this.type == 2) {
+        } else if (this.type === 2) {
           url = '/updatehousehold?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=4'
         } else {
-          url = '/updateemployee?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=4'
+          url = '/updatepartner?num=' + this.user + '&address=a&phone=a&email=a&description=a&type=2&oldpassword=' + this.form.old + '&password=' + this.form.password + '&one=0&two=0&three=0&four=0&five=0'
         }
         axios
           .post(url)
           .then(res => {
-            // eslint-disable-next-line eqeqeq
-            if (res.data == 0) {
+            if (res.data === 0) {
               this.errorMessage('操作失败: 原始密码错误')
             } else {
               this.successMessage('操作成功')

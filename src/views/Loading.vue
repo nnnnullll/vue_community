@@ -56,6 +56,15 @@ export default {
           }
         })
       // eslint-disable-next-line eqeqeq
+      } else if (url == '/partnerdetail') {
+        this.$router.push({
+          path: '/partnerdetail',
+          query: {
+            number: this.$route.query.number,
+            from: 'internal'
+          }
+        })
+      // eslint-disable-next-line eqeqeq
       } else if (url == '/employeetable') {
         this.$router.push({
           path: '/employeetable'

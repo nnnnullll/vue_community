@@ -128,8 +128,7 @@ export default {
   },
   mounted: function () {
     // 1-employee 2-Customer 3-partner  员工-我的信息
-    // eslint-disable-next-line eqeqeq
-    if (this.$route.query.from == 'internal') {
+    if (this.$route.query.from === 'internal') {
       this.GetEmployeeDetailByNumber(this.$route.query.number)
       // eslint-disable-next-line eqeqeq
       this.ifshow = localStorage.getItem('loginadmin') == 1
@@ -142,10 +141,8 @@ export default {
         .post('/getemployee?type=1&company=0&number=' + number)
         .then(res => {
           this.form = res.data[0]
-          // eslint-disable-next-line eqeqeq
-          this.form.active = res.data[0].active == 0
-          // eslint-disable-next-line eqeqeq
-          this.form.admin = res.data[0].admin == 1
+          this.form.active = res.data[0].active === 0
+          this.form.admin = res.data[0].admin === 1
         })
         .catch(err => {
           this.errorMessage('加载失败:' + err)

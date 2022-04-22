@@ -122,14 +122,11 @@ export default {
                 this.form.id
             )
             .then(res => {
-              // eslint-disable-next-line eqeqeq
-              if (res.data == 0) {
+              if (res.data === 0) {
                 this.errorMessage('创建失败: 该身份证号已存在！')
-              // eslint-disable-next-line eqeqeq
-              } else if (res.data == 1) {
+              } else if (res.data === 1) {
                 this.errorMessage('创建失败: 该手机号已存在！')
-              // eslint-disable-next-line eqeqeq
-              } else if (res.data == 2) {
+              } else if (res.data === 2) {
                 this.errorMessage('创建失败: 该邮箱已存在！')
               } else {
                 this.successMessage('创建成功！')

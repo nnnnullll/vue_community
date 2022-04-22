@@ -126,12 +126,10 @@ export default {
         .post('/getemployee?type=1&company=0&number=' + number)
         .then(res => {
           this.form = res.data[0]
-          // eslint-disable-next-line eqeqeq
-          if (res.data[0].active == 0) {
+          if (res.data[0].active === 0) {
             this.form.active = true
           }
-          // eslint-disable-next-line eqeqeq
-          if (res.data[0].admin == 0) {
+          if (res.data[0].admin === 0) {
             this.form.admin = true
           }
         })
@@ -154,11 +152,9 @@ export default {
                 '&type=1&oldpassword=0&password=0'
             )
             .then(res => {
-              // eslint-disable-next-line eqeqeq
-              if (res.data == 0) {
+              if (res.data === 0) {
                 this.errorMessage('创建失败: 该手机号已存在！')
-              // eslint-disable-next-line eqeqeq
-              } else if (res.data == 2) {
+              } else if (res.data === 2) {
                 this.errorMessage('创建失败: 该邮箱已存在！')
               } else {
                 this.successMessage('更新成功')

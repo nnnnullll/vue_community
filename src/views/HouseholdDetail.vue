@@ -97,10 +97,9 @@ export default {
   },
   mounted: function () {
     // 1-employee 2-Customer 3-partner  住户-我的信息
-    // eslint-disable-next-line eqeqeq
-    if (this.$route.query.from == 'internal') {
+    if (this.$route.query.from === 'internal') {
       this.GetHouseholdDetailByNumber(this.$route.query.number)
-      // eslint-disable-next-line eqeqeq
+    // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 2) {
       this.flag = false
       this.GetHouseholdDetailByNumber(localStorage.getItem('loginuser'))
@@ -115,8 +114,7 @@ export default {
         )
         .then(res => {
           this.form = res.data[0]
-          // eslint-disable-next-line eqeqeq
-          this.form.active = res.data[0].active == 0
+          this.form.active = res.data[0].active === 0
         })
         .catch(err => {
           this.errorMessage('加载失败' + err)
@@ -125,7 +123,6 @@ export default {
     onSubmit (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // eslint-disable-next-line eqeqeq
           axios
             .post(
               '/updatehousehold?number=' +

@@ -9,8 +9,11 @@
       </el-breadcrumb>
     </div>
     <div class="container">
+      <div style="width: 100%;height: 60px;">
+        <el-button style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form')">保存</el-button>
+      </div>
       <div class="form-box">
-        <el-form :model="form" ref="form" label-width="130px">
+        <el-form :model="form" ref="form" :rules="rules"  label-width="130px">
           <!-- row1 -->
           <el-row>
             <el-col :span="12">
@@ -99,15 +102,11 @@
                 <el-input
                   v-model="form.description"
                   :disabled="flag"
+                  type="textarea"
                 ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item>
-            <el-button v-show="!flag" type="primary" @click="onSubmit('form')"
-              >保存</el-button
-            >
-          </el-form-item>
         </el-form>
       </div>
     </div>
@@ -120,15 +119,33 @@ export default {
   data () {
     return {
       form: null,
-      flag: true
+      flag: true,
+      rules: {
+        address: [{ required: true, message: '名字不能为空', trigger: 'blur' }],
+        email: [
+          { required: true, message: '邮箱不能为空', trigger: 'blur' },
+          {
+            type: 'email',
+            message: '请输入正确的邮箱地址',
+            trigger: ['blur', 'change']
+          }
+        ],
+        phone: [
+          { required: true, message: '手机号码不能为空', trigger: 'blur' },
+          {
+            pattern: /^1[3456789]\d{9}$/,
+            message: '请输入正确的手机号码',
+            trigger: ['blur', 'change']
+          }
+        ]
+      }
     }
   },
   mounted: function () {
     // 1-employee 2-Customer 3-partner  维修员工-个人信息
-    // eslint-disable-next-line eqeqeq
-    if (this.$route.query.from == 'internal') {
+    if (this.$route.query.from === 'internal') {
       this.GetPartnerDetailByNumber(this.$route.query.number)
-      // eslint-disable-next-line eqeqeq
+    // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 3) {
       this.flag = false
       this.GetPartnerDetailByNumber(localStorage.getItem('loginuser'))
@@ -141,42 +158,12 @@ export default {
         .post('/getpartnerbynum?num=' + number)
         .then(res => {
           this.form = res.data
-          // eslint-disable-next-line eqeqeq
-          if (res.data.active == 0) {
-            this.form.active = true
-          } else {
-            this.form.active = false
-          }
-          // eslint-disable-next-line eqeqeq
-          if (res.data.one == 1) {
-            this.form.one = true
-          } else {
-            this.form.one = false
-          }
-          // eslint-disable-next-line eqeqeq
-          if (res.data.two == 2) {
-            this.form.two = true
-          } else {
-            this.form.two = false
-          }
-          // eslint-disable-next-line eqeqeq
-          if (res.data.three == 3) {
-            this.form.three = true
-          } else {
-            this.form.three = false
-          }
-          // eslint-disable-next-line eqeqeq
-          if (res.data.four == 4) {
-            this.form.four = true
-          } else {
-            this.form.four = false
-          }
-          // eslint-disable-next-line eqeqeq
-          if (res.data.five == 5) {
-            this.form.five = true
-          } else {
-            this.form.five = false
-          }
+          this.form.active = res.data.active === 0
+          this.form.one = res.data.one === 1
+          this.form.two = res.data.two === 1
+          this.form.three = res.data.three === 1
+          this.form.four = res.data.four === 1
+          this.form.five = res.data.five === 1
         })
         .catch(err => {
           this.$message.error('加载失败:' + err)
@@ -186,36 +173,42 @@ export default {
     onSubmit (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // eslint-disable-next-line eqeqeq
           axios
             .post(
-              '/updatepartner?num=' + this.form.num + '&address=' + this.form.address +
-                '&phone=' + this.form.phone + '&email=' + this.form.email + '&description=' + this.form.description +
-                // eslint-disable-next-line eqeqeq
-                '&one=' + (this.form.one == true ? 1 : 0) + '&two=' + (this.form.two == true ? 1 : 0) + '&three=' + (this.form.three == true ? 1 : 0) + '&four=' + (this.form.four == true ? 1 : 0) + '&five=' + (this.form.five == true ? 1 : 0)
+              '/updatepartner?num=' + this.form.num + '&address=' + this.form.address + '&phone=' + this.form.phone +
+              '&email=' + this.form.email + '&description=' + this.form.description + '&type=1&oldpassword=0&password=0' +
+              '&one=' + (this.form.one === true ? 1 : 0) + '&two=' + (this.form.two === true ? 1 : 0) + '&three=' + (this.form.three === true ? 1 : 0) + '&four=' + (this.form.four === true ? 1 : 0) + '&five=' + (this.form.five === true ? 1 : 0)
             )
             .then(res => {
-              this.$message({
-                message: '更新成功',
-                type: 'success'
-              })
-              console.log(res.data)
-              this.$router.push({
-                path: '/loading',
-                query: {
-                  url: '/partnerdetail',
-                  number: this.form.num
-                }
-              })
+              this.successMessage('更新成功！')
+              this.reFresh(this.form.num)
             })
             .catch(err => {
-              this.$message.error('创建失败:' + err)
-              console.error(err)
+              this.errorMessage('更新失败：' + err)
             })
         } else {
           this.$message.error('请输入必填项')
           return false
         }
+      })
+    },
+    reFresh (number) {
+      this.$router.push({
+        path: '/loading',
+        query: {
+          url: '/partnerdetail',
+          number: number
+        }
+      })
+    },
+    errorMessage (message) {
+      this.$message.error(message)
+      console.error(message)
+    },
+    successMessage (message) {
+      this.$message({
+        message: message,
+        type: 'success'
       })
     }
   }

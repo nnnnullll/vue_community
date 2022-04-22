@@ -122,8 +122,8 @@ export default {
     // 1-employee 2-Customer 3-partner  员工-我的同事
     // eslint-disable-next-line no-constant-condition
     if (false) {
-      // 通过url的参数号码
-      // eslint-disable-next-line eqeqeq
+    // 通过url的参数号码
+    // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 1) {
       this.getDataEmploysByCompany(localStorage.getItem('loginuser_commpany'))
     } else {
