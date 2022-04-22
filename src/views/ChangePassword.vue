@@ -58,7 +58,7 @@ export default {
         } else if (this.type === 2) {
           url = '/updatehousehold?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=4'
         } else {
-          url = '/updatepartner?num=' + this.user + '&address=a&phone=a&email=a&description=a&type=2&oldpassword=' + this.form.old + '&password=' + this.form.password + '&one=0&two=0&three=0&four=0&five=0'
+          url = '/updatepartner?num=' + this.user + '&address=a&phone=a&email=a&description=a&type=2&oldpassword=' + this.form.old + '&password=' + this.form.password + '&one=0&two=0&three=0&four=0&five=0&active=0'
         }
         axios
           .post(url)

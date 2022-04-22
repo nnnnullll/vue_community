@@ -45,6 +45,11 @@
                         <el-tag v-show="row.five==1"  effect="light" type="success">✔</el-tag>
                     </template>
                 </el-table-column>
+                <el-table-column prop="active" label="使用中" width="76px" :filters="typetag" :filter-method="filterActive" filter-placement="bottom-end">
+                  <template slot-scope="{row}">
+                        <el-tag v-show="row.active==0"  effect="light" type="success">✔</el-tag>
+                    </template>
+                </el-table-column>
             </el-table>
         </div>
     </div>
