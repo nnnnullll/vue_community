@@ -22,6 +22,8 @@
                         <el-form-item label="地址" prop="region">
                           <div class="block">
                           <el-cascader
+                            placeholder="例: 上海市,宝山区"
+                            v-model="form.region"
                             :options="options"
                             :props="props"
                             clearable>
@@ -59,6 +61,11 @@
                           </el-upload>
                         </el-form-item>
                       </el-col>
+                      <el-col :span="12">
+                        <el-form-item label="具体街道" prop="name">
+                          <el-input placeholder="例:上大路99号" v-model="form.address"></el-input>
+                        </el-form-item>
+                      </el-col>
                     </el-row>
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit('form')">提交</el-button>
@@ -78,8 +85,9 @@ export default {
       buildings: null,
       fileTemp: null,
       form: {
-        name: '',
-        region: ''
+        name: null,
+        region: null,
+        address: null
       },
       // 导出excel
       json_fields: {
@@ -104,53 +112,53 @@ export default {
       props: { multiple: false },
       options: [
         {
-          value: null,
+          value: `上海`,
           label: '上海',
           children: [
-            { value: 1, label: '黄浦区' },
-            { value: 2, label: '徐汇区' },
-            { value: 3, label: '长宁区' },
-            { value: 4, label: '静安区' },
-            { value: 5, label: '普陀区' },
-            { value: 6, label: '虹口区' },
-            { value: 7, label: '杨浦区' },
-            { value: 8, label: '浦东新区' },
-            { value: 9, label: '闵行区' },
-            { value: 10, label: '宝山区' },
-            { value: 11, label: '嘉定区' },
-            { value: 12, label: '金山区' },
-            { value: 13, label: '松江区' },
-            { value: 14, label: '青浦区' },
-            { value: 15, label: '奉贤区' },
-            { value: 16, label: '崇明区' }
+            { value: '黄浦区', label: '黄浦区' },
+            { value: '徐汇区', label: '徐汇区' },
+            { value: '长宁区', label: '长宁区' },
+            { value: '静安区', label: '静安区' },
+            { value: '普陀区', label: '普陀区' },
+            { value: '虹口区', label: '虹口区' },
+            { value: '杨浦区', label: '杨浦区' },
+            { value: '浦东新区', label: '浦东新区' },
+            { value: '闵行区', label: '闵行区' },
+            { value: '宝山区', label: '宝山区' },
+            { value: '嘉定区', label: '嘉定区' },
+            { value: '金山区', label: '金山区' },
+            { value: '松江区', label: '松江区' },
+            { value: '青浦区', label: '青浦区' },
+            { value: '奉贤区', label: '奉贤区' },
+            { value: '崇明区', label: '崇明区' }
           ]
         },
         {
-          value: null,
+          value: '江苏',
           label: '江苏',
           children: [
-            { value: 17, label: '南京市' },
-            { value: 18, label: '无锡市' },
-            { value: 19, label: '徐州市' },
-            { value: 20, label: '常州市' },
-            { value: 21, label: '苏州市' },
-            { value: 22, label: '南通市' },
-            { value: 23, label: '连云港市' },
-            { value: 24, label: '淮安市' },
-            { value: 25, label: '扬州市' },
-            { value: 26, label: '镇江市' },
-            { value: 27, label: '泰州市' },
-            { value: 28, label: '宿迁市' },
-            { value: 29, label: '盐城市' }
+            { value: '南京市', label: '南京市' },
+            { value: '无锡市', label: '无锡市' },
+            { value: '徐州市', label: '徐州市' },
+            { value: '常州市', label: '常州市' },
+            { value: '苏州市', label: '苏州市' },
+            { value: '南通市', label: '南通市' },
+            { value: '连云港市', label: '连云港市' },
+            { value: '淮安市', label: '淮安市' },
+            { value: '扬州市', label: '扬州市' },
+            { value: '镇江市', label: '镇江市' },
+            { value: '泰州市', label: '泰州市' },
+            { value: '宿迁市', label: '宿迁市' },
+            { value: '盐城市', label: '盐城市' }
           ]
         },
         {
-          value: null,
+          value: '浙江',
           label: '浙江',
           children: [
-            { value: 30, label: '杭州' },
-            { value: 31, label: '宁波' },
-            { value: 32, label: '嘉兴' }
+            { value: '杭州', label: '杭州' },
+            { value: '宁波', label: '宁波' },
+            { value: '嘉兴', label: '嘉兴' }
           ]
         },
         {
@@ -190,7 +198,7 @@ export default {
     onSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          axios.post('/insertcommunity?name=' + this.form.name + '&region=' + this.form.region + '&company=' + localStorage.getItem('loginuser_commpany') + '&buildings=' + this.buildings + '&rooms=' + this.rooms)
+          axios.post('/insertcommunity?name=' + this.form.name + '&region=' + this.form.region + '&address=' + this.form.region + this.form.address + '&company=' + localStorage.getItem('loginuser_commpany') + '&buildings=' + this.buildings + '&rooms=' + this.rooms)
             .then(res => {
             // eslint-disable-next-line eqeqeq
               if (res.data != 0) {

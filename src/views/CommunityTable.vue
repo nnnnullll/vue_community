@@ -31,7 +31,7 @@
           label="社区名"
           :formatter="formatter"
         ></el-table-column>
-        <el-table-column sortable prop="region" label="地址"></el-table-column>
+        <el-table-column sortable prop="address" label="地址"></el-table-column>
         <el-table-column
           prop="active"
           label="有效"

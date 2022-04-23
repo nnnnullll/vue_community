@@ -19,8 +19,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="地址" prop="region">
-                <el-input v-model="form.region" :disabled="true"></el-input>
+              <el-form-item label="地址" prop="address">
+                <el-input v-model="form.address" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
