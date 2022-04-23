@@ -30,7 +30,7 @@
                         </el-form-item>
                       </el-col>
                     </el-row>
-                     <!-- row2 -->
+                    <!-- row2 -->
                     <el-row>
                       <el-col :span="12">
                         <el-form-item label="住户" prop="da">
@@ -46,13 +46,22 @@
                             :auto-upload="false">
                           <i class="el-icon-upload"></i>
                           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                          <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb
+                              <!--导出用户信息excel表格-->
+                              <download-excel
+                                class = "export-excel-wrapper"
+                                :data = "json_data"
+                                :fields = "json_fields"
+                                name = "住户自动创建列表.xls">
+                                <el-link type="primary">点击获取自动创建住户的EXCEL模板，请填写后上传。</el-link>
+                              </download-excel>
+                          </div>
                           </el-upload>
                         </el-form-item>
                       </el-col>
                     </el-row>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit('form')">表单提交</el-button>
+                        <el-button type="primary" @click="onSubmit('form')">提交</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -72,6 +81,26 @@ export default {
         name: '',
         region: ''
       },
+      // 导出excel
+      json_fields: {
+        'building': 'building', // 常规字段
+        'room': 'room'
+      },
+      json_data: [
+        // 写死，后续可通过接口进行传值
+        {
+          building: '请输入楼号，eg:1',
+          room: '请输入室号，eg:101。一行代表一户，社区中有几户就有几行。'
+        }
+      ],
+      json_meta: [
+        [
+          {
+            ' key ': ' charset ',
+            ' value ': ' utf- 8 '
+          }
+        ]
+      ],
       props: { multiple: false },
       options: [
         {
