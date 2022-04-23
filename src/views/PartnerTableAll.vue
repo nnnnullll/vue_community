@@ -107,7 +107,6 @@ export default {
     getDataPartnerByCompany () {
       axios.post('/getpartners?type=2&company=0')
         .then(res => {
-          console.log(res.data)
           this.tableData = res.data
         })
         .catch(err => {
