@@ -92,11 +92,11 @@ export default {
     // eslint-disable-next-line eqeqeq
     if (this.$route.query.from == 'internal') {
       this.GetCompanyDetailByNumber(this.$route.query.number)
-      // eslint-disable-next-line eqeqeq
-      this.flag = localStorage.getItem('loginadmin') == 1 && this.$route.query.from == 'internal'
     // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 1 || localStorage.getItem('logintype') == 2) {
       this.GetCompanyDetailByNumber(localStorage.getItem('loginuser_commpany'))
+      // eslint-disable-next-line eqeqeq
+      this.flag = localStorage.getItem('loginadmin') != 1
     } else {
 
     }
@@ -106,12 +106,10 @@ export default {
       axios.post('/getcompanies?type=1&partner=0&number=' + number)
         .then(res => {
           this.form = res.data[0]
-          // eslint-disable-next-line eqeqeq
-          if (res.data.active == 1) { this.form.active = 0 } else { this.form.active = 1 }
+          this.form.active = res.data[0].active === 0
         })
         .catch(err => {
-          this.$message.error('加载失败:' + err)
-          console.error(err)
+          this.errorMessage('加载失败:' + err)
         })
     },
     update (form) {
@@ -121,18 +119,17 @@ export default {
         )
         .then(res => {
           this.successMessage('更新成功！')
-          this.reFresh(form.number)
+          this.reFresh()
         })
         .catch(err => {
           this.errorMessage('更新失败:' + err)
         })
     },
-    reFresh (number) {
+    reFresh () {
       this.$router.push({
         path: '/loading',
         query: {
-          url: '/companydetail',
-          number: number
+          url: '/companydetail'
         }
       })
     },

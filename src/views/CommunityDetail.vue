@@ -33,7 +33,7 @@
                       </el-col>
                       <el-col :span="12">
                         <el-form-item label="" prop="active">
-                          <el-checkbox label="使用中" :disabled="true" name="active"></el-checkbox>
+                          <el-checkbox label="使用中" :disabled="true" v-model="form.active"></el-checkbox>
                         </el-form-item>
                       </el-col>
                     </el-row>
@@ -72,7 +72,6 @@ export default {
       this.GetHouseholdDetailByNumber(this.$route.query.number)
     // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 2) {
-      console.log(localStorage.getItem('loginuser_commmunity'))
       this.GetHouseholdDetailByNumber(localStorage.getItem('loginuser_commmunity'))
     } else {
 
@@ -83,8 +82,7 @@ export default {
       axios.post('/getcommunitydetail?number=' + number)
         .then(res => {
           this.form = res.data
-          // eslint-disable-next-line eqeqeq
-          if (res.data.active == 1) { this.form.active = 0 } else { this.form.active = 1 }
+          this.form.active = res.data.active === 0
         })
         .catch(err => {
           this.$message.error('加载失败:' + err)

@@ -37,7 +37,7 @@
             <el-col :span="12">
               <el-row>
                 <el-form-item label="" prop="admin">
-                  <el-checkbox label="超级管理员" :name="admin"></el-checkbox>
+                  <el-checkbox label="超级管理员" v-model="form.admin"></el-checkbox>
                 </el-form-item>
               </el-row>
             </el-col>

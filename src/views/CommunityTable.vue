@@ -1,32 +1,51 @@
 <template>
-    <div>
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 社区表单
-                </el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
-        <div v-if="tableData!=null" class="container">
-            <el-button type="primary" plain @click="clearFilter">清除所有过滤器</el-button>
-            <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
-                <el-table-column width="73px" sortable prop="number" label="单号">
-                    <template slot-scope="{row}">
-                        <span @click="toDetail(row.number)">
-                            <el-link type="primary">{{ row.number }}</el-link>
-                        </span>
-                    </template>
-                </el-table-column>
-                <el-table-column sortable prop="name" label="社区名" :formatter="formatter"></el-table-column>
-                <el-table-column sortable prop="region" label="地址"></el-table-column>
-                <el-table-column width="85px" sortable prop="active" label="有效" :filters="activetag" :filter-method="filterActive" filter-placement="bottom-end" >
-                    <template slot-scope="{row}">
-                        <el-tag v-show="row.active==0" type="success">加急</el-tag>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
+  <div>
+    <div class="crumbs">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>
+          <i class="el-icon-lx-cascades"></i> 社区表单
+        </el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
+    <div v-if="tableData != null" class="container">
+      <el-button type="primary" plain @click="clearFilter"
+        >清除所有过滤器</el-button
+      >
+      <el-table
+        ref="filterTable"
+        :data="tableData"
+        border
+        class="table"
+        header-cell-class-name="table-header"
+      >
+        <el-table-column sortable prop="number" label="单号">
+          <template slot-scope="{ row }">
+            <span @click="toDetail(row.number)">
+              <el-link type="primary">{{ row.number }}</el-link>
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          sortable
+          prop="name"
+          label="社区名"
+          :formatter="formatter"
+        ></el-table-column>
+        <el-table-column sortable prop="region" label="地址"></el-table-column>
+        <el-table-column
+          prop="active"
+          label="有效"
+          :filters="activetag"
+          :filter-method="filterActive"
+          filter-placement="bottom-end"
+        >
+          <template slot-scope="{ row }">
+            <el-tag v-show="row.active == 0" type="success">加急</el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -45,12 +64,13 @@ export default {
     // 1-employee 2-Customer 3-partner 住户-我的社区
     // eslint-disable-next-line no-constant-condition
     if (false) {
-    // 通过url的参数号码
-    // eslint-disable-next-line eqeqeq
+      // 通过url的参数号码
+      // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 1) {
-      this.getDataCommunityByCompany(localStorage.getItem('loginuser_commpany'))
+      this.getDataCommunityByCompany(
+        localStorage.getItem('loginuser_commpany')
+      )
     } else {
-
     }
   },
   methods: {
@@ -64,7 +84,8 @@ export default {
       return row.active === value
     },
     getDataCommunityByCompany (companynumber) {
-      axios.post('/getcommunity?type=2&number=1&company=' + companynumber)
+      axios
+        .post('/getcommunity?type=2&number=1&company=' + companynumber)
         .then(res => {
           this.tableData = res.data
         })
@@ -88,31 +109,31 @@ export default {
 
 <style scoped>
 .handle-box {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .handle-select {
-    width: 120px;
+  width: 120px;
 }
 
 .handle-input {
-    width: 300px;
-    display: inline-block;
+  width: 300px;
+  display: inline-block;
 }
 .table {
-    width: 100%;
-    font-size: 14px;
+  width: 100%;
+  font-size: 14px;
 }
 .red {
-    color: #ff0000;
+  color: #ff0000;
 }
 .mr10 {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 .table-td-thumb {
-    display: block;
-    margin: auto;
-    width: 40px;
-    height: 40px;
+  display: block;
+  margin: auto;
+  width: 40px;
+  height: 40px;
 }
 </style>

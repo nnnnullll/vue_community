@@ -67,11 +67,7 @@ export default {
       // eslint-disable-next-line eqeqeq
       } else if (url == '/companydetail') {
         this.$router.push({
-          path: '/companydetail',
-          query: {
-            number: this.$route.query.number,
-            from: 'internal'
-          }
+          path: '/companydetail'
         })
       // eslint-disable-next-line eqeqeq
       } else if (url == '/employeetable') {
