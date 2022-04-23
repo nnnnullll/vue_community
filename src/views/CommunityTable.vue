@@ -8,17 +8,13 @@
       </el-breadcrumb>
     </div>
     <div v-if="tableData != null" class="container">
-      <el-button type="primary" plain @click="clearFilter"
-        >清除所有过滤器</el-button
-      >
       <el-table
-        ref="filterTable"
         :data="tableData"
         border
         class="table"
         header-cell-class-name="table-header"
       >
-        <el-table-column sortable prop="number" label="单号">
+        <el-table-column sortable prop="number" label="编号">
           <template slot-scope="{ row }">
             <span @click="toDetail(row.number)">
               <el-link type="primary">{{ row.number }}</el-link>
@@ -28,19 +24,12 @@
         <el-table-column
           sortable
           prop="name"
-          label="社区名"
-          :formatter="formatter"
+          label="社区"
         ></el-table-column>
         <el-table-column sortable prop="address" label="地址"></el-table-column>
-        <el-table-column
-          prop="active"
-          label="有效"
-          :filters="activetag"
-          :filter-method="filterActive"
-          filter-placement="bottom-end"
-        >
+        <el-table-column prop="number" v-if="ifshow">
           <template slot-scope="{ row }">
-            <el-tag v-show="row.active == 0" type="success">加急</el-tag>
+            <el-link  type="primary" @click="update(row.number, 1)">解除合作</el-link>
           </template>
         </el-table-column>
       </el-table>
@@ -53,11 +42,9 @@ const axios = require('axios')
 export default {
   data () {
     return {
-      activetag: [
-        { text: '服务中', value: 0 },
-        { text: '暂定服务', value: 1 }
-      ],
-      tableData: null
+      tableData: null,
+      ifshow: false,
+      usercompany: null
     }
   },
   mounted: function () {
@@ -67,22 +54,14 @@ export default {
       // 通过url的参数号码
       // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 1) {
-      this.getDataCommunityByCompany(
-        localStorage.getItem('loginuser_commpany')
-      )
+      this.usercompany = localStorage.getItem('loginuser_commpany')
+      // eslint-disable-next-line eqeqeq
+      this.ifshow = localStorage.getItem('loginadmin') == 1 && localStorage.getItem('logintype') == 1
+      this.getDataCommunityByCompany(localStorage.getItem('loginuser_commpany'))
     } else {
     }
   },
   methods: {
-    clearFilter () {
-      this.$refs.filterTable.clearFilter()
-    },
-    formatter (row, column) {
-      return row.name
-    },
-    filterActive (value, row) {
-      return row.active === value
-    },
     getDataCommunityByCompany (companynumber) {
       axios
         .post('/getcommunity?type=2&number=1&company=' + companynumber)
@@ -90,8 +69,24 @@ export default {
           this.tableData = res.data
         })
         .catch(err => {
-          this.$message.error('加载失败:' + err)
-          console.error(err)
+          this.errorMessage('加载失败:' + err)
+        })
+    },
+    update (number, type) {
+      axios
+        .post(
+          '/updatecommunity?number=' + number + '&company=' + this.usercompany + '&type=' + type
+        )
+        .then(res => {
+          if (res.data === 0) {
+            this.errorMessage('操作失败：物业公司不匹配')
+          } else {
+            this.successMessage('操作成功')
+            this.reFresh()
+          }
+        })
+        .catch(err => {
+          this.errorMessage('操作失败:' + err)
         })
     },
     toDetail (number) {
@@ -101,6 +96,24 @@ export default {
           number: number,
           from: 'internal'
         }
+      })
+    },
+    reFresh () {
+      this.$router.push({
+        path: '/loading',
+        query: {
+          url: '/communitytable'
+        }
+      })
+    },
+    errorMessage (message) {
+      this.$message.error(message)
+      console.error(message)
+    },
+    successMessage (message) {
+      this.$message({
+        message: message,
+        type: 'success'
       })
     }
   }

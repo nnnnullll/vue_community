@@ -63,7 +63,7 @@
         </el-form>
       </div>
     </div>
-    <div class="crumbs">
+    <div v-if="form != null" class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
           <i class="el-icon-lx-calendar"></i> {{form.name}}
@@ -72,9 +72,8 @@
       </el-breadcrumb>
     </div>
      <div v-if="tableData!=null" class="container">
-      <el-button type="primary" plain @click="clearFilter">清除所有过滤器</el-button>
       <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
-        <el-table-column sortable prop="number" label="编号" :formatter="formatter">
+        <el-table-column sortable prop="number" label="编号">
           <template slot-scope="{ row }">
               <el-link @click="toDetail(row.number)" type="primary">{{ row.number }}</el-link>
           </template>
@@ -83,11 +82,6 @@
         <el-table-column sortable prop="room_number" label="门牌号"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="phone" label="联系电话"></el-table-column>
-        <el-table-column prop="number" v-if="ifshow">
-          <template slot-scope="{ row }">
-            <el-link type="primary">离职</el-link>
-          </template>
-        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -118,7 +112,6 @@ export default {
       axios
         .post('/getcommunitydetail?number=' + number)
         .then(res => {
-          console.log(res.data)
           this.form = res.data
           this.form.active = res.data.active === 0
           this.tableData = res.data.households

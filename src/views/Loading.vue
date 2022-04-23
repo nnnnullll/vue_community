@@ -36,6 +36,11 @@ export default {
           path: '/householddetail'
         })
       // eslint-disable-next-line eqeqeq
+      } else if (url == '/communitytable') {
+        this.$router.push({
+          path: '/communitytable'
+        })
+      // eslint-disable-next-line eqeqeq
       } else if (url == '/employeedetailmine') {
         this.$router.push({
           path: '/employeedetailmine',
