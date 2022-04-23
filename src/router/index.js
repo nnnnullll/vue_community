@@ -86,6 +86,14 @@ export default new Router({
           component: () => import('../views/CommunityTable.vue')
         },
         {
+          path: '/communitytableall',
+          name: 'communitytableall',
+          meta: {
+            title: '社区表格'
+          },
+          component: () => import('../views/CommunityTableAll.vue')
+        },
+        {
           path: '/companytable',
           name: 'companytable',
           meta: {

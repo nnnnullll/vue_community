@@ -9,6 +9,10 @@
       </el-breadcrumb>
     </div>
     <div v-if="form != null" class="container">
+      <div style="width: 100%;height: 60px;">
+        <el-button style="margin-right: 30px; float:right;" v-if="form.company==usercompany"  type="primary" @click="update(form.number, 1)">解除合作</el-button>
+        <el-button style="margin-right: 30px; float:right;" v-if="form.company==null" type="primary" @click="update(form.number, 2)">建立合作</el-button>
+      </div>
       <div class="form-box">
         <el-form :model="form" ref="form" label-width="80px">
           <!-- row1 -->
@@ -63,7 +67,7 @@
         </el-form>
       </div>
     </div>
-    <div v-if="form != null" class="crumbs">
+    <div v-if="form != null&&usercompany!=null" class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
           <i class="el-icon-lx-calendar"></i> {{form.name}}
@@ -71,7 +75,7 @@
         <el-breadcrumb-item>住户列表</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-     <div v-if="tableData!=null" class="container">
+     <div v-if="tableData!=null&&usercompany!=null" class="container">
       <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
         <el-table-column sortable prop="number" label="编号">
           <template slot-scope="{ row }">
@@ -93,13 +97,18 @@ export default {
   data () {
     return {
       form: null,
-      tableData: null
+      tableData: null,
+      ifshow: null,
+      usercompany: null
     }
   },
   mounted: function () {
     // 1-employee 2-Customer 3-partner 住户-我的社区
     // eslint-disable-next-line eqeqeq
     if (this.$route.query.from == 'internal') {
+      this.usercompany = localStorage.getItem('loginuser_commpany')
+      // eslint-disable-next-line eqeqeq
+      this.ifshow = localStorage.getItem('loginadmin') == 1 && localStorage.getItem('logintype') == 1
       this.GetCommunitiesByNumber(this.$route.query.number)
       // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 2) {
@@ -121,6 +130,23 @@ export default {
           console.error(err)
         })
     },
+    update (number, type) {
+      axios
+        .post(
+          '/updatecommunity?number=' + number + '&company=' + this.usercompany + '&type=' + type
+        )
+        .then(res => {
+          if (res.data === 0) {
+            this.errorMessage('操作失败：物业公司不匹配')
+          } else {
+            this.successMessage('操作成功')
+            this.reFresh(number)
+          }
+        })
+        .catch(err => {
+          this.errorMessage('操作失败:' + err)
+        })
+    },
     toDetail (number) {
       this.$router.push({
         path: '/householddetail',
@@ -128,6 +154,26 @@ export default {
           number: number,
           from: 'internal'
         }
+      })
+    },
+    reFresh (number) {
+      this.$router.push({
+        path: '/loading',
+        query: {
+          url: '/communitydetail',
+          number: number,
+          from: 'internal'
+        }
+      })
+    },
+    errorMessage (message) {
+      this.$message.error(message)
+      console.error(message)
+    },
+    successMessage (message) {
+      this.$message({
+        message: message,
+        type: 'success'
       })
     }
   }

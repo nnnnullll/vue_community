@@ -41,6 +41,11 @@ export default {
           path: '/communitytable'
         })
       // eslint-disable-next-line eqeqeq
+      } else if (url == '/communitytableall') {
+        this.$router.push({
+          path: '/communitytableall'
+        })
+      // eslint-disable-next-line eqeqeq
       } else if (url == '/employeedetailmine') {
         this.$router.push({
           path: '/employeedetailmine',
@@ -52,6 +57,15 @@ export default {
       } else if (url == '/employeedetail') {
         this.$router.push({
           path: '/employeedetail',
+          query: {
+            number: this.$route.query.number,
+            from: 'internal'
+          }
+        })
+      // eslint-disable-next-line eqeqeq
+      } else if (url == '/communitydetail') {
+        this.$router.push({
+          path: '/communitydetail',
           query: {
             number: this.$route.query.number,
             from: 'internal'
