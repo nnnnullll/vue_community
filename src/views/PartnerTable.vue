@@ -7,7 +7,7 @@
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="container">
+        <div v-if="tableData!=null" class="container">
             <el-button type="primary" plain @click="clearFilter">清除所有过滤器</el-button>
             <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
                 <el-table-column width="100px" sortable prop="num" label="编号">
@@ -60,7 +60,7 @@ const axios = require('axios')
 export default {
   data () {
     return {
-      tableData: [],
+      tableData: null,
       typetag: [
         { text: '', value: 0 },
         { text: '✔', value: 1 }

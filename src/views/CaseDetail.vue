@@ -8,7 +8,7 @@
                 <el-breadcrumb-item>详细信息</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="container">
+        <div  v-if="form!=null" class="container">
             <!-- 2-Customer 1-employee 3-partner -->
             <div style="width: 100%;height: 60px;">
             <!-- 物业员工 -->

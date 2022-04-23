@@ -7,7 +7,7 @@
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="container">
+        <div v-if="tableData!=null" class="container">
             <el-button @click="clearFilter">清除所有过滤器</el-button>
             <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
                 <el-table-column width="73px" sortable prop="number" label="单号" @click="toCaseDetail(row.number)">
@@ -88,7 +88,7 @@ export default {
         { text: '逾期', value: 1 },
         { text: '未逾期', value: 0 }
       ],
-      tableData: []
+      tableData: null
     }
   },
   mounted: function () {

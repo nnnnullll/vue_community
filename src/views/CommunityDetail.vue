@@ -8,7 +8,7 @@
                 <el-breadcrumb-item>社区信息</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="container">
+        <div v-if="form!=null" class="container">
             <div class="form-box">
                 <el-form :model="form" ref="form"  label-width="80px">
                     <!-- row1 -->

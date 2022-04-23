@@ -8,7 +8,7 @@
         <el-breadcrumb-item>物业员工</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="container">
+    <div v-if="form!=null" class="container">
       <div style="width: 100%;height: 60px;">
         <el-button style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form')">保存</el-button>
       </div>
@@ -121,21 +121,15 @@ export default {
   },
   methods: {
     GetEmployeeDetailByNumber (number) {
-      console.log(number)
       axios
         .post('/getemployee?type=1&company=0&number=' + number)
         .then(res => {
           this.form = res.data[0]
-          if (res.data[0].active === 0) {
-            this.form.active = true
-          }
-          if (res.data[0].admin === 0) {
-            this.form.admin = true
-          }
+          this.form.active = res.data[0].active === 0
+          this.form.admin = res.data[0].admin === 0
         })
         .catch(err => {
-          this.$message.error('加载失败:' + err)
-          console.error(err)
+          this.errorMessage('加载失败:' + err)
         })
     },
     onSubmit (formName) {

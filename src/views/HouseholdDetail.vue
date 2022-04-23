@@ -8,7 +8,7 @@
         <el-breadcrumb-item>住户信息</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="container">
+    <div v-if="form!=null" class="container">
       <div style="width: 100%;height: 60px;">
         <el-button
           v-show="!flag"

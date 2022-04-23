@@ -7,7 +7,7 @@
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="container">
+    <div v-if="tableData!=null" class="container">
       <el-button type="primary" plain @click="clearFilter"
         >清除所有过滤器</el-button
       >
@@ -103,7 +103,7 @@ export default {
       ifshow: false,
       usertype: null,
       minename: '',
-      tableData: [],
+      tableData: null,
       admin: [
         { text: '非管理员', value: 0 },
         { text: '管理员', value: 1 }

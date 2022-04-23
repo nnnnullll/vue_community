@@ -8,7 +8,7 @@
         <el-breadcrumb-item>基本信息</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="container">
+    <div v-if="form!=null" class="container">
       <div style="width: 100%;height: 60px;">
         <el-button v-show="!flag" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form')">保存</el-button>
       </div>

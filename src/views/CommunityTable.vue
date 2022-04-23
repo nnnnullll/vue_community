@@ -7,7 +7,7 @@
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div class="container">
+        <div v-if="tableData!=null" class="container">
             <el-button type="primary" plain @click="clearFilter">清除所有过滤器</el-button>
             <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
                 <el-table-column width="73px" sortable prop="number" label="单号">
@@ -38,7 +38,7 @@ export default {
         { text: '服务中', value: 0 },
         { text: '暂定服务', value: 1 }
       ],
-      tableData: []
+      tableData: null
     }
   },
   mounted: function () {

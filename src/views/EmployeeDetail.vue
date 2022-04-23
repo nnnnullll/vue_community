@@ -8,7 +8,7 @@
         <el-breadcrumb-item>物业员工</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="container">
+    <div v-if="form!=null" class="container">
       <div style="width: 100%;height: 60px;">
         <el-button
           v-show="ifshow && form.active == true && minename != form.number"
@@ -155,10 +155,11 @@ export default {
           '/updateemployee?number=' + number + '&email=0&phone=0&oldpassword=0&password=0&type=' + type
         )
         .then(res => {
+          this.successMessage('更新成功！')
           this.reFresh(number)
         })
         .catch(err => {
-          this.errorMessage('操作失败:' + err)
+          this.errorMessage('更新失败:' + err)
         })
     },
     reFresh (number) {
