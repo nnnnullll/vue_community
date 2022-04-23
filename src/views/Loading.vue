@@ -33,10 +33,7 @@ export default {
       // eslint-disable-next-line eqeqeq
       } else if (url == '/householddetail') {
         this.$router.push({
-          path: '/householddetail',
-          query: {
-            number: this.$route.query.number
-          }
+          path: '/householddetail'
         })
       // eslint-disable-next-line eqeqeq
       } else if (url == '/employeedetailmine') {

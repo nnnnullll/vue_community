@@ -119,10 +119,6 @@ export default {
             {
               index: '/communitytable',
               title: '管理的社区'
-            },
-            {
-              index: '/householdtable',
-              title: '住户列表'
             }
           ]
         },

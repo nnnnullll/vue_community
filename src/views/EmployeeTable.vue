@@ -8,86 +8,32 @@
       </el-breadcrumb>
     </div>
     <div v-if="tableData!=null" class="container">
-      <el-button type="primary" plain @click="clearFilter"
-        >清除所有过滤器</el-button
-      >
-      <el-table
-        ref="filterTable"
-        :data="tableData"
-        border
-        class="table"
-        header-cell-class-name="table-header"
-      >
+      <el-button type="primary" plain @click="clearFilter">清除所有过滤器</el-button>
+      <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
         <el-table-column sortable prop="number" label="工号">
           <template slot-scope="{ row }">
-            <span @click="toDetail(row.number)">
-              <el-link type="primary">{{ row.number }}</el-link>
-            </span>
+              <el-link @click="toDetail(row.number)" type="primary">{{ row.number }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column
-          sortable
-          prop="name"
-          label="名字"
-          :formatter="formatter"
-        ></el-table-column>
+        <el-table-column sortable prop="name" label="名字" :formatter="formatter"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="phone" label="联系电话"></el-table-column>
-        <el-table-column
-          prop="admin"
-          label="管理员"
-          width="75px"
-          :filters="admin"
-          :filter-method="filterAdmin"
-          filter-placement="bottom-end"
-        >
+        <el-table-column prop="admin" label="管理员" width="75px" :filters="admin" :filter-method="filterAdmin" filter-placement="bottom-end">
           <template slot-scope="{ row }">
-            <el-tag v-show="row.admin == 1" effect="light" type="success"
-              >✔</el-tag
-            >
+            <el-tag v-show="row.admin == 1" effect="light" type="success">✔</el-tag>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="admin"
-          label="在职"
-          width="61px"
-          :filters="active"
-          :filter-method="filterActive"
-          filter-placement="bottom-end"
-        >
+        <el-table-column prop="admin" label="在职" width="61px" :filters="active" :filter-method="filterActive" filter-placement="bottom-end">
           <template slot-scope="{ row }">
-            <el-tag v-show="row.active == 0" effect="light" type="success"
-              >✔</el-tag
-            >
+            <el-tag v-show="row.active == 0" effect="light" type="success">✔</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="number" v-if="ifshow">
           <template slot-scope="{ row }">
-            <span @click="update(row.number, 2)">
-              <el-link
-                v-show="row.active == 0 && ifshow && minename != row.number"
-                type="primary"
-                >离职</el-link
-              >
-            </span>
-            <el-link
-              v-show="row.active != 0 && ifshow && minename != row.number"
-              type="primary"
-              @click="update(row.number, 2)"
-              >复职</el-link
-            >
-            <el-link
-              v-show="row.admin != 1 && ifshow && minename != row.number"
-              type="primary"
-              @click="update(row.number, 3)"
-              >授予管理员</el-link
-            >
-            <el-link
-              v-show="row.admin == 1 && ifshow && minename != row.number"
-              type="primary"
-              @click="update(row.number, 3)"
-              >撤销管理员</el-link
-            >
+            <el-link v-show="row.active == 0 && ifshow && minename != row.number" type="primary" @click="update(row.number, 2)">离职</el-link>
+            <el-link v-show="row.active != 0 && ifshow && minename != row.number" type="primary" @click="update(row.number, 2)">复职</el-link>
+            <el-link v-show="row.admin != 1 && ifshow && minename != row.number" type="primary" @click="update(row.number, 3)">授予管理员</el-link>
+            <el-link v-show="row.admin == 1 && ifshow && minename != row.number" type="primary"  @click="update(row.number, 3)">撤销管理员</el-link >
           </template>
         </el-table-column>
       </el-table>
