@@ -19,7 +19,7 @@
               <!-- 分配维修（状态受理中/维修中时能看见） -->
               <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4)))" style="float:right;" type="primary" @click="clickbuttonlist(3)">分配维修</el-button>
               <!-- 已解决（状态受理中/维修中时能看见） -->
-              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&form.fix_state==4))" style="float:right;" type="primary" @click="clickbuttonlist(4)">已解决</el-button>
+              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&form.fix_state==4))" style="float:right;" type="primary" @click="clickbuttonlist(4)">解决</el-button>
             <!-- 维修方 -->
               <!--维修员 接受（状态室维修中-3 维修状态是已分配_2时能看见）  -->
               <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="float:right;" type="primary" @click="clickbuttonlist(5)">接受维修单</el-button>
@@ -27,6 +27,8 @@
               <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="float:right;" type="primary" @click="clickbuttonlist(6)">拒绝维修单</el-button>
               <!--维修员 完成（状态室维修中-3 维修状态是维修中_3时能看见）  -->
               <el-button v-show="usertype==3&&form.state==3&&form.fix_state==3" style="float:right;" type="primary" @click="clickbuttonlist(7)">完成维修单</el-button>
+              <!-- 关闭（只有household看见） -->
+              <el-button v-show="usertype==2&&form.state!=5" style="float:right;" type="primary" @click="clickbuttonlist(11)">关闭</el-button>
             </div>
             <div class="form-box">
                 <el-form :model="form" ref="form"  label-width="80px">
@@ -134,7 +136,7 @@
                             <el-tab-pane label="历史记录" name="first">
                               <el-form-item label="留言" prop="message">
                                   <el-input type="textarea" rows="5" v-model="message" :disabled="form.state==5?true:false"></el-input>
-                                  <el-button style="margin-top: 20px; float:right;" type="primary" @click="clickbuttonlist(8)">提交</el-button>
+                                  <el-button style="margin-top: 20px; float:right;" type="primary" @click="clickbuttonlist(11)">留言</el-button>
                               </el-form-item>
                               <el-form-item style="margin-top: 20px;" label="历史记录" prop="activity">
                                 <div v-for="(ac, index) in form.activities" :key="index">
@@ -412,7 +414,20 @@ export default {
         }
       // eslint-disable-next-line brace-style
       }
-      else {
+      // 关闭 状态：关闭。清除escalation emergency，
+      // eslint-disable-next-line eqeqeq
+      else if (buttonNum == 11) {
+        this.$confirm('此操作将关闭投诉单, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.changeCaseState(this.form.number, buttonNum, 0, '', this.username)
+        }).catch(() => {
+          this.postInfoMessage('已取消操作')
+        })
+      // eslint-disable-next-line brace-style
+      } else {
       }
     },
     changeCaseState (casenumber, type, assign, message, updateduser) {

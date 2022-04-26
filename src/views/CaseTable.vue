@@ -22,23 +22,28 @@
                 <el-table-column width="85px" sortable prop="state" label="状态" :filters="statetag" :filter-method="filterState" >
                     <template slot-scope="{row}">
                         <!-- 新建 提供解决方案 -->
-                        <el-tag  v-if="row.state==0||row.state==4" type="success">{{statetag[row.state].text}}</el-tag>
+                        <el-tag  v-if="row.state==0" type="success">新建</el-tag>
+                         <!-- 新建 提供解决方案 -->
+                        <el-tag  v-if="row.state==4" type="success">已解决</el-tag>
                         <!-- 关闭 -->
-                        <el-tag  v-else-if="row.state==2" type="warning">{{statetag[row.state].text}}</el-tag>
+                        <el-tag  v-else-if="row.state==2" type="warning">关闭</el-tag>
                         <!-- 待补充 -->
-                        <el-tag  v-else-if="row.state==5" type="info">{{statetag[row.state].text}}</el-tag>
+                        <el-tag  v-else-if="row.state==5" type="info">待补充</el-tag>
                         <!-- 受理中 维修中 -->
-                        <el-tag  v-else type="">{{statetag[row.state].text}}</el-tag>
+                        <el-tag  v-else-if="row.state==1" type="">受理中</el-tag>
+                        <!-- 受理中 维修中 -->
+                        <el-tag  v-else-if="row.state==3" type="">维修中</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column width="118px" sortable prop="fix_state" label="维修状态" :filters="fixstatetag" :filter-method="filterFix_state" filter-placement="bottom-end" >
                     <template slot-scope="{row}">
                         <!-- 提供解决方案 -->
-                        <el-tag  v-if="row.fix_state==4" type="success">{{fixstatetag[row.state].text}}</el-tag>
+                        <el-tag  v-if="row.fix_state==4" type="success">已解决</el-tag>
                         <!-- 待分配 -->
-                        <el-tag  v-else-if="row.fix_state==1" type="warning">{{fixstatetag[row.state].text}}</el-tag>
+                        <el-tag  v-else-if="row.fix_state==1" type="warning">待分配</el-tag>
                         <!-- 已分配 维修中 -->
-                        <el-tag  v-else-if="row.fix_state==2 || row.fix_state==3" type="">{{fixstatetag[row.state].text}}</el-tag>
+                        <el-tag  v-else-if="row.fix_state==2" type="">已分配</el-tag>
+                        <el-tag  v-else-if="row.fix_state==3" type="">维修中</el-tag>
                         <!-- empty -->
                         <div v-else></div>
                     </template>
@@ -120,6 +125,7 @@ export default {
     getData (number, type, company) {
       axios.post('/getcaselist?number=' + number + '&type=' + type + '&company=' + company)
         .then(res => {
+          console.log(res.data)
           this.tableData = res.data
         })
         .catch(err => {
