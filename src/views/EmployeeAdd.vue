@@ -115,7 +115,7 @@ export default {
                 '&email=' +
                 this.form.email +
                 '&admin=' +
-                this.form.admin +
+                (this.form.admin === true ? 1 : 0) +
                 '&id=' +
                 this.form.id
             )

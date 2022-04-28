@@ -11,8 +11,8 @@
     <div v-if="form!=null" class="container">
       <div style="width: 100%;height: 60px;">
         <el-button v-show="!flag" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',1,0)">保存</el-button>
-        <el-button v-show="!flag&&!form.active" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',3,!form.active)">恢复使用该账户</el-button>
-        <el-button v-show="!flag&&form.active" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',3,!form.active)">停止使用该账户</el-button>
+        <el-button v-show="!flag&&!form.active" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',3,!form.active)">恢复接单</el-button>
+        <el-button v-show="!flag&&form.active" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',3,!form.active)">停止接单</el-button>
         <el-button v-show="admin && form.active && form.ispartner==1" style="margin-right: 30px; float:right;" type="primary" @click="update(form.num)">建立合作</el-button>
         <el-button v-show="admin && form.active && form.ispartner==0" style="margin-right: 30px; float:right;" type="primary" @click="update(form.num)">解除合作</el-button>
       </div>
@@ -177,7 +177,7 @@ export default {
             )
             .then(res => {
               this.successMessage('更新成功！')
-              this.reFresh(this.form.num)
+              this.reFreshmine(this.form.num)
             })
             .catch(err => {
               this.errorMessage('更新失败：' + err)
@@ -202,6 +202,16 @@ export default {
         })
     },
     reFresh (number) {
+      this.$router.push({
+        path: '/loading',
+        query: {
+          url: '/partnerdetail',
+          number: number,
+          from: 'internal'
+        }
+      })
+    },
+    reFreshmine (number) {
       this.$router.push({
         path: '/loading',
         query: {

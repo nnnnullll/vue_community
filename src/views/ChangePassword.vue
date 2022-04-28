@@ -45,7 +45,6 @@ export default {
   },
   mounted: function () {
     this.user = localStorage.getItem('loginuser')
-    this.type = localStorage.getItem('logintype')
   },
   methods: {
     update () {
@@ -53,9 +52,11 @@ export default {
         this.errorMessage('操作失败: 请确保两次新密码保持一致')
       } else {
         var url = ''
-        if (this.type === 1) {
+        // eslint-disable-next-line eqeqeq
+        if (localStorage.getItem('logintype') == 1) {
           url = '/updateemployee?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=4'
-        } else if (this.type === 2) {
+        // eslint-disable-next-line eqeqeq
+        } else if (localStorage.getItem('logintype') == 2) {
           url = '/updatehousehold?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=4'
         } else {
           url = '/updatepartner?num=' + this.user + '&address=a&phone=a&email=a&description=a&type=2&oldpassword=' + this.form.old + '&password=' + this.form.password + '&one=0&two=0&three=0&four=0&five=0&active=0'

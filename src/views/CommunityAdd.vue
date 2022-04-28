@@ -10,7 +10,7 @@
         </div>
         <div class="container">
             <div class="form-box">
-                <el-form :model="form" ref="form"  label-width="80px">
+                <el-form :model="form" :rules="rules" ref="form"  label-width="80px">
                     <!-- row1 -->
                     <el-row>
                       <el-col :span="12">
@@ -35,7 +35,7 @@
                     <!-- row2 -->
                     <el-row>
                       <el-col :span="12">
-                        <el-form-item label="住户" prop="da">
+                        <el-form-item label="自动创建住户文件" prop="da">
                           <el-upload
                             class="upload-demo"
                             action=""
@@ -62,7 +62,7 @@
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
-                        <el-form-item label="具体街道" prop="name">
+                        <el-form-item label="具体街道" prop="address">
                           <el-input placeholder="例:上大路99号" v-model="form.address"></el-input>
                         </el-form-item>
                       </el-col>
@@ -81,13 +81,20 @@ const axios = require('axios')
 export default {
   data () {
     return {
+      rules: {
+        name: [{ required: true, message: '名字不能为空', trigger: 'blur' }],
+        address: [{ required: true, message: '地址不能为空', trigger: 'blur' }],
+        region: [{ required: true, message: '地址不能为空', trigger: 'blur' }],
+        da: [{ required: true, message: '文件不能为空', trigger: 'blur' }]
+      },
       rooms: null,
       buildings: null,
       fileTemp: null,
       form: {
         name: null,
         region: null,
-        address: null
+        address: null,
+        da: null
       },
       // 导出excel
       json_fields: {
@@ -97,8 +104,8 @@ export default {
       json_data: [
         // 写死，后续可通过接口进行传值
         {
-          building: '请输入楼号，eg:1',
-          room: '请输入室号，eg:101。一行代表一户，社区中有几户就有几行。'
+          building: '请输入楼号，eg:1。一行代表一户，社区中有几户就有几行。',
+          room: '请输入室号，eg:101。请保留该行示例，从下一行开始填写数据。'
         }
       ],
       json_meta: [
@@ -230,6 +237,7 @@ export default {
     },
     // 上传文件时处理方法
     handleChange (file, fileList) {
+      this.form.da = 1
       this.fileTemp = file.raw
       if (this.fileTemp) {
         // eslint-disable-next-line eqeqeq
@@ -259,6 +267,7 @@ export default {
     },
     // 移除文件的操作方法
     handleRemove (file, fileList) {
+      this.form.da = null
       this.fileTemp = null
       this.buildings = null
       this.rooms = null

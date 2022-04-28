@@ -10,10 +10,10 @@ export default {
     }
   },
   mounted: function () {
-    this.back(this.$route.query.url)
+    this.back(this.$route.query.url, this.$route.query.from)
   },
   methods: {
-    back: function (url) {
+    back: function (url, from) {
       // eslint-disable-next-line eqeqeq
       if (url == '/casedetail') {
         this.$router.push({
@@ -23,7 +23,7 @@ export default {
           }
         })
       // eslint-disable-next-line eqeqeq
-      } else if (url == '/partnerdetail') {
+      } else if (url == '/partnerdetail' && from != 'internal') {
         this.$router.push({
           path: '/partnerdetail',
           query: {
@@ -31,9 +31,37 @@ export default {
           }
         })
       // eslint-disable-next-line eqeqeq
-      } else if (url == '/householddetail') {
+      } else if (url == '/partnerdetail' && from == 'internal') {
+        this.$router.push({
+          path: '/partnerdetail',
+          query: {
+            number: this.$route.query.number,
+            from: 'internal'
+          }
+        })
+      // eslint-disable-next-line eqeqeq
+      } else if (url == '/partnertable') {
+        this.$router.push({
+          path: '/partnertable'
+        })
+      // eslint-disable-next-line eqeqeq
+      } else if (url == '/partnertableall') {
+        this.$router.push({
+          path: '/partnertableall'
+        })
+      // eslint-disable-next-line eqeqeq
+      } else if (url == '/householddetail' && from != 'internal') {
         this.$router.push({
           path: '/householddetail'
+        })
+      // eslint-disable-next-line eqeqeq
+      } else if (url == '/communitydetail' && from == 'internal') {
+        this.$router.push({
+          path: '/communitydetail',
+          query: {
+            number: this.$route.query.number,
+            from: 'internal'
+          }
         })
       // eslint-disable-next-line eqeqeq
       } else if (url == '/communitytable') {
@@ -46,7 +74,12 @@ export default {
           path: '/communitytableall'
         })
       // eslint-disable-next-line eqeqeq
-      } else if (url == '/employeedetailmine') {
+      } else if (url == '/employeetable') {
+        this.$router.push({
+          path: '/employeetable'
+        })
+      // eslint-disable-next-line eqeqeq
+      } else if (url == '/employeedetailmine' && from != 'internal') {
         this.$router.push({
           path: '/employeedetailmine',
           query: {
@@ -54,27 +87,9 @@ export default {
           }
         })
       // eslint-disable-next-line eqeqeq
-      } else if (url == '/employeedetail') {
+      } else if (url == '/employeedetail' && from == 'internal') {
         this.$router.push({
           path: '/employeedetail',
-          query: {
-            number: this.$route.query.number,
-            from: 'internal'
-          }
-        })
-      // eslint-disable-next-line eqeqeq
-      } else if (url == '/communitydetail') {
-        this.$router.push({
-          path: '/communitydetail',
-          query: {
-            number: this.$route.query.number,
-            from: 'internal'
-          }
-        })
-      // eslint-disable-next-line eqeqeq
-      } else if (url == '/partnerdetail') {
-        this.$router.push({
-          path: '/partnerdetail',
           query: {
             number: this.$route.query.number,
             from: 'internal'
@@ -86,24 +101,9 @@ export default {
           path: '/companydetail'
         })
       // eslint-disable-next-line eqeqeq
-      } else if (url == '/employeetable') {
-        this.$router.push({
-          path: '/employeetable'
-        })
-      // eslint-disable-next-line eqeqeq
       } else if (url == '/changepassword') {
         this.$router.push({
           path: '/changepassword'
-        })
-      // eslint-disable-next-line eqeqeq
-      } else if (url == '/partnertable') {
-        this.$router.push({
-          path: '/partnertable'
-        })
-      // eslint-disable-next-line eqeqeq
-      } else if (url == '/partnertableall') {
-        this.$router.push({
-          path: '/partnertableall'
         })
       // eslint-disable-next-line eqeqeq
       } else {

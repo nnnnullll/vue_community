@@ -178,7 +178,8 @@ export default {
         path: '/loading',
         query: {
           url: '/partnerdetail',
-          number: number
+          number: number,
+          from: 'internal'
         }
       })
     },

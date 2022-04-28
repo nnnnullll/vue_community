@@ -126,7 +126,7 @@ export default {
         .then(res => {
           this.form = res.data[0]
           this.form.active = res.data[0].active === 0
-          this.form.admin = res.data[0].admin === 0
+          this.form.admin = res.data[0].admin === 1
         })
         .catch(err => {
           this.errorMessage('加载失败:' + err)

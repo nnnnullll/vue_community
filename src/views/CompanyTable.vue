@@ -10,7 +10,7 @@
         <div v-if="tableData!=null" class="container">
             <el-button @click="clearFilter">清除所有过滤器</el-button>
             <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
-                <el-table-column width="73px" sortable prop="number" label="单号">
+                <el-table-column sortable prop="number" label="编号">
                     <template slot-scope="{row}">
                         <span @click="toDetail(row.number)">
                             <el-link type="primary">{{ row.number }}</el-link>
@@ -19,9 +19,9 @@
                 </el-table-column>
                 <el-table-column sortable prop="name" label="名字" :formatter="formatter"></el-table-column>
                 <el-table-column sortable prop="address" label="地址"></el-table-column>
-                <el-table-column width="85px" sortable prop="active" label="有效" :filters="activetag" :filter-method="filterActive" filter-placement="bottom-end" >
+                <el-table-column width="85px" prop="active" label="使用中" :filters="activetag" :filter-method="filterActive" filter-placement="bottom-end" >
                     <template slot-scope="{row}">
-                        <el-tag v-show="row.active==0" type="success">加急</el-tag>
+                        <el-tag v-show="row.active==0" type="success">使用中</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column sortable prop="email" label="邮箱"></el-table-column>
@@ -37,8 +37,8 @@ export default {
   data () {
     return {
       activetag: [
-        { text: '服务中', value: 0 },
-        { text: '暂定服务', value: 1 }
+        { text: '使用中', value: 0 },
+        { text: '已停用', value: 1 }
       ],
       tableData: null
     }

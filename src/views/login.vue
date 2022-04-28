@@ -46,7 +46,8 @@ export default {
       },
       rules: {
         username: [
-          { required: true, message: '请输入账号', trigger: 'blur' }
+          { required: true, message: '请输入账号', trigger: 'blur' },
+          { min: 10, max: 10, message: '长度为 10 个字符', trigger: 'blur' }
         ],
         type: [
           { required: true, message: '请选择身份', trigger: 'blur' }
@@ -64,8 +65,9 @@ export default {
           axios.post('/login?username=' + this.loginForm.username + '&password=' + this.loginForm.password + '&type=' + this.loginForm.type)
             .then(res => {
               // type=1 employee  type=2 household  type=3 partner
-              // type=1  0-no admin 1-admin 2-失败
-              // type=2/3  1-成功 2-失败
+              // type=1  0-no admin 1-admin 2-失败 3-停用 4-不存在
+              // type=2  1-成功 2-失败 3-停用 4-不存在
+              // type=2  1-成功 2-失败 4-不存在
               // eslint-disable-next-line eqeqeq
               if (res.data == 2) {
                 this.$message.error('登录失败：用户名或密码或身份不符')
@@ -82,6 +84,9 @@ export default {
               // eslint-disable-next-line eqeqeq
               } else if (res.data == 3) {
                 this.$message.error('该账户已停用')
+              // eslint-disable-next-line eqeqeq
+              } else if (res.data == 4) {
+                this.$message.error('该账户不存在')
               } else {
                 this.$message.error('登录失败：未知错误，请联系工作人员。联系电话：18812345678')
               }

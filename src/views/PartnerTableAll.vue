@@ -45,7 +45,7 @@
                         <el-tag v-show="row.five==1"  effect="light" type="success">✔</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column prop="active" label="使用中" width="76px" :filters="typetag" :filter-method="filterActive" filter-placement="bottom-end">
+                <el-table-column prop="active" label="接单中" width="76px" :filters="activetag" :filter-method="filterActive" filter-placement="bottom-end">
                   <template slot-scope="{row}">
                         <el-tag v-show="row.active==0"  effect="light" type="success">✔</el-tag>
                     </template>
@@ -72,6 +72,10 @@ export default {
       typetag: [
         { text: '', value: 0 },
         { text: '✔', value: 1 }
+      ],
+      activetag: [
+        { text: '', value: 1 },
+        { text: '✔', value: 0 }
       ]
     }
   },
