@@ -50,6 +50,11 @@
                         <el-tag v-show="row.active==0"  effect="light" type="success">✔</el-tag>
                     </template>
                 </el-table-column>
+                <el-table-column prop="num" v-if="ifshow">
+                  <template slot-scope="{ row }">
+                    <el-link v-show="row.active == 0" type="primary" @click="update(row.num)">解除合作</el-link>
+                  </template>
+                </el-table-column>
             </el-table>
         </div>
     </div>
@@ -60,6 +65,8 @@ const axios = require('axios')
 export default {
   data () {
     return {
+      company: '',
+      ifshow: false,
       tableData: null,
       typetag: [
         { text: '', value: 0 },
@@ -68,6 +75,9 @@ export default {
     }
   },
   mounted: function () {
+    this.company = localStorage.getItem('loginuser_commpany')
+    // eslint-disable-next-line eqeqeq
+    this.ifshow = localStorage.getItem('loginadmin') == 1 && localStorage.getItem('logintype') == 1
     // 1-employee 2-Customer 3-partner  物业员工-合作的维修公司
     // eslint-disable-next-line no-constant-condition
     if (false) {
@@ -121,6 +131,37 @@ export default {
           number: number,
           from: 'internal'
         }
+      })
+    },
+    update (number) {
+      axios
+        .post(
+          '/changerelationship?company=' + this.company + '&partner=' + number
+        )
+        .then(res => {
+          this.successMessage('操作成功')
+          this.reFresh()
+        })
+        .catch(err => {
+          this.errorMessage('操作失败:' + err)
+        })
+    },
+    reFresh () {
+      this.$router.push({
+        path: '/loading',
+        query: {
+          url: '/partnertable'
+        }
+      })
+    },
+    errorMessage (message) {
+      this.$message.error(message)
+      console.error(message)
+    },
+    successMessage (message) {
+      this.$message({
+        message: message,
+        type: 'success'
       })
     }
   }

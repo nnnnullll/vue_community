@@ -10,7 +10,11 @@
     </div>
     <div v-if="form!=null" class="container">
       <div style="width: 100%;height: 60px;">
-        <el-button v-show="!flag" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form')">保存</el-button>
+        <el-button v-show="!flag" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',1,0)">保存</el-button>
+        <el-button v-show="!flag&&!form.active" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',3,!form.active)">恢复使用该账户</el-button>
+        <el-button v-show="!flag&&form.active" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',3,!form.active)">停止使用该账户</el-button>
+        <el-button v-show="admin && form.active && form.ispartner==1" style="margin-right: 30px; float:right;" type="primary" @click="update(form.num)">建立合作</el-button>
+        <el-button v-show="admin && form.active && form.ispartner==0" style="margin-right: 30px; float:right;" type="primary" @click="update(form.num)">解除合作</el-button>
       </div>
       <div class="form-box">
         <el-form :model="form" ref="form" :rules="rules"  label-width="130px">
@@ -36,7 +40,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item prop="active">
-                <el-checkbox v-model="form.active" :disabled="flag">使用中</el-checkbox>
+                <el-checkbox v-model="form.active" :disabled="true">使用中</el-checkbox>
               </el-form-item>
             </el-col>
           </el-row>
@@ -103,6 +107,8 @@ const axios = require('axios')
 export default {
   data () {
     return {
+      admin: false,
+      company: null,
       form: null,
       flag: true,
       rules: {
@@ -127,20 +133,23 @@ export default {
     }
   },
   mounted: function () {
+    this.company = localStorage.getItem('loginuser_commpany')
+    // eslint-disable-next-line eqeqeq
+    this.admin = localStorage.getItem('loginadmin') == 1 && localStorage.getItem('logintype') == 1
     // 1-employee 2-Customer 3-partner  维修员工-个人信息
     if (this.$route.query.from === 'internal') {
-      this.GetPartnerDetailByNumber(this.$route.query.number)
+      this.GetPartnerDetailByNumber(this.$route.query.number, localStorage.getItem('loginuser_commpany'))
     // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 3) {
       this.flag = false
-      this.GetPartnerDetailByNumber(localStorage.getItem('loginuser'))
+      this.GetPartnerDetailByNumber(localStorage.getItem('loginuser'), '0')
     } else {
     }
   },
   methods: {
-    GetPartnerDetailByNumber (number) {
+    GetPartnerDetailByNumber (number, company) {
       axios
-        .post('/getpartnerbynum?num=' + number)
+        .post('/getpartnerbynum?num=' + number + '&company=' + company)
         .then(res => {
           this.form = res.data
           this.form.active = res.data.active === 0
@@ -155,16 +164,16 @@ export default {
           console.error(err)
         })
     },
-    onSubmit (formName) {
+    onSubmit (formName, type, active) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           axios
             .post(
               '/updatepartner?num=' + this.form.num + '&address=' + this.form.address + '&phone=' + this.form.phone +
-              '&email=' + this.form.email + '&description=' + this.form.description + '&type=1&oldpassword=0&password=0' +
+              '&email=' + this.form.email + '&description=' + this.form.description + '&type=' + type + '&oldpassword=0&password=0' +
               '&one=' + (this.form.one === true ? 1 : 0) + '&two=' + (this.form.two === true ? 1 : 0) + '&three=' +
               (this.form.three === true ? 1 : 0) + '&four=' + (this.form.four === true ? 1 : 0) + '&five=' +
-              (this.form.five === true ? 1 : 0 + '&active=' + (this.form.active === true ? 0 : 1))
+              (this.form.five === true ? 1 : 0) + '&active=' + (active === true ? 0 : 1)
             )
             .then(res => {
               this.successMessage('更新成功！')
@@ -178,6 +187,19 @@ export default {
           return false
         }
       })
+    },
+    update (number) {
+      axios
+        .post(
+          '/changerelationship?company=' + this.company + '&partner=' + number
+        )
+        .then(res => {
+          this.successMessage('操作成功')
+          this.reFresh(number)
+        })
+        .catch(err => {
+          this.errorMessage('操作失败:' + err)
+        })
     },
     reFresh (number) {
       this.$router.push({

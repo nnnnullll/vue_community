@@ -96,6 +96,16 @@ export default {
           path: '/changepassword'
         })
       // eslint-disable-next-line eqeqeq
+      } else if (url == '/partnertable') {
+        this.$router.push({
+          path: '/partnertable'
+        })
+      // eslint-disable-next-line eqeqeq
+      } else if (url == '/partnertableall') {
+        this.$router.push({
+          path: '/partnertableall'
+        })
+      // eslint-disable-next-line eqeqeq
       } else {
       }
     }

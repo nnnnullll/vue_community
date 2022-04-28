@@ -310,6 +310,7 @@ export default {
     getLogindash (number, type) {
       axios.post('/getlogindash?number=' + number + '&type=' + type)
         .then(res => {
+          console.log(res.data)
           this.logininfo = res.data
           this.options.title.text = res.data.stateChartTitle
           this.options.datasets[0].data[0] = res.data.statechart[0]
