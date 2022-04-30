@@ -73,22 +73,21 @@
                         <el-col :span="8">
                             <el-form-item label="受理人" prop="assigned_to.name">
                                 <!-- 只有物业员工才能编辑 -->
-                                <el-input v-model="form.assigned_to.name" :disabled="usertype==1?false:true"></el-input>
+                                <div class="block">
+                                  <el-select v-model="form.assigned_to.name"  placeholder="请选择"  :disabled="!(usertype==1&&(form.state==0||form.state==1||form.state==2||form.state==3))">
+                                      <el-option v-for="item in form.options_agent" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                  </el-select>
+                                </div>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="维修方" prop="fix_assigned_to.name">
                                 <!-- 只有物业员工才能编辑 -->
                                 <div class="block">
-                                  <el-cascader
-                                    v-show="usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4)))"
-                                    v-model="form.fix_assigned_to.name"
-                                    :options="form.options_fix"
-                                    :props="props_fix"
-                                    clearable>
-                                  </el-cascader>
+                                  <el-select v-model="form.fix_assigned_to.name"  placeholder="请选择"  :disabled="!(usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4))))">
+                                      <el-option v-for="item in form.options_fix" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                  </el-select>
                                 </div>
-                                <el-input v-show="!(usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4))))" v-model="form.fix_assigned_to.name" :disabled="true"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">

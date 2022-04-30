@@ -33,12 +33,17 @@
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="社区" prop="community.number">
-                                <el-input v-model="form.community.number" :disabled="true"></el-input>
+                                <el-select @change="onCommunityChange(form.community.number)" v-model="form.community.number" placeholder="请选择" :disabled="form.created_role!=1">
+                                    <el-option v-for="item in option_community" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                </el-select>
+                                <!-- <el-input v-model="form.community.number" :disabled="form.created_role!=1"></el-input> -->
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="住户" prop="household.number">
-                                <el-input v-model="form.household.number" :disabled="true"></el-input>
+                            <el-form-item label="住户" prop="household">
+                               <el-select v-model="form.household" placeholder="请选择" :disabled="form.created_role!=1||form.community.number==null">
+                                    <el-option v-for="item in option_household" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                </el-select>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
@@ -230,17 +235,44 @@ export default {
           label: '已解决',
           value: 4
         }
-      ]
+      ],
+      option_community: null,
+      option_household: null
     }
   },
+  mounted: function () {
+    this.GetCommunityOptionByCompany(localStorage.getItem('loginuser_commpany'))
+    this.form.created_role = localStorage.getItem('logintype')
+    this.form.created_by = localStorage.getItem('loginuser')
+  },
   methods: {
+    GetCommunityOptionByCompany (company) {
+      axios.post('/getcommunityoptionbycompany?company=' + company)
+        .then(res => {
+          console.log(res.data)
+          this.option_community = res.data
+        })
+        .catch(err => {
+          this.postErrorMessage('获取投诉单数据失败:' + err)
+        })
+    },
+    onCommunityChange () {
+      this.form.household = null
+      axios.post('/gethouseholdoptionbycommunity?community=' + this.form.community.number)
+        .then(res => {
+          console.log(res.data)
+          this.option_household = res.data
+        })
+        .catch(err => {
+          this.postErrorMessage('获取投诉单数据失败:' + err)
+        })
+    },
     onSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 1-employee 2-Customer
-          this.form.created_by = localStorage.getItem('loginuser')
-          this.form.created_role = localStorage.getItem('logintype')
-          axios.post('/insertcase?subject=' + this.form.subject + '&description=' + this.form.description + '&type=' + this.form.type + '&created_by=' + this.form.created_by + '&created_role=' + this.form.created_role)
+          // eslint-disable-next-line eqeqeq
+          axios.post('/insertcase?subject=' + this.form.subject + '&description=' + this.form.description + '&type=' + this.form.type + '&created_by=' + this.form.created_by + '&created_role=' + this.form.created_role + '&household=' + (this.form.created_role == 1 ? this.form.household : 0))
             .then(res => {
               this.$message({
                 message: '创建成功',

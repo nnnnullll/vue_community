@@ -86,6 +86,11 @@
         <el-table-column sortable prop="room_number" label="门牌号"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="phone" label="联系电话"></el-table-column>
+        <el-table-column prop="number" v-if="ifshow">
+          <template slot-scope="{ row }">
+            <el-link type="primary" @click="reset(row.number)">重置密码</el-link>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -145,6 +150,20 @@ export default {
         })
         .catch(err => {
           this.errorMessage('操作失败:' + err)
+        })
+    },
+    reset (number) {
+      axios
+        .post(
+          '/updatehousehold?number=' +
+                number +
+                '&email=0&phone=0&type=3&oldpassword=0&password=0'
+        )
+        .then(res => {
+          this.successMessage('操作成功')
+        })
+        .catch(err => {
+          this.errorMessage('操作失败：' + err)
         })
     },
     toDetail (number) {

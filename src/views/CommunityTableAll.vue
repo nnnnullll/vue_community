@@ -16,7 +16,7 @@
       >
         <el-table-column sortable prop="number" label="编号">
           <template slot-scope="{ row }">
-            <span @click="toDetail(row.number)">
+            <span>
               <el-link type="primary">{{ row.number }}</el-link>
             </span>
           </template>
