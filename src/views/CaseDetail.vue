@@ -79,7 +79,16 @@
                         <el-col :span="8">
                             <el-form-item label="维修方" prop="fix_assigned_to.name">
                                 <!-- 只有物业员工才能编辑 -->
-                                <el-input v-model="form.fix_assigned_to.name" :disabled="usertype==1?false:true"></el-input>
+                                <div class="block">
+                                  <el-cascader
+                                    v-show="usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4)))"
+                                    v-model="form.fix_assigned_to.name"
+                                    :options="form.options_fix"
+                                    :props="props_fix"
+                                    clearable>
+                                  </el-cascader>
+                                </div>
+                                <el-input v-show="!(usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4))))" v-model="form.fix_assigned_to.name" :disabled="true"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
@@ -255,19 +264,37 @@ export default {
           label: '已解决',
           value: 4
         }
-      ]
+      ],
+      props_fix: { multiple: false }
+      // options_fix: [{
+      //   value: '选项1',
+      //   label: '黄金糕'
+      // }, {
+      //   value: '选项2',
+      //   label: '双皮奶'
+      // }, {
+      //   value: '选项3',
+      //   label: '蚵仔煎'
+      // }, {
+      //   value: '选项4',
+      //   label: '龙须面'
+      // }, {
+      //   value: '选项5',
+      //   label: '北京烤鸭'
+      // }]
     }
   },
   mounted: function () {
-    this.GetCaseDetailByNumber(this.$route.query.casenumber)
+    this.GetCaseDetailByNumber(this.$route.query.casenumber, localStorage.getItem('logintype'))
     // type=1 employee  type=2 household  type=3 partner
     this.usertype = localStorage.getItem('logintype')
     this.username = localStorage.getItem('loginuser')
   },
   methods: {
-    GetCaseDetailByNumber (number) {
-      axios.post('/getcasebynumber?number=' + number)
+    GetCaseDetailByNumber (number, type) {
+      axios.post('/getcasebynumber?number=' + number + '&usertype=' + type)
         .then(res => {
+          console.log(res.data)
           this.form = res.data
         })
         .catch(err => {

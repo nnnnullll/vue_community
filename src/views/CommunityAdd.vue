@@ -21,14 +21,14 @@
                       <el-col :span="12">
                         <el-form-item label="地址" prop="region">
                           <div class="block">
-                          <el-cascader
-                            placeholder="例: 上海市,宝山区"
-                            v-model="form.region"
-                            :options="options"
-                            :props="props"
-                            clearable>
-                          </el-cascader>
-                        </div>
+                            <el-cascader
+                              placeholder="例: 上海市,宝山区"
+                              v-model="form.region"
+                              :options="options"
+                              :props="props"
+                              clearable>
+                            </el-cascader>
+                          </div>
                         </el-form-item>
                       </el-col>
                     </el-row>
