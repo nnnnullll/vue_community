@@ -17,18 +17,18 @@
               <!-- 待补充（状态受理中时能看见） -->
               <el-button v-show="usertype==1&&form.state==1&&form.fix_state==null" style="margin-right: 10px; float:right;" type="primary" @click="clickbuttonlist(2)">待补充</el-button>
               <!-- 分配维修（状态受理中/维修中时能看见） -->
-              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4)))" style="float:right;" type="primary" @click="clickbuttonlist(3)">分配维修</el-button>
+              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4)))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(3)">分配维修</el-button>
               <!-- 已解决（状态受理中/维修中时能看见） -->
-              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&form.fix_state==4))" style="float:right;" type="primary" @click="clickbuttonlist(4)">解决</el-button>
+              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&form.fix_state==4))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(4)">解决</el-button>
             <!-- 维修方 -->
               <!--维修员 接受（状态室维修中-3 维修状态是已分配_2时能看见）  -->
-              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="float:right;" type="primary" @click="clickbuttonlist(5)">接受维修单</el-button>
+              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(5)">接受维修单</el-button>
               <!--维修员 拒绝（状态室维修中-3 维修状态是已分配_2时能看见）  -->
-              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="float:right;" type="primary" @click="clickbuttonlist(6)">拒绝维修单</el-button>
+              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(6)">拒绝维修单</el-button>
               <!--维修员 完成（状态室维修中-3 维修状态是维修中_3时能看见）  -->
-              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==3" style="float:right;" type="primary" @click="clickbuttonlist(7)">完成维修单</el-button>
+              <el-button v-show="usertype==3&&form.state==3&&form.fix_state==3" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(7)">完成维修单</el-button>
               <!-- 关闭（只有household看见） -->
-              <el-button v-show="usertype==2&&form.state!=5" style="float:right;" type="primary" @click="clickbuttonlist(11)">关闭</el-button>
+              <el-button v-show="usertype==2&&form.state!=5" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(11)">关闭</el-button>
             </div>
             <div class="form-box">
                 <el-form :model="form" ref="form"  label-width="80px">
@@ -136,7 +136,7 @@
                             <el-tab-pane label="历史记录" name="first">
                               <el-form-item label="留言" prop="message">
                                   <el-input type="textarea" rows="5" v-model="message" :disabled="form.state==5?true:false"></el-input>
-                                  <el-button style="margin-top: 20px; float:right;" type="primary" @click="clickbuttonlist(11)">留言</el-button>
+                                  <el-button style="margin-top: 20px; float:right;" type="primary" @click="clickbuttonlist(8)">留言</el-button>
                               </el-form-item>
                               <el-form-item style="margin-top: 20px;" label="历史记录" prop="activity">
                                 <div v-for="(ac, index) in form.activities" :key="index">
@@ -278,7 +278,8 @@ export default {
       // 分配 assgned_to new->in progress
       // eslint-disable-next-line eqeqeq
       if (buttonNum == 1) {
-        if (this.form.assigned_to == null) {
+        // eslint-disable-next-line eqeqeq
+        if (this.form.assigned_to.name == null || this.form.assigned_to.name == '') {
           this.postErrorMessage('分配受理失败！受理人字段为空，无法分配！')
         } else {
           this.$confirm('此操作将把该投诉单分配给工号' + this.form.assigned_to.name + '员工, 是否继续?', '提示', {
@@ -295,7 +296,8 @@ export default {
       } // 待补充 awaiting in progress->awaiting info
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 2) {
-        if (this.message == null) {
+        // eslint-disable-next-line eqeqeq
+        if (this.message == null || this.message == '') {
           this.postErrorMessage('留言为空，请填写留言，告知住户需要补充的内容！')
         } else {
           this.$confirm('此操作将把该投诉单状态置为待补充, 是否继续?', '提示', {
@@ -312,7 +314,8 @@ export default {
       } // 分配维修 fix_assgned_to in progress->in fix
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 3) {
-        if (this.form.fix_assigned_to.name == null) {
+        // eslint-disable-next-line eqeqeq
+        if (this.form.fix_assigned_to.name == null || this.form.fix_assigned_to.name == '') {
           this.postErrorMessage('分配维修方失败！维修方字段为空，无法分配！')
         } else {
           this.$confirm('此操作将把该投诉单分配给维修方' + this.form.fix_assigned_to.name + '维修, 是否继续?', '提示', {
@@ -329,7 +332,8 @@ export default {
       }// 提供解决方案 resolved in progress/in fix->resolved
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 4) {
-        if (this.form.solution == null) {
+        // eslint-disable-next-line eqeqeq
+        if (this.form.solution == null || this.form.solution == '') {
           this.postErrorMessage('设置该投诉单为解决状态失败!解决方案字段为空，请填写解决方案！')
         } else {
           this.$confirm('此操作将把该投诉单状态更改为已解决, 是否继续?', '提示', {
@@ -372,7 +376,8 @@ export default {
       }// 维修结束 维修状态：已解决 ← 维修中
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 7) {
-        if (this.message == null) {
+        // eslint-disable-next-line eqeqeq
+        if (this.message == null || this.message == '') {
           this.postErrorMessage('留言为空，请填写留言，告知物业方维修细节！')
         } else {
           this.$confirm('此操作将把该投诉单维修状态置为完成维修, 是否继续?', '提示', {
@@ -389,7 +394,8 @@ export default {
       }// 发送留言 // payload type 8-employee/8-household/10-customer
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 8) {
-        if (this.message == null) {
+        // eslint-disable-next-line eqeqeq
+        if (this.message == null || this.message == '') {
           this.postErrorMessage('操作失败, 留言内容为空！')
         } else {
           this.$confirm('此操作将发送留言, 是否继续?', '提示', {

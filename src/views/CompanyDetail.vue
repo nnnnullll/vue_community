@@ -10,7 +10,7 @@
         </div>
         <div class="container">
             <div style="width: 100%;height: 60px;">
-              <el-button v-show="!flag" style="margin-right: 30px; float:right;" type="primary" @click="update('form')">保存</el-button>
+              <el-button v-show="admin&&type==1" style="margin-right: 30px; float:right;" type="primary" @click="update('form')">保存</el-button>
             </div>
             <div v-if="form!=null" class="form-box">
                 <el-form :rules="rules" :model="form" ref="form"  label-width="130px">
@@ -31,7 +31,7 @@
                     <el-row>
                       <el-col :span="12">
                         <el-form-item label="地址" prop="address">
-                          <el-input v-model="form.address" :disabled="flag"></el-input>
+                          <el-input v-model="form.address" :disabled="admin!=true || type!=1"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
@@ -44,12 +44,12 @@
                     <el-row>
                       <el-col :span="12">
                         <el-form-item label="邮件" prop="email">
-                          <el-input v-model="form.email" :disabled="flag"></el-input>
+                          <el-input v-model="form.email" :disabled="admin!=true || type!=1"></el-input>
                         </el-form-item>
                       </el-col>
                       <el-col :span="12">
                         <el-form-item label="联系电话" prop="phone">
-                          <el-input v-model="form.phone" :disabled="flag"></el-input>
+                          <el-input v-model="form.phone" :disabled="admin!=true || type!=1"></el-input>
                         </el-form-item>
                       </el-col>
                     </el-row>
@@ -65,7 +65,8 @@ export default {
   data () {
     return {
       form: null,
-      flag: false,
+      admin: false,
+      type: 0,
       rules: {
         address: [{ required: true, message: '地址不能为空', trigger: 'blur' }],
         email: [
@@ -96,7 +97,8 @@ export default {
     } else if (localStorage.getItem('logintype') == 1 || localStorage.getItem('logintype') == 2) {
       this.GetCompanyDetailByNumber(localStorage.getItem('loginuser_commpany'))
       // eslint-disable-next-line eqeqeq
-      this.flag = localStorage.getItem('loginadmin') != 1
+      this.admin = localStorage.getItem('loginadmin') == 1
+      this.type = localStorage.getItem('logintype')
     } else {
 
     }

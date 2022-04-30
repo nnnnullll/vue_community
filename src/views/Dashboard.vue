@@ -22,16 +22,6 @@
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-1">
-                                <i class="el-icon-document-add grid-con-icon"></i>
-                                <div class="grid-cont-right">
-                                    <div>创建</div>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                            <div class="grid-content grid-con-1">
                                 <i class="el-icon-tickets grid-con-icon"></i>
                                 <div class="grid-cont-right">
                                     <div class="grid-num">{{logininfo.newnumber}}</div>
@@ -47,6 +37,17 @@
                                 <div class="grid-cont-right">
                                     <div class="grid-num">{{logininfo.inprogressnumber}}</div>
                                     <div>我的受理</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                            <div class="grid-content grid-con-2">
+                                <i class="el-icon-help grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div class="grid-num">{{logininfo.infixnumber}}</div>
+                                    <div>我的维修</div>
                                 </div>
                             </div>
                         </el-card>
@@ -89,16 +90,6 @@
                     </el-col>
                 </el-row>
                 <el-row v-if="householdshow" :gutter="24" class="mgb20">
-                    <el-col :span="8">
-                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                            <div class="grid-content grid-con-1">
-                                <i class="el-icon-document-add grid-con-icon"></i>
-                                <div class="grid-cont-right">
-                                    <div>创建</div>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-col>
                      <el-col :span="8">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-h-1">
@@ -121,6 +112,17 @@
                             </div>
                         </el-card>
                     </el-col>
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                            <div class="grid-content grid-con-h-2">
+                                <i class="el-icon-help grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div class="grid-num">{{logininfo.infixnumber}}</div>
+                                    <div>维修中</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
                 </el-row>
                 <el-row v-if="householdshow" :gutter="24" class="mgb20">
                     <el-col :span="8">
@@ -128,7 +130,7 @@
                             <div class="grid-content grid-con-h-3">
                                 <i class="el-icon-warning-outline grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{logininfo.escalationnumber}}</div>
+                                    <div class="grid-num">{{logininfo.awaitnumber}}</div>
                                     <div>待补充</div>
                                 </div>
                             </div>
@@ -139,7 +141,7 @@
                             <div class="grid-content grid-con-h-4">
                                 <i class="el-icon-finished grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{logininfo.emergencynumber}}</div>
+                                    <div class="grid-num">{{logininfo.resolvednumber}}</div>
                                     <div>已解决</div>
                                 </div>
                             </div>
@@ -150,7 +152,7 @@
                             <div class="grid-content grid-con-h-5">
                                 <i class="el-icon-box grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{logininfo.emergencynumber}}</div>
+                                    <div class="grid-num">{{logininfo.closednumber}}</div>
                                     <div>已关闭</div>
                                 </div>
                             </div>
