@@ -53,6 +53,7 @@
                 <el-table-column prop="num" v-if="ifshow">
                   <template slot-scope="{ row }">
                     <el-link v-show="row.active == 0" type="primary" @click="update(row.num)">解除合作</el-link>
+                    <el-link v-show="row.active == 0" type="primary" @click="reset(row.num)">重置密码</el-link>
                   </template>
                 </el-table-column>
             </el-table>
@@ -94,6 +95,18 @@ export default {
     }
   },
   methods: {
+    reset (num) {
+      axios
+        .post(
+          '/updatepartner?num=' + num + '&address=0&phone=0&email=0&description=0&type=4&oldpassword=0&password=0&one=0&two=0&three=0&four=0&five=0&active=0'
+        )
+        .then(res => {
+          this.successMessage('操作成功！')
+        })
+        .catch(err => {
+          this.errorMessage('操作失败：' + err)
+        })
+    },
     clearFilter () {
       this.$refs.filterTable.clearFilter()
     },
