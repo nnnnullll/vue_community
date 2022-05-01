@@ -1,25 +1,25 @@
 <template>
     <div>
         <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item>
-                    <i class="el-icon-lx-calendar"></i> 投诉单
-                </el-breadcrumb-item>
-                <el-breadcrumb-item>详细信息</el-breadcrumb-item>
-            </el-breadcrumb>
+          <el-breadcrumb separator="/">
+            <el-breadcrumb-item>
+              <i class="el-icon-lx-calendar"></i> 投诉单
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>详细信息</el-breadcrumb-item>
+          </el-breadcrumb>
         </div>
         <div  v-if="form!=null" class="container">
             <!-- 2-Customer 1-employee 3-partner -->
             <div style="width: 100%;height: 60px;">
             <!-- 物业员工 -->
-              <!-- 分配给我（状态新建时能看见） -->
-              <el-button v-show="usertype==1&&(form.state==0||form.state==1||form.state==2||form.state==3)" style="margin-right: 30px; float:right;" type="primary" @click="clickbuttonlist(1)">受理</el-button>
-              <!-- 待补充（状态受理中时能看见） -->
-              <el-button v-show="usertype==1&&form.state==1&&form.fix_state==null" style="margin-right: 10px; float:right;" type="primary" @click="clickbuttonlist(2)">待补充</el-button>
-              <!-- 分配维修（状态受理中/维修中时能看见） -->
-              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4)))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(3)">分配维修</el-button>
-              <!-- 已解决（状态受理中/维修中时能看见） -->
-              <el-button v-show="usertype==1&&(form.state==1||(form.state==3&&form.fix_state==4))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(4)">解决</el-button>
+              <!-- 分配受理（状态 新建/受理中/维修中/已解决 能看见） -->
+              <el-button v-show="isagent&&form.state!=5" style="margin-right: 30px; float:right;" type="primary" @click="clickbuttonlist(1)">分配受理</el-button>
+              <!-- 待补充（状态 受理中 能看见） -->
+              <el-button v-show="isagent&&form.state==1&&form.fix_state==null" style="margin-right: 10px; float:right;" type="primary" @click="clickbuttonlist(2)">待补充</el-button>
+              <!-- 分配维修（状态 受理中/维修中（待分配/已解决） 能看见） -->
+              <el-button v-show="isagent&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4)))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(3)">分配维修</el-button>
+              <!-- 已解决（状态 受理中/维修中（已解决）能看见） -->
+              <el-button v-show="isagent&&(form.state==1||(form.state==3&&form.fix_state==4))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(4)">解决</el-button>
             <!-- 维修方 -->
               <!--维修员 接受（状态室维修中-3 维修状态是已分配_2时能看见）  -->
               <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(5)">接受维修单</el-button>
@@ -27,6 +27,7 @@
               <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(6)">拒绝维修单</el-button>
               <!--维修员 完成（状态室维修中-3 维修状态是维修中_3时能看见）  -->
               <el-button v-show="usertype==3&&form.state==3&&form.fix_state==3" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(7)">完成维修单</el-button>
+            <!-- 住户 -->
               <!-- 关闭（只有household看见） -->
               <el-button v-show="usertype==2&&form.state!=5" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(11)">关闭</el-button>
             </div>
@@ -74,7 +75,7 @@
                             <el-form-item label="受理人" prop="assigned_to.name">
                                 <!-- 只有物业员工才能编辑 -->
                                 <div class="block">
-                                  <el-select v-model="form.assigned_to.name"  placeholder="请选择"  :disabled="!(usertype==1&&(form.state==0||form.state==1||form.state==2||form.state==3))">
+                                  <el-select v-model="form.assigned_to.name"  placeholder="请选择"  :disabled="!(isagent&&form.state!=5)">
                                       <el-option v-for="item in form.options_agent" :key="item.value" :label="item.label" :value="item.value"></el-option>
                                   </el-select>
                                 </div>
@@ -84,7 +85,7 @@
                             <el-form-item label="维修方" prop="fix_assigned_to.name">
                                 <!-- 只有物业员工才能编辑 -->
                                 <div class="block">
-                                  <el-select v-model="form.fix_assigned_to.name"  placeholder="请选择"  :disabled="!(usertype==1&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4))))">
+                                  <el-select v-model="form.fix_assigned_to.name"  placeholder="请选择"  :disabled="!(isagent&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4))))">
                                       <el-option v-for="item in form.options_fix" :key="item.value" :label="item.label" :value="item.value"></el-option>
                                   </el-select>
                                 </div>
@@ -109,7 +110,6 @@
                     <el-row>
                          <el-col :span="8">
                             <el-form-item label="状态" prop="state">
-                              <!-- 只有物业员工才能编辑state -->
                                 <el-select v-model="form.state"  placeholder="请选择"  :disabled="true">
                                     <el-option v-for="item in statelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
                                 </el-select>
@@ -117,7 +117,6 @@
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="维修状态" prop="fix_state">
-                              <!-- 只有物业员工才能编辑fix_state -->
                                 <el-select v-model="form.fix_state"  placeholder="请选择" :disabled="true">
                                     <el-option v-for="item1 in fix_statelist" :key="item1.value" :label="item1.label" :value="item1.value"></el-option>
                                 </el-select>
@@ -125,7 +124,6 @@
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="类别" prop="type">
-                                <!-- 只有物业员工才能编辑 -->
                                 <el-select v-model="form.type" placeholder="请选择" :disabled="true">
                                     <el-option v-for="item in typelist" :key="item.value" :label="item.label" :value="item.value"></el-option>
                                 </el-select>
@@ -143,7 +141,7 @@
                            <el-tabs v-model="activeName">
                             <el-tab-pane label="历史记录" name="first">
                               <el-form-item label="留言" prop="message">
-                                  <el-input type="textarea" rows="5" v-model="message" :disabled="form.state==5?true:false"></el-input>
+                                  <el-input type="textarea" rows="5" v-model="message" :disabled="form.state==5"></el-input>
                                   <el-button style="margin-top: 20px; float:right;" type="primary" @click="clickbuttonlist(8)">留言</el-button>
                               </el-form-item>
                               <el-form-item style="margin-top: 20px;" label="历史记录" prop="activity">
@@ -174,7 +172,7 @@
                             </el-tab-pane>
                             <el-tab-pane label="提供解决方案" name="second">
                               <el-form-item label="解决方案" prop="solution">
-                                  <el-input type="textarea" rows="5" v-model="form.solution" :disabled="usertype==1&&(form.state==1||(form.state==3&&form.fix_state==4))?false:true"></el-input>
+                                  <el-input type="textarea" rows="5" v-model="form.solution" :disabled="!(isagent&&(form.state==1||(form.state==3&&form.fix_state==4)))"></el-input>
                               </el-form-item>
                             </el-tab-pane>
                           </el-tabs>
@@ -192,6 +190,7 @@ export default {
   data () {
     return {
       form: null,
+      isagent: false,
       // 通过user的身份设置某些字段是否可以编辑 按钮是否可见
       usertype: null,
       username: null,
@@ -265,36 +264,21 @@ export default {
         }
       ],
       props_fix: { multiple: false }
-      // options_fix: [{
-      //   value: '选项1',
-      //   label: '黄金糕'
-      // }, {
-      //   value: '选项2',
-      //   label: '双皮奶'
-      // }, {
-      //   value: '选项3',
-      //   label: '蚵仔煎'
-      // }, {
-      //   value: '选项4',
-      //   label: '龙须面'
-      // }, {
-      //   value: '选项5',
-      //   label: '北京烤鸭'
-      // }]
     }
   },
   mounted: function () {
-    this.GetCaseDetailByNumber(this.$route.query.casenumber, localStorage.getItem('logintype'))
-    // type=1 employee  type=2 household  type=3 partner
     this.usertype = localStorage.getItem('logintype')
     this.username = localStorage.getItem('loginuser')
+    this.GetCaseDetailByNumber(this.$route.query.casenumber, localStorage.getItem('logintype'))
+    // type=1 employee  type=2 household  type=3 partner
   },
   methods: {
     GetCaseDetailByNumber (number, type) {
       axios.post('/getcasebynumber?number=' + number + '&usertype=' + type)
         .then(res => {
-          console.log(res.data)
           this.form = res.data
+          // eslint-disable-next-line eqeqeq
+          this.isagent = localStorage.getItem('logintype') == 1 && localStorage.getItem('loginuser') == res.data.assigned_to.number
         })
         .catch(err => {
           this.postErrorMessage('获取投诉单数据失败:' + err)
@@ -344,7 +328,7 @@ export default {
         if (this.form.fix_assigned_to.name == null || this.form.fix_assigned_to.name == '') {
           this.postErrorMessage('分配维修方失败！维修方字段为空，无法分配！')
         } else {
-          this.$confirm('此操作将把该投诉单分配给维修方' + this.form.fix_assigned_to.name + '维修, 是否继续?', '提示', {
+          this.$confirm('此操作将把该投诉单分配给' + this.form.fix_assigned_to.name + '维修, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
@@ -360,7 +344,7 @@ export default {
       else if (buttonNum == 4) {
         // eslint-disable-next-line eqeqeq
         if (this.form.solution == null || this.form.solution == '') {
-          this.postErrorMessage('设置该投诉单为解决状态失败!解决方案字段为空，请填写解决方案！')
+          this.postErrorMessage('设置解决状态失败! 请填写解决方案！')
         } else {
           this.$confirm('此操作将把该投诉单状态更改为已解决, 是否继续?', '提示', {
             confirmButtonText: '确定',
@@ -406,7 +390,7 @@ export default {
         if (this.message == null || this.message == '') {
           this.postErrorMessage('留言为空，请填写留言，告知物业方维修细节！')
         } else {
-          this.$confirm('此操作将把该投诉单维修状态置为完成维修, 是否继续?', '提示', {
+          this.$confirm('此操作将把维修状态置为完成维修, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
@@ -445,8 +429,7 @@ export default {
           })
         }
       // eslint-disable-next-line brace-style
-      }
-      // 关闭 状态：关闭。清除escalation emergency，
+      }// 关闭 状态：关闭。清除escalation emergency，
       // eslint-disable-next-line eqeqeq
       else if (buttonNum == 11) {
         this.$confirm('此操作将关闭投诉单, 是否继续?', '提示', {
@@ -471,9 +454,9 @@ export default {
       // type=6 拒绝维修单 维修状态：待分配 ← 已分配; casenumber&type&updated_usernumber
       // type=7 维修状态：已解决 ← 维修中; casenumber&type&message&updated_usernumber
       // type=8-household/9-employee/10-customer 发送留言,household可能状态变化; casenumber&type&message&updated_usernumber
+      // type=11 关闭
       axios.post('/updatecasebynumber?number=' + this.form.number + '&type=' + type + '&assigned_to=' + assign + '&message=' + message + '&updateduser=' + updateduser)
         .then(res => {
-          this.form = res.data
           this.postSuccessMessage('操作成功!')
           this.refresh(casenumber)
         })
