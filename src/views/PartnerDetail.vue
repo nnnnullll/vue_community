@@ -9,15 +9,15 @@
       </el-breadcrumb>
     </div>
     <div v-if="form!=null" class="container">
-      <div style="width: 100%;height: 60px;">
-        <el-button v-show="!flag" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',1,0)">保存</el-button>
-        <el-button v-show="!flag&&!form.active" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',3,!form.active)">恢复接单</el-button>
-        <el-button v-show="!flag&&form.active" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',3,!form.active)">停止接单</el-button>
-        <el-button v-show="admin && form.active && form.ispartner==1" style="margin-right: 30px; float:right;" type="primary" @click="update(form.num)">建立合作</el-button>
-        <el-button v-show="admin && form.active && form.ispartner==0" style="margin-right: 30px; float:right;" type="primary" @click="update(form.num)">解除合作</el-button>
-      </div>
       <div class="form-box">
         <el-form :model="form" ref="form" :rules="rules"  label-width="130px">
+           <div style="width: 100%;height: 60px;">
+            <el-button v-show="!flag" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',1,0)">保存</el-button>
+            <el-button v-show="!flag&&!form.active" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',3,!form.active)">恢复接单</el-button>
+            <el-button v-show="!flag&&form.active" style="margin-right: 30px; float:right;" type="primary" @click="onSubmit('form',3,!form.active)">停止接单</el-button>
+            <el-button v-show="admin && form.active && form.ispartner==1" style="margin-right: 30px; float:right;" type="primary" @click="update(form.num)">建立合作</el-button>
+            <el-button v-show="admin && form.active && form.ispartner==0" style="margin-right: 30px; float:right;" type="primary" @click="update(form.num)">解除合作</el-button>
+          </div>
           <!-- row1 -->
           <el-row>
             <el-col :span="12">
@@ -194,8 +194,12 @@ export default {
           '/changerelationship?company=' + this.company + '&partner=' + number
         )
         .then(res => {
-          this.successMessage('操作成功')
-          this.reFresh(number)
+          if (res.data === 0) {
+            this.errorMessage('操作失败：该维修公司名下任有未完成的维修单')
+          } else {
+            this.successMessage('操作成功')
+            this.reFresh(number)
+          }
         })
         .catch(err => {
           this.errorMessage('操作失败:' + err)

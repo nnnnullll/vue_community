@@ -50,7 +50,11 @@ export default {
           subs: [
             {
               index: '/casetable',
-              title: '投诉单列表'
+              title: '处理中投诉单'
+            },
+            {
+              index: '/casetableclose',
+              title: '已关闭投诉单'
             }
           ]
         },
@@ -62,6 +66,10 @@ export default {
             {
               index: '/companytable',
               title: '我的合作'
+            },
+            {
+              index: '/companytableall',
+              title: '非合作物业'
             }
           ]
         },

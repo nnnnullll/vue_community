@@ -39,9 +39,17 @@
                         <el-tag  v-if="row.fix_state==3" type="">维修中</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column width="103px" sortable prop="community_n" label="社区"></el-table-column>
-                <el-table-column width="103px" sortable prop="assigned_to_n" label="受理人"></el-table-column>
-                <el-table-column width="103px" sortable prop="fix_assigned_to_n" label="维修方"></el-table-column>
+                <el-table-column width="85px" sortable prop="escalation" label="加急" :filters="escalationtag" :filter-method="filterEscalation" filter-placement="bottom-end" >
+                    <template slot-scope="{row}">
+                        <el-tag v-show="row.escalation==1" type="danger">加急</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column width="85px" sortable prop="emergency" label="逾期" :filters="emergencytag" :filter-method="filterEmergency" filter-placement="bottom-end" >
+                    <template slot-scope="{row}">
+                        <el-tag v-show="row.emergency==1"  effect="dark" type="danger">逾期</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column width="103px" sortable prop="created" label="创建时间"></el-table-column>
                 <el-table-column width="103px" sortable prop="updated" label="更新时间"></el-table-column>
             </el-table>
         </div>
@@ -80,10 +88,10 @@ export default {
     }
   },
   mounted: function () {
-    // 1-employee 2-Customer 3-partner 4-all case by company
+    // 1-employee 2-Customer 3-partner 4-all case by company 5-escalarion&emergency
     // eslint-disable-next-line eqeqeq
     if (localStorage.getItem('logintype') == 1) {
-      this.getData(localStorage.getItem('loginuser'), 4, localStorage.getItem('loginuser_commpany'))
+      this.getData(localStorage.getItem('loginuser'), 5, localStorage.getItem('loginuser_commpany'))
     } else {
     }
   },

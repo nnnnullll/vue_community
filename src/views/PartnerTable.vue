@@ -156,8 +156,12 @@ export default {
           '/changerelationship?company=' + this.company + '&partner=' + number
         )
         .then(res => {
-          this.successMessage('操作成功')
-          this.reFresh()
+          if (res.data === 0) {
+            this.errorMessage('操作失败：该维修公司名下任有未完成的维修单')
+          } else {
+            this.successMessage('操作成功')
+            this.reFresh()
+          }
         })
         .catch(err => {
           this.errorMessage('操作失败:' + err)

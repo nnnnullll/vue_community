@@ -9,17 +9,17 @@
       </el-breadcrumb>
     </div>
     <div v-if="form!=null" class="container">
-      <div style="width: 100%;height: 60px;">
-        <el-button
-          v-show="!flag"
-          style="margin-right: 30px; float:right;"
-          type="primary"
-          @click="onSubmit('form')"
-          >保存</el-button
-        >
-      </div>
       <div class="form-box">
         <el-form :model="form" ref="form" :rules="rules" label-width="80px">
+          <div style="width: 100%;height: 60px;">
+            <el-button
+              v-show="!flag"
+              style="margin-right: 30px; float:right;"
+              type="primary"
+              @click="onSubmit('form')"
+              >保存</el-button
+            >
+          </div>
           <!-- row1 -->
           <el-row>
             <el-col :span="12">

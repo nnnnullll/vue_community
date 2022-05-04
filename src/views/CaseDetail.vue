@@ -9,17 +9,19 @@
           </el-breadcrumb>
         </div>
         <div  v-if="form!=null" class="container">
-            <!-- 2-Customer 1-employee 3-partner -->
+            <div class="form-box">
+                <el-form :model="form" ref="form"  label-width="80px">
+                  <!-- 2-Customer 1-employee 3-partner -->
             <div style="width: 100%;height: 60px;">
             <!-- 物业员工 -->
               <!-- 分配受理（状态 新建/受理中/维修中/已解决 能看见） -->
-              <el-button v-show="isagent&&form.state!=5" style="margin-right: 30px; float:right;" type="primary" @click="clickbuttonlist(1)">分配受理</el-button>
+              <el-button v-show="form.state==0||(isagent&&form.state!=5)" style="margin-right: 30px; float:right;" type="primary" @click="clickbuttonlist(1)">分配受理</el-button>
               <!-- 待补充（状态 受理中 能看见） -->
               <el-button v-show="isagent&&form.state==1&&form.fix_state==null" style="margin-right: 10px; float:right;" type="primary" @click="clickbuttonlist(2)">待补充</el-button>
               <!-- 分配维修（状态 受理中/维修中（待分配/已解决） 能看见） -->
               <el-button v-show="isagent&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4)))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(3)">分配维修</el-button>
               <!-- 已解决（状态 受理中/维修中（已解决）能看见） -->
-              <el-button v-show="isagent&&(form.state==1||(form.state==3&&form.fix_state==4))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(4)">解决</el-button>
+              <el-button v-show="isagent&&(form.state==1||(form.state==3&&form.fix_state==4))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(4)">解决维修单</el-button>
             <!-- 维修方 -->
               <!--维修员 接受（状态室维修中-3 维修状态是已分配_2时能看见）  -->
               <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(5)">接受维修单</el-button>
@@ -29,10 +31,8 @@
               <el-button v-show="usertype==3&&form.state==3&&form.fix_state==3" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(7)">完成维修单</el-button>
             <!-- 住户 -->
               <!-- 关闭（只有household看见） -->
-              <el-button v-show="usertype==2&&form.state!=5" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(11)">关闭</el-button>
+              <el-button v-show="usertype==2&&form.state!=5" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(11)">关闭维修单</el-button>
             </div>
-            <div class="form-box">
-                <el-form :model="form" ref="form"  label-width="80px">
                     <!-- row1 -->
                     <el-row>
                         <el-col :span="8">
@@ -42,7 +42,11 @@
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="物业" prop="company.name">
-                                <el-input v-model="form.company.name" :disabled="true"></el-input>
+                              <el-row>
+                                <el-input v-model="form.company.name" :disabled="true">
+                                  <el-button slot="append" icon="el-icon-info" @click="toDetail(1,form.company.number)"></el-button>
+                                </el-input>
+                               </el-row>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
@@ -55,12 +59,16 @@
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="社区" prop="community.name">
-                                <el-input v-model="form.community.name" :disabled="true"></el-input>
+                                <el-input v-model="form.community.name" :disabled="true">
+                                  <el-button slot="append" icon="el-icon-info" @click="toDetail(3,form.community.number)"></el-button>
+                                </el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="住户" prop="household.name">
-                                <el-input v-model="form.household.name" :disabled="true"></el-input>
+                                <el-input v-model="form.household.name" :disabled="true">
+                                  <el-button slot="append" icon="el-icon-info" @click="toDetail(4,form.household.number)"></el-button>
+                                </el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
@@ -75,9 +83,12 @@
                             <el-form-item label="受理人" prop="assigned_to.name">
                                 <!-- 只有物业员工才能编辑 -->
                                 <div class="block">
-                                  <el-select v-model="form.assigned_to.name"  placeholder="请选择"  :disabled="!(isagent&&form.state!=5)">
+                                  <el-select v-if="(form.state==0||(isagent&&form.state!=5))" v-model="form.assigned_to.name"  placeholder="请选择"  :disabled="!(form.state==0||(isagent&&form.state!=5))">
                                       <el-option v-for="item in form.options_agent" :key="item.value" :label="item.label" :value="item.value"></el-option>
                                   </el-select>
+                                  <el-input v-if="!(form.state==0||(isagent&&form.state!=5))" v-model="form.assigned_to.name" :disabled="true">
+                                    <el-button v-if="form.assigned_to.name!=null" slot="append" icon="el-icon-info" @click="toDetail(5,form.assigned_to.number)"></el-button>
+                                  </el-input>
                                 </div>
                             </el-form-item>
                         </el-col>
@@ -85,9 +96,12 @@
                             <el-form-item label="维修方" prop="fix_assigned_to.name">
                                 <!-- 只有物业员工才能编辑 -->
                                 <div class="block">
-                                  <el-select v-model="form.fix_assigned_to.name"  placeholder="请选择"  :disabled="!(isagent&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4))))">
-                                      <el-option v-for="item in form.options_fix" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                  <el-select v-if="(isagent&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4))))" v-model="form.fix_assigned_to.name"  placeholder="请选择"  :disabled="!(isagent&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4))))">
+                                      <el-option  v-for="item in form.options_fix" :key="item.value" :label="item.label" :value="item.value"></el-option>
                                   </el-select>
+                                  <el-input v-if="!(isagent&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4))))" v-model="form.fix_assigned_to.name" :disabled="true">
+                                    <el-button v-if="form.fix_assigned_to.name!=null" slot="append" icon="el-icon-info" @click="toDetail(2,form.fix_assigned_to.number)"></el-button>
+                                  </el-input>
                                 </div>
                             </el-form-item>
                         </el-col>
@@ -142,7 +156,7 @@
                             <el-tab-pane label="历史记录" name="first">
                               <el-form-item label="留言" prop="message">
                                   <el-input type="textarea" rows="5" v-model="message" :disabled="form.state==5"></el-input>
-                                  <el-button style="margin-top: 20px; float:right;" type="primary" @click="clickbuttonlist(8)">留言</el-button>
+                                  <el-button v-if="form.state!=5" style="margin-top: 20px; float:right;" type="primary" @click="clickbuttonlist(8)">留言</el-button>
                               </el-form-item>
                               <el-form-item style="margin-top: 20px;" label="历史记录" prop="activity">
                                 <div v-for="(ac, index) in form.activities" :key="index">
@@ -487,6 +501,50 @@ export default {
           casenumber: casenumber
         }
       })
+    },
+    // type=1 company
+    toDetail (type, number) {
+      if (type === 1) {
+        this.$router.push({
+          path: '/companydetail',
+          query: {
+            number: number,
+            from: 'internal'
+          }
+        })
+      } else if (type === 2) {
+        this.$router.push({
+          path: '/partnerdetail',
+          query: {
+            number: number,
+            from: 'internal'
+          }
+        })
+      } else if (type === 3) {
+        this.$router.push({
+          path: '/communitydetail',
+          query: {
+            number: number,
+            from: 'internal'
+          }
+        })
+      } else if (type === 4) {
+        this.$router.push({
+          path: '/householddetail',
+          query: {
+            number: number,
+            from: 'internal'
+          }
+        })
+      } else {
+        this.$router.push({
+          path: '/employeedetail',
+          query: {
+            number: number,
+            from: 'internal'
+          }
+        })
+      }
     }
   }
 }

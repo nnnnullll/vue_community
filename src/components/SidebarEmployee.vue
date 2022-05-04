@@ -53,12 +53,20 @@ export default {
               title: '新建投诉单'
             },
             {
+              index: '/casetablenew',
+              title: '待处理'
+            },
+            {
               index: '/casetable',
-              title: '我的投诉单列表'
+              title: '我的处理中'
+            },
+            {
+              index: '/casetableclose',
+              title: '我的已关闭'
             },
             {
               index: '/casetableall',
-              title: '所有投诉单列表'
+              title: '所有投诉单'
             }
           ]
         },

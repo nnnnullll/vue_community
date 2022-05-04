@@ -160,17 +160,6 @@
                     </el-col>
                 </el-row>
                  <el-row v-if="partnershow" :gutter="24" class="mgb20">
-                     <el-col :span="8">
-                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                            <div class="grid-content grid-con-h-1">
-                                <i class="el-icon-tickets grid-con-icon"></i>
-                                <div class="grid-cont-right">
-                                    <div class="grid-num">{{logininfo.fixwaite_number}}</div>
-                                    <div>待分配</div>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-col>
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-h-2">
@@ -193,8 +182,6 @@
                             </div>
                         </el-card>
                     </el-col>
-                </el-row>
-                <el-row v-if="partnershow" :gutter="24" class="mgb20">
                     <el-col :span="8">
                         <el-card shadow="hover" :body-style="{ padding: '0px' }">
                             <div class="grid-content grid-con-h-4">
@@ -202,6 +189,30 @@
                                 <div class="grid-cont-right">
                                     <div class="grid-num">{{logininfo.fixfinish_number}}</div>
                                     <div>已解决</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                </el-row>
+                <el-row v-if="partnershow" :gutter="24" class="mgb20">
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                            <div class="grid-content grid-con-3">
+                                <i class="el-icon-warning-outline grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div class="grid-num">{{logininfo.escalationnumber}}</div>
+                                    <div>加急</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                            <div class="grid-content grid-con-4">
+                                <i class="el-icon-warning grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div class="grid-num">{{logininfo.emergencynumber}}</div>
+                                    <div>逾期</div>
                                 </div>
                             </div>
                         </el-card>

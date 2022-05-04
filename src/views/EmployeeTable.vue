@@ -107,8 +107,17 @@ export default {
           '/updateemployee?number=' + number + '&email=0&phone=0&oldpassword=0&password=0&type=' + type
         )
         .then(res => {
-          this.successMessage('操作成功')
-          this.reFresh()
+          if (type === 2) {
+            if (res.data === 0) {
+              this.errorMessage('操作失败: 该员工名下任有未处理完的投诉单')
+            } else {
+              this.successMessage('操作成功')
+              this.reFresh()
+            }
+          } else {
+            this.successMessage('操作成功')
+            this.reFresh()
+          }
         })
         .catch(err => {
           this.errorMessage('操作失败:' + err)

@@ -70,7 +70,7 @@ export default {
               // type=2  1-成功 2-失败 4-不存在
               // eslint-disable-next-line eqeqeq
               if (res.data == 2) {
-                this.$message.error('登录失败：用户名或密码或身份不符')
+                this.$message.error('登录失败：密码错误')
               // eslint-disable-next-line eqeqeq
               } else if (res.data == 1 || res.data == 0) {
                 this.$message({
@@ -96,7 +96,6 @@ export default {
               console.error(err)
             })
         } else {
-          this.$message.error('登录失败,请输入用户名密码并选择身份')
           return false
         }
       })

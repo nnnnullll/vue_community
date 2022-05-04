@@ -8,7 +8,7 @@
             </el-breadcrumb>
         </div>
         <div v-if="tableData!=null" class="container">
-            <el-button type="primary" plain @click="clearFilter">清除所有过滤器</el-button>
+            <el-button @click="clearFilter">清除所有过滤器</el-button>
             <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
                 <el-table-column width="73px" sortable prop="number" label="单号" @click="toCaseDetail(row.number)">
                     <template slot-scope="{row}">
@@ -19,30 +19,11 @@
                 </el-table-column>
                 <el-table-column sortable prop="subject" label="标题" :formatter="formatter"></el-table-column>
                 <!--  -->
-                <el-table-column width="85px" sortable prop="state" label="状态" :filters="statetag" :filter-method="filterState" >
-                    <template slot-scope="{row}">
-                        <!-- 新建 提供解决方案 -->
-                        <el-tag  v-if="row.state==0||row.state==4" type="success">{{statetag[row.state].text}}</el-tag>
-                        <!-- 关闭 -->
-                        <el-tag  v-else-if="row.state==2" type="warning">{{statetag[row.state].text}}</el-tag>
-                        <!-- 待补充 -->
-                        <el-tag  v-else-if="row.state==5" type="info">{{statetag[row.state].text}}</el-tag>
-                        <!-- 受理中 维修中 -->
-                        <el-tag  v-else type="">{{statetag[row.state].text}}</el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column width="118px" sortable prop="fix_state" label="维修状态" :filters="fixstatetag" :filter-method="filterFix_state" filter-placement="bottom-end" >
-                    <template slot-scope="{row}">
-                        <el-tag  v-if="row.fix_state==4" type="success">已解决</el-tag>
-                        <el-tag  v-if="row.fix_state==1" type="warning">待分配</el-tag>
-                        <el-tag  v-if="row.fix_state==2" type="">已分配</el-tag>
-                        <el-tag  v-if="row.fix_state==3" type="">维修中</el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column width="103px" sortable prop="community_n" label="社区"></el-table-column>
-                <el-table-column width="103px" sortable prop="assigned_to_n" label="受理人"></el-table-column>
-                <el-table-column width="103px" sortable prop="fix_assigned_to_n" label="维修方"></el-table-column>
-                <el-table-column width="103px" sortable prop="updated" label="更新时间"></el-table-column>
+                <el-table-column  sortable prop="community_n" label="社区"></el-table-column>
+                <el-table-column  sortable prop="company_n" label="物业"></el-table-column>
+                <el-table-column  sortable prop="assigned_to_n" label="受理人"></el-table-column>
+                <el-table-column sortable prop="fix_assigned_to_n" label="维修方"></el-table-column>
+                <el-table-column width="103px" sortable prop="created" label="创建时间"></el-table-column>
             </el-table>
         </div>
     </div>
@@ -80,11 +61,15 @@ export default {
     }
   },
   mounted: function () {
-    // 1-employee 2-Customer 3-partner 4-all case by company
+    // 1-employee 2-Customer 3-partner
     // eslint-disable-next-line eqeqeq
     if (localStorage.getItem('logintype') == 1) {
-      this.getData(localStorage.getItem('loginuser'), 4, localStorage.getItem('loginuser_commpany'))
+      this.getData(localStorage.getItem('loginuser'), 6, '')
+      // eslint-disable-next-line eqeqeq
+    } else if (localStorage.getItem('logintype') == 2) {
+      this.getData(localStorage.getItem('loginuser'), 7, '')
     } else {
+      this.getData(localStorage.getItem('loginuser'), 8, '')
     }
   },
   methods: {
@@ -107,10 +92,11 @@ export default {
       const property = column['property']
       return row[property] === value
     },
-    // type 4-all case by company
+    // 1-employee 2-Customer 3-partner
     getData (number, type, company) {
       axios.post('/getcaselist?number=' + number + '&type=' + type + '&company=' + company)
         .then(res => {
+          console.log(res.data)
           this.tableData = res.data
         })
         .catch(err => {

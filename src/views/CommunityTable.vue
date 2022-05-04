@@ -80,6 +80,8 @@ export default {
         .then(res => {
           if (res.data === 0) {
             this.errorMessage('操作失败：物业公司不匹配')
+          } else if (res.data === 2) {
+            this.errorMessage('操作失败: 该社区任由未处理完的投诉单')
           } else {
             this.successMessage('操作成功')
             this.reFresh()

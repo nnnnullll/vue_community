@@ -31,13 +31,38 @@ export default new Router({
           component: () => import('../views/CaseTable.vue')
         },
         {
+          path: '/casetablenew',
+          name: 'casetablenew',
+          meta: {
+            title: '投诉单列表'
+          },
+          component: () => import('../views/CaseTableNew.vue')
+        },
+        {
+          path: '/casetableesca',
+          name: 'casetableesca',
+          meta: {
+            title: '加急与逾期'
+          },
+          component: () => import('../views/CaseTableEsca.vue')
+        },
+        {
           path: '/casetableall',
           name: 'casetableall',
           meta: {
             title: '投诉单列表'
           },
           component: () => import('../views/CaseTableAll.vue')
-        }, {
+        },
+        {
+          path: '/casetableclose',
+          name: 'casetableclose',
+          meta: {
+            title: '投诉单列表'
+          },
+          component: () => import('../views/CaseTableClose.vue')
+        },
+        {
           path: '/addcaseform',
           name: 'addcaseform',
           meta: {
@@ -100,6 +125,14 @@ export default new Router({
             title: '物业公司表格'
           },
           component: () => import('../views/CompanyTable.vue')
+        },
+        {
+          path: '/companytableall',
+          name: 'companytableall',
+          meta: {
+            title: '所有物业公司'
+          },
+          component: () => import('../views/CompanyTableAll.vue')
         },
         {
           path: '/partnertable',
