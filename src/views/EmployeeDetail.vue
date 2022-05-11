@@ -155,8 +155,17 @@ export default {
           '/updateemployee?number=' + number + '&email=0&phone=0&oldpassword=0&password=0&type=' + type
         )
         .then(res => {
-          this.successMessage('更新成功！')
-          this.reFresh(number)
+          if (type === 2) {
+            if (res.data === 0) {
+              this.errorMessage('操作失败: 该员工名下任有未处理完的投诉单')
+            } else {
+              this.successMessage('操作成功')
+              this.reFresh()
+            }
+          } else {
+            this.successMessage('操作成功')
+            this.reFresh(number)
+          }
         })
         .catch(err => {
           this.errorMessage('更新失败:' + err)
@@ -167,7 +176,8 @@ export default {
         path: '/loading',
         query: {
           url: '/employeedetail',
-          number: number
+          number: number,
+          from: 'internal'
         }
       })
     },

@@ -22,7 +22,7 @@
           <!-- row1 -->
           <el-row>
             <el-col :span="12">
-              <el-form-item label="物业公司" prop="name">
+              <el-form-item label="名称" prop="name">
                 <el-input v-model="form.name"></el-input>
               </el-form-item>
             </el-col>
@@ -168,7 +168,6 @@ export default {
               this.errorMessage('创建失败:' + err)
             })
         } else {
-          this.errorMessage('请输入必填项')
           return false
         }
       })

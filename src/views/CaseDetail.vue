@@ -21,7 +21,7 @@
               <!-- 分配维修（状态 受理中/维修中（待分配/已解决） 能看见） -->
               <el-button v-show="isagent&&(form.state==1||(form.state==3&&(form.fix_state==1||form.fix_state==4)))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(3)">分配维修</el-button>
               <!-- 已解决（状态 受理中/维修中（已解决）能看见） -->
-              <el-button v-show="isagent&&(form.state==1||(form.state==3&&form.fix_state==4))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(4)">解决维修单</el-button>
+              <el-button v-show="isagent&&(form.state==1||(form.state==3&&form.fix_state==4))" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(4)">解决投诉单</el-button>
             <!-- 维修方 -->
               <!--维修员 接受（状态室维修中-3 维修状态是已分配_2时能看见）  -->
               <el-button v-show="usertype==3&&form.state==3&&form.fix_state==2" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(5)">接受维修单</el-button>

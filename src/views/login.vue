@@ -27,7 +27,6 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
                 </div>
-                <el-link type="primary">忘记密码</el-link>
                 <p class="login-tips" type="primary">帮助中心联系电话：18812345678</p>
             </el-form>
         </div>
@@ -70,7 +69,7 @@ export default {
               // type=2  1-成功 2-失败 4-不存在
               // eslint-disable-next-line eqeqeq
               if (res.data == 2) {
-                this.$message.error('登录失败：密码错误')
+                this.$message.error('密码错误')
               // eslint-disable-next-line eqeqeq
               } else if (res.data == 1 || res.data == 0) {
                 this.$message({

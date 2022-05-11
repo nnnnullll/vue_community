@@ -33,8 +33,8 @@
             <el-link v-show="row.active == 0" type="primary" @click="update(row.number, 5)">重置密码</el-link>
             <el-link v-show="row.active == 0 && minename != row.number" type="primary" @click="update(row.number, 2)">离职</el-link>
             <el-link v-show="row.active != 0 && minename != row.number" type="primary" @click="update(row.number, 2)">复职</el-link>
-            <el-link v-show="row.admin != 1 && minename != row.number" type="primary" @click="update(row.number, 3)">授予管理员</el-link>
-            <el-link v-show="row.admin == 1 && minename != row.number" type="primary"  @click="update(row.number, 3)">撤销管理员</el-link >
+            <el-link v-show="row.active == 0 && row.admin != 1 && minename != row.number" type="primary" @click="update(row.number, 3)">授予管理员</el-link>
+            <el-link v-show="row.active == 0 && row.admin == 1 && minename != row.number" type="primary"  @click="update(row.number, 3)">撤销管理员</el-link >
           </template>
         </el-table-column>
       </el-table>

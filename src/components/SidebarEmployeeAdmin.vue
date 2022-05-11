@@ -130,7 +130,7 @@ export default {
             },
             {
               index: '/communitytable',
-              title: '管理的社区'
+              title: '合作社区'
             },
             {
               index: '/communitytableall',

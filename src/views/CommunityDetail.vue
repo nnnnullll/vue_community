@@ -132,7 +132,6 @@ export default {
         })
         .catch(err => {
           this.$message.error('加载失败:' + err)
-          console.error(err)
         })
     },
     update (number, type) {
@@ -141,12 +140,22 @@ export default {
           '/updatecommunity?number=' + number + '&company=' + this.usercompany + '&type=' + type
         )
         .then(res => {
-          if (res.data === 0) {
-            this.errorMessage('操作失败：物业公司不匹配')
+          if (type === 1) {
+            if (res.data === 2) {
+              this.errorMessage('操作失败: 该社区名下任有未处理完的投诉单')
+            } else if (res.data === 0) {
+              this.errorMessage('操作失败: 该社区已不是该物业公司的合作社区')
+            } else {
+              this.successMessage('操作成功')
+            }
           } else {
-            this.successMessage('操作成功')
-            this.reFresh(number)
+            if (res.data === 0) {
+              this.errorMessage('操作失败：该社区已有合作物业公司')
+            } else {
+              this.successMessage('操作成功')
+            }
           }
+          this.reFresh(number)
         })
         .catch(err => {
           this.errorMessage('操作失败:' + err)
