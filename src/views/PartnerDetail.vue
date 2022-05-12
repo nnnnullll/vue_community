@@ -40,7 +40,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item prop="active">
-                <el-checkbox v-model="form.active" :disabled="true">使用中</el-checkbox>
+                <el-checkbox v-model="form.active" :disabled="true">接单中</el-checkbox>
               </el-form-item>
             </el-col>
           </el-row>

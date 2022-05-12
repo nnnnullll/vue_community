@@ -52,8 +52,7 @@
                 </el-table-column>
                 <el-table-column prop="num" v-if="ifshow">
                   <template slot-scope="{ row }">
-                    <el-link v-show="row.active == 0 && row.ispartner==1" type="primary" @click="update(row.num)">建立合作</el-link>
-                    <el-link v-show="row.active == 0 && row.ispartner==0" type="primary" @click="update(row.num)">解除合作</el-link>
+                    <el-link type="primary" @click="update(row.num)">建立合作</el-link>
                   </template>
                 </el-table-column>
             </el-table>

@@ -112,10 +112,10 @@ export default {
           this.errorMessage('加载失败:' + err)
         })
     },
-    update (form) {
+    update () {
       axios
         .post(
-          '/updatecompany?number=' + form.number + '&email=' + form.email + '&phone=' + form.phone + '&address=' + form.address
+          '/updatecompany?number=' + this.form.number + '&email=' + this.form.email + '&phone=' + this.form.phone + '&address=' + this.form.address
         )
         .then(res => {
           this.successMessage('更新成功！')

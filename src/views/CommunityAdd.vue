@@ -208,22 +208,17 @@ export default {
           axios.post('/insertcommunity?name=' + this.form.name + '&region=' + this.form.region + '&address=' + this.form.region + this.form.address + '&company=' + localStorage.getItem('loginuser_commpany') + '&buildings=' + this.buildings + '&rooms=' + this.rooms)
             .then(res => {
             // eslint-disable-next-line eqeqeq
-              if (res.data != 0) {
-                this.$message({
-                  message: '创建成功',
-                  type: 'success'
-                })
-                console.log(res.data)
-                this.$router.push({
-                  path: '/communitydetail',
-                  query: {
-                    number: res.data,
-                    from: 'internal'
-                  }
-                })
-              } else {
-                this.$message.error('创建失败:检测到相同的身份证号或手机号，该同事已存在！点击查看')
-              }
+              this.$message({
+                message: '创建成功',
+                type: 'success'
+              })
+              this.$router.push({
+                path: '/communitydetail',
+                query: {
+                  number: res.data,
+                  from: 'internal'
+                }
+              })
             })
             .catch(err => {
               this.$message.error('创建失败:' + err)

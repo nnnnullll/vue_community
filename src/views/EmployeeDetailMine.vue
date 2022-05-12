@@ -147,9 +147,9 @@ export default {
             )
             .then(res => {
               if (res.data === 0) {
-                this.errorMessage('创建失败: 该手机号已存在！')
+                this.errorMessage('更新失败: 该手机号已存在！')
               } else if (res.data === 2) {
-                this.errorMessage('创建失败: 该邮箱已存在！')
+                this.errorMessage('更新失败: 该邮箱已存在！')
               } else {
                 this.successMessage('更新成功')
                 this.refresh(this.form.number)

@@ -12,13 +12,13 @@
             <div class="form-box">
                 <el-form :model="form" ref="form"  label-width="80px">
                   <el-form-item label="原密码" prop="old">
-                    <el-input v-model="form.old"></el-input>
+                    <el-input v-model="form.old" show-password></el-input>
                   </el-form-item>
                   <el-form-item label="新密码" prop="password">
-                    <el-input v-model="form.password"></el-input>
+                    <el-input v-model="form.password" show-password></el-input>
                   </el-form-item>
                   <el-form-item label="新密码" prop="password2">
-                    <el-input v-model="form.password2"></el-input>
+                    <el-input v-model="form.password2" show-password></el-input>
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="update()">提交</el-button>
@@ -48,7 +48,9 @@ export default {
   },
   methods: {
     update () {
-      if (this.form.password !== this.form.password2) {
+      if (this.old === null || this.form.password === null || this.form.password2 === null) {
+        this.errorMessage('操作失败: 原密码与新密码字段不得为空')
+      } else if (this.form.password !== this.form.password2) {
         this.errorMessage('操作失败: 请确保两次新密码保持一致')
       } else {
         var url = ''
@@ -57,7 +59,7 @@ export default {
           url = '/updateemployee?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=4'
         // eslint-disable-next-line eqeqeq
         } else if (localStorage.getItem('logintype') == 2) {
-          url = '/updatehousehold?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=4'
+          url = '/updatehousehold?number=' + this.user + '&email=0&phone=0&oldpassword=' + this.form.old + '&password=' + this.form.password + '&type=2'
         } else {
           url = '/updatepartner?num=' + this.user + '&address=a&phone=a&email=a&description=a&type=2&oldpassword=' + this.form.old + '&password=' + this.form.password + '&one=0&two=0&three=0&four=0&five=0&active=0'
         }

@@ -160,7 +160,7 @@ export default {
               this.errorMessage('操作失败: 该员工名下任有未处理完的投诉单')
             } else {
               this.successMessage('操作成功')
-              this.reFresh()
+              this.reFresh(number)
             }
           } else {
             this.successMessage('操作成功')
@@ -168,7 +168,7 @@ export default {
           }
         })
         .catch(err => {
-          this.errorMessage('更新失败:' + err)
+          this.errorMessage('操作失败:' + err)
         })
     },
     reFresh (number) {
