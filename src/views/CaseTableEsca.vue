@@ -18,6 +18,9 @@
                     </template>
                 </el-table-column>
                 <el-table-column sortable prop="subject" label="标题" :formatter="formatter"></el-table-column>
+                <el-table-column  sortable prop="community_n" label="社区"></el-table-column>
+                <el-table-column  sortable prop="assigned_to_n" label="受理人"></el-table-column>
+                <el-table-column sortable prop="fix_assigned_to_n" label="维修方"></el-table-column>
                 <!--  -->
                 <el-table-column width="85px" sortable prop="state" label="状态" :filters="statetag" :filter-method="filterState" >
                     <template slot-scope="{row}">

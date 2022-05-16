@@ -1,11 +1,10 @@
 <template>
     <div>
         <div class="crumbs">
-            <el-breadcrumb separator="/">
+            <el-breadcrumb>
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-calendar"></i> 新建
+                    <i class="el-icon-lx-calendar"></i> 新建投诉单
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>投诉单</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
@@ -110,7 +109,7 @@
                         <el-input type="textarea" rows="5" v-model="form.description"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit('form')">表单提交</el-button>
+                        <el-button type="primary" @click="onSubmit('form')">提交</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -249,7 +248,6 @@ export default {
     GetCommunityOptionByCompany (company) {
       axios.post('/getcommunityoptionbycompany?company=' + company)
         .then(res => {
-          console.log(res.data)
           this.option_community = res.data
         })
         .catch(err => {
@@ -260,7 +258,6 @@ export default {
       this.form.household = null
       axios.post('/gethouseholdoptionbycommunity?community=' + this.form.community.number)
         .then(res => {
-          console.log(res.data)
           this.option_household = res.data
         })
         .catch(err => {
@@ -270,25 +267,29 @@ export default {
     onSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // 1-employee 2-Customer
           // eslint-disable-next-line eqeqeq
-          axios.post('/insertcase?subject=' + this.form.subject + '&description=' + this.form.description + '&type=' + this.form.type + '&created_by=' + this.form.created_by + '&created_role=' + this.form.created_role + '&household=' + (this.form.created_role == 1 ? this.form.household : 0))
-            .then(res => {
-              this.$message({
-                message: '创建成功',
-                type: 'success'
+          if (localStorage.getItem('logintype') == 1 && this.form.household.name == '') {
+            this.$message.error('创建失败:住户不得为空')
+          } else {
+            // eslint-disable-next-line eqeqeq
+            axios.post('/insertcase?subject=' + this.form.subject + '&description=' + this.form.description + '&type=' + this.form.type + '&created_by=' + this.form.created_by + '&created_role=' + this.form.created_role + '&household=' + (this.form.created_role == 1 ? this.form.household : 0))
+              .then(res => {
+                this.$message({
+                  message: '创建成功',
+                  type: 'success'
+                })
+                this.$router.push({
+                  path: '/casedetail',
+                  query: {
+                    casenumber: res.data
+                  }
+                })
               })
-              this.$router.push({
-                path: '/casedetail',
-                query: {
-                  casenumber: res.data
-                }
+              .catch(err => {
+                this.$message.error('创建失败:' + err)
+                console.error(err)
               })
-            })
-            .catch(err => {
-              this.$message.error('创建失败:' + err)
-              console.error(err)
-            })
+          }
         } else {
           this.$message.error('请输入必填项')
           return false

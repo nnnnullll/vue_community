@@ -5,10 +5,10 @@
             <i v-if="!collapse" class="el-icon-s-fold"></i>
             <i v-else class="el-icon-s-unfold"></i>
         </div>
-        <div class="logo">物业管理系统</div>
+        <div class="logo">社区投诉管理平台</div>
         <div class="header-right">
             <div class="header-user-con">
-                <p class="login-tips" type="primary">您好，欢迎使用物业管理系统&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <p class="login-tips" type="primary">您好，欢迎使用社区投诉管理平台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                 <el-link class="login-tips" type="primary" @click="logout">退出登录</el-link>
             </div>
         </div>
@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     logout () {
-      this.$confirm('此操作将退出物业系统, 是否继续?', '提示', {
+      this.$confirm('此操作将退出社区投诉管理平台, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

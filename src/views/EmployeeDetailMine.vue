@@ -1,11 +1,10 @@
 <template>
   <div>
     <div class="crumbs">
-      <el-breadcrumb separator="/">
+      <el-breadcrumb>
         <el-breadcrumb-item>
-          <i class="el-icon-lx-calendar"></i> 用户
+          <i class="el-icon-lx-calendar"></i> 物业员工基本信息
         </el-breadcrumb-item>
-        <el-breadcrumb-item>物业员工</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div v-if="form!=null" class="container">

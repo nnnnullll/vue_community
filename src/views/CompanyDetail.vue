@@ -1,11 +1,10 @@
 <template>
     <div>
         <div class="crumbs">
-            <el-breadcrumb separator="/">
+            <el-breadcrumb>
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-calendar"></i>基本休息
+                    <i class="el-icon-lx-calendar"></i>物业基本休息
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>物业公司</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">

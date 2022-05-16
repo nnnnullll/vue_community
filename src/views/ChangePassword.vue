@@ -1,11 +1,10 @@
 <template>
     <div>
         <div class="crumbs">
-            <el-breadcrumb separator="/">
+            <el-breadcrumb>
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-calendar"></i> 用户
+                    <i class="el-icon-lx-calendar"></i> 更改密码
                 </el-breadcrumb-item>
-                <el-breadcrumb-item>更改密码</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">

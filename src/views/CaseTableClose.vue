@@ -96,7 +96,6 @@ export default {
     getData (number, type, company) {
       axios.post('/getcaselist?number=' + number + '&type=' + type + '&company=' + company)
         .then(res => {
-          console.log(res.data)
           this.tableData = res.data
         })
         .catch(err => {
