@@ -268,17 +268,11 @@ export default {
     },
     importfxx (obj) {
       let _this = this
-
       this.file = event.currentTarget.files[0]
-
-      var rABS = false // 是否将文件读取为二进制字符串
       var f = this.file
-
       var reader = new FileReader()
-      // if (!FileReader.prototype.readAsBinaryString) {
       FileReader.prototype.readAsBinaryString = function (f) {
         var binary = ''
-        var rABS = false // 是否将文件读取为二进制字符串
         var wb // 读取完成的数据
         var outdata
         var reader = new FileReader()
@@ -290,16 +284,9 @@ export default {
           }
           // 如果没有在main.js中引入，则此处需要引入，用于解析excel
           var XLSX = require('xlsx')
-          if (rABS) {
-            wb = XLSX.read(btoa(_this.fixdata(binary)), {
-              // 手动转化
-              type: 'base64'
-            })
-          } else {
-            wb = XLSX.read(binary, {
-              type: 'binary'
-            })
-          }
+          wb = XLSX.read(binary, {
+            type: 'binary'
+          })
           outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])
           // outdata就是读取的数据（不包含标题行即表头，表头会作为对象的下标）
           // 此处可对数据进行处理
@@ -314,21 +301,8 @@ export default {
         }
         reader.readAsArrayBuffer(f)
       }
-      if (rABS) {
-        reader.readAsArrayBuffer(f)
-      } else {
-        reader.readAsBinaryString(f)
-      }
-    },
-    fixdata (data) { // 文件流转BinaryString
-      var o = ''
-      var l = 0
-      var w = 10240
-      for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)))
-      o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)))
-      return o
+      reader.readAsBinaryString(f)
     }
-
   }
 }
 </script>
