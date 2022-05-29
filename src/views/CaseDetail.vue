@@ -30,7 +30,7 @@
               <el-button v-show="usertype==3&&form.state==3&&form.fix_state==3" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(7)">完成维修单</el-button>
             <!-- 住户 -->
               <!-- 关闭（只有household看见） -->
-              <el-button v-show="usertype==2&&form.state!=5" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(11)">关闭维修单</el-button>
+              <el-button v-show="usertype==2&&form.state!=5" style="margin-right: 10px;float:right;" type="primary" @click="clickbuttonlist(11)">关闭投诉单</el-button>
             </div>
                     <!-- row1 -->
                     <el-row>
@@ -470,8 +470,16 @@ export default {
       // type=11 关闭
       axios.post('/updatecasebynumber?number=' + this.form.number + '&type=' + type + '&assigned_to=' + assign + '&message=' + message + '&updateduser=' + updateduser)
         .then(res => {
-          this.postSuccessMessage('操作成功!')
-          this.refresh(casenumber)
+          if (res.data === 10) {
+            this.postErrorMessage('操作失败，该投诉单状态已改变!')
+            this.refresh(casenumber)
+          } else if (res.data === 0) {
+            this.postErrorMessage('操作失败，数据库更新失败!')
+            this.refresh(casenumber)
+          } else {
+            this.postSuccessMessage('操作成功!')
+            this.refresh(casenumber)
+          }
         })
         .catch(err => {
           this.postErrorMessage('操作失败:' + err)
