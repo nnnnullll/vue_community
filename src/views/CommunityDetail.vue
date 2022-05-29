@@ -66,7 +66,7 @@
         </el-form>
       </div>
     </div>
-    <div v-if="form != null&&usercompany!=null" class="crumbs">
+    <div v-if="form != null&&usercompany!=null&&ifemployee" class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
           <i class="el-icon-lx-calendar"></i> {{form.name}}
@@ -74,7 +74,7 @@
         <el-breadcrumb-item>住户列表</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-     <div v-if="tableData!=null&&usercompany!=null" class="container">
+     <div v-if="tableData!=null&&usercompany!=null&&ifemployee" class="container">
       <el-table ref="filterTable" :data="tableData" border class="table" header-cell-class-name="table-header">
         <el-table-column sortable prop="number" label="编号">
           <template slot-scope="{ row }">
@@ -103,7 +103,8 @@ export default {
       form: null,
       tableData: null,
       ifshow: null,
-      usercompany: null
+      usercompany: null,
+      ifemployee: null
     }
   },
   mounted: function () {
@@ -113,6 +114,8 @@ export default {
       this.usercompany = localStorage.getItem('loginuser_commpany')
       // eslint-disable-next-line eqeqeq
       this.ifshow = localStorage.getItem('loginadmin') == 1 && localStorage.getItem('logintype') == 1
+      // eslint-disable-next-line eqeqeq
+      this.ifemployee = localStorage.getItem('logintype') == 1
       this.GetCommunitiesByNumber(this.$route.query.number)
       // eslint-disable-next-line eqeqeq
     } else if (localStorage.getItem('logintype') == 2) {

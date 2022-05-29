@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">物业管理系统</div>
+            <div class="ms-title">社区投诉管理系统</div>
             <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
                     <el-input v-model="loginForm.username" placeholder="账号">
