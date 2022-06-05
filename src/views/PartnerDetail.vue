@@ -25,7 +25,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="物业公司名" prop="name">
+              <el-form-item label="名称" prop="name">
                 <el-input v-model="form.name" :disabled="true"></el-input>
               </el-form-item>
             </el-col>

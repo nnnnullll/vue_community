@@ -25,10 +25,7 @@ export default {
       // eslint-disable-next-line eqeqeq
       } else if (url == '/partnerdetail' && from != 'internal') {
         this.$router.push({
-          path: '/partnerdetail',
-          query: {
-            number: this.$route.query.number
-          }
+          path: '/partnerdetail'
         })
       // eslint-disable-next-line eqeqeq
       } else if (url == '/partnerdetail' && from == 'internal') {
@@ -81,10 +78,7 @@ export default {
       // eslint-disable-next-line eqeqeq
       } else if (url == '/employeedetailmine' && from != 'internal') {
         this.$router.push({
-          path: '/employeedetailmine',
-          query: {
-            number: this.$route.query.number
-          }
+          path: '/employeedetailmine'
         })
       // eslint-disable-next-line eqeqeq
       } else if (url == '/employeedetail' && from == 'internal') {

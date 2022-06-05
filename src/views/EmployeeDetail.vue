@@ -130,7 +130,7 @@ export default {
     if (this.$route.query.from === 'internal') {
       this.GetEmployeeDetailByNumber(this.$route.query.number)
       // eslint-disable-next-line eqeqeq
-      this.ifshow = localStorage.getItem('loginadmin') == 1
+      this.ifshow = localStorage.getItem('loginadmin') == 1 && localStorage.getItem('logintype') == 1
       this.minename = localStorage.getItem('loginuser')
     }
   },
